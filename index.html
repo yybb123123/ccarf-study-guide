@@ -619,6 +619,9 @@ body.is-remote .file-hit{opacity:.85}
   .toast-wrap{bottom:80px;width:calc(100vw - 24px)}
 }
 @media print{.coach-grid,.sync-chip,#openSettings,.remote-note{display:none!important}}
+
+/* 全局 hidden 兜底：避免 display:flex 覆盖 HTML hidden 属性 */
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
