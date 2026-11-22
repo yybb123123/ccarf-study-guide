@@ -838,8 +838,6 @@ body.is-remote .file-hit{opacity:.85}
       <p>按「需求度」（对通过的贡献）和「难度」（读懂要花的力气）分层。点任意文件直接打开，支持搜索。</p>
     </header>
 
-    <p class="remote-note">你正在看<strong>在线版</strong>：PDF 原件不在这里，点击资料名不会打开文件。要连资料一起用，请打开本机的 <code>ai a/学习指导.html</code>。</p>
-
     <div class="map-tools">
       <div class="search">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -3469,17 +3467,6 @@ body.is-remote .file-hit{opacity:.85}
     renderCtx();
     scheduleSync();
   });
-
-  /* ---------------- 在线/本地提示 ---------------- */
-  if (location.protocol !== "file:") {
-    document.body.classList.add("is-remote");
-    document.querySelectorAll(".file-hit").forEach(function (a) {
-      a.addEventListener("click", function (e) {
-        e.preventDefault();
-        toast("在线版不含 PDF 原件，资料链接要在本机 ai a 文件夹里打开才有效");
-      });
-    });
-  }
 
   /* ---------------- 启动 ---------------- */
   var testBtn = $("testBtn");
