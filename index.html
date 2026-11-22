@@ -622,6 +622,219 @@ body.is-remote .file-hit{opacity:.85}
 
 /* 全局 hidden 兜底：避免 display:flex 覆盖 HTML hidden 属性 */
 [hidden]{display:none!important}
+/* ============================================================
+   v6 · 制图图纸主题
+   一张备考图纸：冷灰纸面、石墨字、钢蓝结构线、红笔批注。
+   去掉模板味：无衬线大标题、无全大写小标签、无中间点拼接、按钮无箭头。
+   ============================================================ */
+
+:root{
+  --bg:#EFF1F2;
+  --surface:#F8F9F9;
+  --surface-2:#E8EBEC;
+  --surface-3:#DFE3E5;
+  --ink:#14181A;
+  --ink-2:#3D484D;
+  --ink-3:#5B686D;
+  --line:#C8CFD2;
+  --line-2:#DCE1E3;
+  --brand:#2F5A72;
+  --brand-ink:#23485D;
+  --brand-soft:#E2EAEF;
+  --brand-line:#A9BEC9;
+  --amber:#9A3A2A;
+  --amber-soft:#F4E7E4;
+  --amber-line:#DBB7AF;
+  --d1:#2F5A72;
+  --d2:#4A6B7A;
+  --d3:#4F5E6B;
+  --d4:#6B5A52;
+  --d5:#5F6B5D;
+  --d1-soft:#E2EAEF;
+  --d2-soft:#E6EBEE;
+  --d3-soft:#E7EAEC;
+  --d4-soft:#EDE8E4;
+  --d5-soft:#E8EBE6;
+  --font-serif:"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif;
+  --r:2px;
+  --r-lg:3px;
+  --shadow:none;
+  --maxw:1120px;
+}
+[data-theme="dark"]{
+  --bg:#0F1315;
+  --surface:#161B1D;
+  --surface-2:#1B2225;
+  --surface-3:#232B2E;
+  --ink:#E6ECEF;
+  --ink-2:#B0BCC1;
+  --ink-3:#8B989D;
+  --line:#2A3438;
+  --line-2:#212A2D;
+  --brand:#8FB6C9;
+  --brand-ink:#A9CBDB;
+  --brand-soft:#16262E;
+  --brand-line:#33505E;
+  --amber:#E0705C;
+  --amber-soft:#2A1D1A;
+  --amber-line:#5C3A33;
+  --d1:#8FB6C9;--d2:#9DB4BE;--d3:#A9B4BC;--d4:#C3ADA4;--d5:#B3BCA9;
+  --d1-soft:#16262E;--d2-soft:#182023;--d3-soft:#1A2023;--d4-soft:#221E1C;--d5-soft:#1E211C;
+  --shadow:none;
+}
+
+/* ---- 纸面与网格 ---- */
+body{background:var(--bg)}
+.hero{position:relative;padding:88px 0 0;border-bottom:1px solid var(--line);overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(to right,color-mix(in srgb,var(--brand) 9%,transparent) 1px,transparent 1px),
+    linear-gradient(to bottom,color-mix(in srgb,var(--brand) 9%,transparent) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.5) 55%,transparent 92%);
+  mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.5) 55%,transparent 92%);
+}
+.hero>.wrap{position:relative;max-width:980px;padding-bottom:56px}
+
+/* ---- 首屏排版 ---- */
+.subject{
+  font-size:12.5px;letter-spacing:.01em;color:var(--ink-3);
+  padding-bottom:14px;margin-bottom:26px;border-bottom:1px solid var(--line);
+  max-width:18em;
+}
+.hero h1{
+  font-family:var(--font-serif);font-weight:600;
+  font-size:clamp(32px,4.4vw,56px);line-height:1.1;letter-spacing:-.025em;
+  color:var(--ink);max-width:16em;
+}
+.hero h1 em{font-style:normal;color:inherit;text-decoration:none}
+.lede{margin-top:24px;font-size:16px;line-height:1.75;color:var(--ink-2);max-width:34em}
+.lede strong{color:var(--ink);font-weight:600}
+.hero-cta{margin-top:32px;gap:10px}
+.hero-hint,.dim-note{margin-top:18px;font-size:12.5px;color:var(--ink-3)}
+
+/* ---- 按钮 ---- */
+.btn{border-radius:var(--r);font-size:14px;font-weight:600;letter-spacing:0}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-primary:hover{background:var(--brand-ink);border-color:var(--brand-ink);color:#fff}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn-quiet{border-radius:var(--r)}
+
+/* ---- 权重尺寸线 ---- */
+.dimline{display:flex;margin-top:60px;border-top:1.5px solid var(--ink-2)}
+.dim-seg{position:relative;padding:16px 8px 0 0;min-width:0}
+.dim-seg::before{content:"";position:absolute;left:0;top:0;width:1px;height:9px;background:var(--ink-2)}
+.dim-seg:first-child::before{height:0}
+.dim-seg:last-child::after{content:"";position:absolute;right:0;top:0;width:1px;height:9px;background:var(--ink-2)}
+.dim-pct{display:block;font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.dim-name{display:block;margin-top:5px;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dimlist{display:none}
+
+/* ---- 标题栏 ---- */
+.spec{display:grid;grid-template-columns:repeat(4,1fr);margin:52px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.spec>div{display:flex;align-items:baseline;gap:8px;padding:13px 16px 13px 0;border-right:1px solid var(--line-2)}
+.spec>div:last-child{border-right:0}
+.spec dt{font-size:11.5px;color:var(--ink-3)}
+.spec dd{margin:0;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ---- 版面节奏 ---- */
+.band{padding:72px 0}
+.band-alt{background:var(--surface-2);border-block:1px solid var(--line)}
+.sec-head h2{font-family:var(--font-serif);font-weight:600;letter-spacing:-.02em}
+.sec-head p{color:var(--ink-2)}
+
+/* ---- 卡片：细线、直角、无阴影 ---- */
+.domain,.folder,.tl-card,.ex,.quiz,.chat-log,.coach-chat,.coach-side,.stats,.focus,.prompt-box,.accept,.crash,.tri-card{
+  border-radius:var(--r);box-shadow:none;
+}
+.domain,.folder,.tl-card,.ex,.quiz,.coach-chat,.coach-side,.stats,.focus,.prompt-box,.accept,.crash{
+  border-color:var(--line);background:var(--surface);
+}
+.domain{padding:22px}
+.dcode,.ex-name,.tl-day{background:var(--surface-3);color:var(--ink-2);border-radius:1px}
+.dweight{font-family:var(--font-mono);font-size:22px;font-weight:600;letter-spacing:-.02em}
+.dweight small{font-size:11px;color:var(--ink-3)}
+.dbar{height:2px;background:var(--line-2)}
+.dq-k{background:var(--brand-soft);color:var(--brand-ink);border-radius:1px}
+
+/* ---- 时间线：红笔标完成 ---- */
+.tl-node{font-size:11px;background:var(--bg);border-color:var(--line);border-radius:2px;width:30px;height:30px}
+.tl-rail::before{background:var(--line)}
+.tl-item.done .tl-node{background:var(--amber);border-color:var(--amber);color:#fff}
+[data-theme="dark"] .tl-item.done .tl-node{color:#1A0E0B}
+.tl-item.done .tl-card{border-color:var(--amber-line);background:var(--surface)}
+.tl-item.done .tl-head h3{color:var(--ink-2)}
+input:checked + .box{background:var(--amber);border-color:var(--amber)}
+[data-theme="dark"] input:checked + .box{color:#1A0E0B}
+.box{border-radius:2px}
+.tfile{border-radius:1px;font-size:10.5px}
+
+/* ---- 进度与状态 ---- */
+.plan-progress{background:var(--line-2)}
+.plan-progress span{background:var(--brand)}
+.stat-n{font-family:var(--font-mono);font-weight:600;font-size:24px}
+.stat.is-done .stat-n{color:var(--brand-ink)}
+.dbar-track span{background:var(--brand)}
+.resume{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:var(--r)}
+.resume-k{color:var(--amber);font-weight:700;letter-spacing:.02em}
+.resume-go{background:var(--surface-2);border-color:var(--line);border-radius:1px;color:var(--ink)}
+.plan-foot{background:var(--amber-soft);border-left:3px solid var(--amber);border-radius:0 var(--r) var(--r) 0}
+.plan-foot em{color:var(--amber)}
+.crash{border-radius:var(--r)}
+
+/* ---- 表头与页脚 ---- */
+.topbar{background:color-mix(in srgb,var(--bg) 90%,transparent);border-bottom:1px solid var(--line)}
+.brand-mark{background:var(--ink);color:var(--bg);border-radius:2px}
+[data-theme="dark"] .brand-mark{color:#0F1315}
+.brand-txt b{color:var(--ink-3)}
+.topnav a[aria-current="true"]{background:transparent;color:var(--ink);font-weight:600;box-shadow:inset 0 -1.5px 0 var(--ink);border-radius:0}
+.topnav a{border-radius:0}
+.progress-chip{border-radius:2px;background:transparent}
+.icon-btn{border-radius:2px}
+
+/* ---- 章节编号：仅时间线使用 ---- */
+.tl-day{font-size:10.5px}
+
+/* ---- 移动端：尺寸线换成列表 ---- */
+@media (max-width:760px){
+  .hero{padding-top:56px}
+  .hero>.wrap{padding-bottom:40px}
+  .dimline{display:none}
+  .dimlist{display:flex;flex-direction:column;gap:9px;margin-top:36px;border-top:1px solid var(--line);padding-top:18px}
+  .dimlist li{display:grid;grid-template-columns:1fr 60px auto;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-2)}
+  .dimlist i{display:block;height:2px;background:var(--brand);justify-self:stretch;align-self:center}
+  .dimlist b{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--ink)}
+  .spec{grid-template-columns:repeat(2,1fr);margin-top:34px}
+  .spec>div:nth-child(2n){border-right:0}
+  .spec>div:nth-child(-n+2){border-bottom:1px solid var(--line-2)}
+}
+@media print{
+  .hero::before{display:none}
+  .dimline{border-color:#444}
+  .dimlist{display:none}
+}
+
+/* 微调 */
+.subject{max-width:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:760px){.subject{white-space:normal}}
+.tri-k{color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.tri-card h3{letter-spacing:-.01em}
+.q-code,.file-kind,.tl-hrs,.meta-pages{font-variant-numeric:tabular-nums}
+
+/* 权重数字的百分号 */
+.dweight small{margin-left:2px;font-size:12px;color:var(--ink-3);font-weight:500}
+.dweight{letter-spacing:-.03em}
+
+/* 移动端权重条 */
+.dimlist li{grid-template-columns:minmax(0,1fr) 84px 40px}
+.dimlist .dl-track{display:block;height:3px;background:var(--line);position:relative}
+.dimlist .dl-track i{position:absolute;inset:0 auto 0 0;background:var(--brand);display:block;height:100%}
+.dimlist b{text-align:right}
+.resume-go{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.resume-go:hover{background:var(--brand-ink);border-color:var(--brand-ink);color:#fff}
 </style>
 </head>
 <body>
@@ -669,53 +882,48 @@ body.is-remote .file-hit{opacity:.85}
 <main id="main">
 
 <section class="hero" id="top">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">Anthropic 认证 · 备考工作台</p>
-      <h1>31 份官方文档<br>排成<em>两周</em>走完的路</h1>
-      <p class="lede">49 页考纲、167 页 Hooks、10 门需登录的课程页——资料不缺，缺的是顺序。
-      这台页面把三件事放在一起：<strong>考什么</strong>（权重）、<strong>读什么</strong>（资料地图）、<strong>今天做什么</strong>（14 天计划）。</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#plan">开始 14 天计划
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="#map">先看资料怎么分</a>
-      </div>
-
-      <div class="resume" id="resume" hidden>
-        <span class="resume-k">下一步</span>
-        <span class="resume-body">
-          <span class="resume-t" id="resumeText"></span>
-          <span class="resume-stat" id="resumeStat"></span>
-        </span>
-        <button class="resume-go" id="resumeGo" type="button">
-          跳到这一节
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-        </button>
-      </div>
-
-      <p class="hero-hint">预计 20–25 小时 · 每天 60 分钟起 · 全部资料已在本文件夹离线可用</p>
-    </div>
-
-    <div class="hero-panel" aria-label="考试关键事实">
-      <div class="fact"><span class="fact-n">42</span><span class="fact-l">页官方考纲</span></div>
-      <div class="fact"><span class="fact-n">5</span><span class="fact-l">大领域 / 100% 权重</span></div>
-      <div class="fact"><span class="fact-n">31</span><span class="fact-l">份来源文档</span></div>
-      <div class="fact"><span class="fact-n">4</span><span class="fact-l">项动手实作</span></div>
-    </div>
-  </div>
-
   <div class="wrap">
-    <div class="weight-strip" aria-label="领域权重分布">
-      <div class="ws-bar"><span style="width:27%"></span><span style="width:20%"></span><span style="width:20%"></span><span style="width:18%"></span><span style="width:15%"></span></div>
-      <ul class="ws-legend">
-        <li><i class="dot d1"></i>D1 Agent 编排 <b>27%</b></li>
-        <li><i class="dot d3"></i>D3 Claude Code <b>20%</b></li>
-        <li><i class="dot d4"></i>D4 提示词与输出 <b>20%</b></li>
-        <li><i class="dot d2"></i>D2 工具与 MCP <b>18%</b></li>
-        <li><i class="dot d5"></i>D5 上下文与可靠性 <b>15%</b></li>
-      </ul>
+    <p class="subject">Claude Certified Architect — Foundations</p>
+    <h1>把 31 份资料<br>按考分权重排进两周</h1>
+    <p class="lede">42 页考纲划定范围，D1 到 D5 的权重决定时间怎么分配。
+    资料、顺序、自测都串在这页上：每天 60 分钟，14 天走完，进度存在本机。</p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#plan">开始 14 天计划</a>
+      <a class="btn btn-ghost" href="#map">查看资料地图</a>
     </div>
+
+    <div class="resume" id="resume" hidden>
+      <span class="resume-k">下一步</span>
+      <span class="resume-body">
+        <span class="resume-t" id="resumeText"></span>
+        <span class="resume-stat" id="resumeStat"></span>
+      </span>
+      <button class="resume-go" id="resumeGo" type="button">跳到这一节</button>
+    </div>
+
+    <div class="dimline" role="img" aria-label="五大领域权重：D1 27%、D3 20%、D4 20%、D2 18%、D5 15%">
+      <div class="dim-seg" style="flex:27 1 0"><span class="dim-pct">27%</span><span class="dim-name">D1 编排</span></div>
+      <div class="dim-seg" style="flex:20 1 0"><span class="dim-pct">20%</span><span class="dim-name">D3 Claude Code</span></div>
+      <div class="dim-seg" style="flex:20 1 0"><span class="dim-pct">20%</span><span class="dim-name">D4 提示词</span></div>
+      <div class="dim-seg" style="flex:18 1 0"><span class="dim-pct">18%</span><span class="dim-name">D2 工具</span></div>
+      <div class="dim-seg" style="flex:15 1 0"><span class="dim-pct">15%</span><span class="dim-name">D5 上下文</span></div>
+    </div>
+
+    <ul class="dimlist" aria-hidden="true">
+      <li><span>D1 编排</span><span class="dl-track"><i style="width:27%"></i></span><b>27%</b></li>
+      <li><span>D3 Claude Code</span><span class="dl-track"><i style="width:20%"></i></span><b>20%</b></li>
+      <li><span>D4 提示词</span><span class="dl-track"><i style="width:20%"></i></span><b>20%</b></li>
+      <li><span>D2 工具</span><span class="dl-track"><i style="width:18%"></i></span><b>18%</b></li>
+      <li><span>D5 上下文</span><span class="dl-track"><i style="width:15%"></i></span><b>15%</b></li>
+    </ul>
+
+    <dl class="spec">
+      <div><dt>考纲</dt><dd>42 页</dd></div>
+      <div><dt>领域</dt><dd>5 个</dd></div>
+      <div><dt>文档</dt><dd>31 份</dd></div>
+      <div><dt>实作</dt><dd>4 项</dd></div>
+    </dl>
   </div>
 </section>
 
@@ -727,17 +935,17 @@ body.is-remote .file-hit{opacity:.85}
     </header>
     <div class="tri">
       <article class="tri-card">
-        <span class="tri-k">① 范围</span>
+        <span class="tri-k">范围</span>
         <h3>考纲是唯一裁判</h3>
         <p>任何文档里出现考纲没写的功能，都不要当成必考。学每块内容前先回考纲确认它对应哪条 Task Statement。</p>
       </article>
       <article class="tri-card">
-        <span class="tri-k">② 权重</span>
+        <span class="tri-k">权重</span>
         <h3>D1+D3+D4 占 67%</h3>
         <p>三个领域吃掉三分之二的分。同样是 20 页文档，D1 的值得读两遍，D5 的读一遍就够。</p>
       </article>
       <article class="tri-card">
-        <span class="tri-k">③ 方式</span>
+        <span class="tri-k">方式</span>
         <h3>能讲出来才算会</h3>
         <p>考试考判断力而非定义。每读完一块，合上文档口述 3 分钟；讲不顺的地方就是漏洞。</p>
       </article>
@@ -748,7 +956,7 @@ body.is-remote .file-hit{opacity:.85}
 <section class="band band-alt" id="domains">
   <div class="wrap">
     <header class="sec-head">
-      <h2>五大领域 · 要能解释什么</h2>
+      <h2>五大领域：要能解释什么</h2>
       <p>每个领域后面是它的自测题，答不上来说明还没读完。</p>
     </header>
     <div class="domains">
@@ -834,7 +1042,7 @@ body.is-remote .file-hit{opacity:.85}
 <section class="band" id="map">
   <div class="wrap">
     <header class="sec-head">
-      <h2>资料地图 · 7 个文件夹</h2>
+      <h2>资料地图：7 个文件夹</h2>
       <p>按「需求度」（对通过的贡献）和「难度」（读懂要花的力气）分层。点任意文件直接打开，支持搜索。</p>
     </header>
 
@@ -1640,10 +1848,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D1</span>
-            <h3>打地基 ①</h3>
+            <h3>打地基 上</h3>
             <span class="tl-hrs">1.5 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="2" class="unit-box" aria-label="标记 D1 打地基 ① 完成">
+              <input type="checkbox" data-unit="2" class="unit-box" aria-label="标记 D1 打地基 上 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1664,10 +1872,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D2</span>
-            <h3>打地基 ②</h3>
+            <h3>打地基 下</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="3" class="unit-box" aria-label="标记 D2 打地基 ② 完成">
+              <input type="checkbox" data-unit="3" class="unit-box" aria-label="标记 D2 打地基 下 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1688,10 +1896,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D3</span>
-            <h3>D1 主攻 ①</h3>
+            <h3>D1 主攻 1/2</h3>
             <span class="tl-hrs">1.5 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="4" class="unit-box" aria-label="标记 D3 D1 主攻 ① 完成">
+              <input type="checkbox" data-unit="4" class="unit-box" aria-label="标记 D3 D1 主攻 1/2 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1712,10 +1920,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D4</span>
-            <h3>D1 主攻 ②</h3>
+            <h3>D1 主攻 2/2</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="5" class="unit-box" aria-label="标记 D4 D1 主攻 ② 完成">
+              <input type="checkbox" data-unit="5" class="unit-box" aria-label="标记 D4 D1 主攻 2/2 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1736,10 +1944,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D5</span>
-            <h3>D3 主攻 ①</h3>
+            <h3>D3 主攻 1/3</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="6" class="unit-box" aria-label="标记 D5 D3 主攻 ① 完成">
+              <input type="checkbox" data-unit="6" class="unit-box" aria-label="标记 D5 D3 主攻 1/3 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1760,10 +1968,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D6</span>
-            <h3>D3 主攻 ②</h3>
+            <h3>D3 主攻 2/3</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="7" class="unit-box" aria-label="标记 D6 D3 主攻 ② 完成">
+              <input type="checkbox" data-unit="7" class="unit-box" aria-label="标记 D6 D3 主攻 2/3 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1784,10 +1992,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D7</span>
-            <h3>D3 主攻 ③</h3>
+            <h3>D3 主攻 3/3</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="8" class="unit-box" aria-label="标记 D7 D3 主攻 ③ 完成">
+              <input type="checkbox" data-unit="8" class="unit-box" aria-label="标记 D7 D3 主攻 3/3 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1808,10 +2016,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D8</span>
-            <h3>D4 主攻 ①</h3>
+            <h3>D4 主攻 1/2</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="9" class="unit-box" aria-label="标记 D8 D4 主攻 ① 完成">
+              <input type="checkbox" data-unit="9" class="unit-box" aria-label="标记 D8 D4 主攻 1/2 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -1832,10 +2040,10 @@ body.is-remote .file-hit{opacity:.85}
         <article class="tl-card">
           <header class="tl-head">
             <span class="tl-day">D9</span>
-            <h3>D4 主攻 ②</h3>
+            <h3>D4 主攻 2/2</h3>
             <span class="tl-hrs">2 小时</span>
             <label class="tl-check">
-              <input type="checkbox" data-unit="10" class="unit-box" aria-label="标记 D9 D4 主攻 ② 完成">
+              <input type="checkbox" data-unit="10" class="unit-box" aria-label="标记 D9 D4 主攻 2/2 完成">
               <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span class="check-lbl">完成</span>
             </label>
@@ -2133,7 +2341,7 @@ body.is-remote .file-hit{opacity:.85}
     </div>
 
     <div class="accept">
-      <h3>验收表 · 六条全过才算做完</h3>
+      <h3>验收表：六条全过才算做完</h3>
       <ul class="accept-list">
         <li>
           <label>
@@ -2274,7 +2482,7 @@ body.is-remote .file-hit{opacity:.85}
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <p>资料整理于 2026-11-21 · 全部离线可用 · 官方来源见 <code>00_开始这里/03_所有来源链接.txt</code></p>
+    <p>资料整理于 2026-11-21。全部离线可用，原始来源见 <code>00_开始这里/03_所有来源链接.txt</code>。</p>
     <p class="foot-note">本页为自主学习辅助，非 Anthropic 官方材料；考纲以官方 PDF 为准。</p>
     <p class="foot-keys">快捷键：<kbd>/</kbd> 搜索资料 · <kbd>t</kbd> 切换深浅色 · <kbd>Esc</kbd> 清空搜索</p>
   </div>
@@ -2282,7 +2490,7 @@ body.is-remote .file-hit{opacity:.85}
 <dialog class="sheet" id="settings" aria-labelledby="settingsTitle">
   <form method="dialog" class="sheet-in">
     <header class="sheet-head">
-      <h2 id="settingsTitle">设置 · API 与同步</h2>
+      <h2 id="settingsTitle">设置：API 与同步</h2>
       <button class="icon-btn" type="submit" value="close" aria-label="关闭设置">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
