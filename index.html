@@ -2931,6 +2931,10 @@ body.is-remote .file-hit{opacity:.85}
   }, cfgStore.cfg);
 
   function apiKey() { return cfg.remember ? cfgStore.key : (cfgStore.sessionKey || cfgStore.key); }
+
+  function looksLikeUrl(k) {
+    return /^(https?:\/\/|www\.|Bearer\s)/i.test(k) || k.indexOf("/") !== -1;
+  }
   function ghToken() { return cfg.remember ? cfgStore.ghToken : (cfgStore.ghSession || cfgStore.ghToken); }
 
   function persist() { write(localStorage, "ccarf.ai", cfg); }
@@ -3089,6 +3093,14 @@ body.is-remote .file-hit{opacity:.85}
 
       var key = fields.key.value.trim();
       var tok = fields.ghToken.value.trim();
+      if (key && looksLikeUrl(key)) {
+        setStatus("这看起来是网址，不是 API Key。Key 以 sk- 开头、不含斜杠。", "err");
+        return;
+      }
+      if (tok && looksLikeUrl(tok)) {
+        setStatus("GitHub Token 那一栏填的像是网址。", "err");
+        return;
+      }
       if (cfg.remember) {
         cfgStore.key = key; write(localStorage, "ccarf.key", key);
         del(sessionStorage, "ccarf.key");
@@ -3496,6 +3508,10 @@ body.is-remote .file-hit{opacity:.85}
     testBtn.addEventListener("click", async function () {
       var key = fields.key.value.trim();
       if (!key) { setStatus("先填 API Key", "err"); return; }
+      if (looksLikeUrl(key)) {
+        setStatus("这看起来是网址，不是 API Key。Key 以 sk- 开头、不含斜杠。", "err");
+        return;
+      }
       setStatus("正在测试…");
       var old = { p: cfg.provider, m: cfg.model, b: cfg.baseUrl };
       cfg.provider = fields.provider.value;
