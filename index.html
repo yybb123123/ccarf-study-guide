@@ -2295,7 +2295,8 @@ body.is-remote .file-hit{opacity:.85}
           <label for="provider">服务商</label>
           <select id="provider">
             <option value="anthropic">Anthropic（Claude）</option>
-            <option value="openai">OpenAI 兼容接口</option>
+            <option value="deepseek">DeepSeek</option>
+            <option value="openai">其他 OpenAI 兼容接口</option>
           </select>
         </div>
         <div class="field">
@@ -2304,6 +2305,7 @@ body.is-remote .file-hit{opacity:.85}
             <input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
             <button type="button" class="btn btn-quiet" id="toggleKey">显示</button>
           </div>
+          <p class="hint" id="providerHint">Anthropic 控制台创建，形如 sk-ant-…</p>
           <p class="hint">只存在这台电脑的浏览器里，不进仓库、不上传。公用电脑请取消勾选「记住」。</p>
         </div>
         <div class="field">
@@ -2900,7 +2902,12 @@ body.is-remote .file-hit{opacity:.85}
 
   var $ = function (id) { return document.getElementById(id); };
   var DEBOUNCE = 3500;
-  var DEFAULT_MODEL = { anthropic: "claude-sonnet-4-5", openai: "gpt-4o-mini" };
+  var PRESET = {
+    anthropic: { base: "", model: "claude-sonnet-4-5" },
+    deepseek: { base: "https://api.deepseek.com", model: "deepseek-chat" },
+    openai: { base: "https://api.openai.com/v1", model: "" }
+  };
+  var DEFAULT_MODEL = { anthropic: PRESET.anthropic.model, deepseek: "deepseek-chat", openai: "gpt-4o-mini" };
 
   function read(store, k, d) {
     try { var v = store.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; }
@@ -2970,12 +2977,27 @@ body.is-remote .file-hit{opacity:.85}
     syncProviderUI();
   }
 
-  function syncProviderUI() {
-    var isAnthropic = (fields.provider ? fields.provider.value : "anthropic") === "anthropic";
+  function syncProviderUI(fill) {
+    var p = fields.provider ? fields.provider.value : "anthropic";
+    var isAnthropic = p === "anthropic";
     var baseRow = $("baseRow");
     if (baseRow) baseRow.hidden = isAnthropic;
     var m = $("model");
-    if (m) m.placeholder = isAnthropic ? DEFAULT_MODEL.anthropic : DEFAULT_MODEL.openai;
+    if (m) m.placeholder = DEFAULT_MODEL[p] || "模型名";
+    if (fill && PRESET[p]) {
+      if (fields.baseUrl && !isAnthropic) fields.baseUrl.value = PRESET[p].base;
+      if (fields.model && (!fields.model.value || /^(claude|deepseek|gpt)-/.test(fields.model.value))) {
+        fields.model.value = PRESET[p].model;
+      }
+    }
+    var hint = $("providerHint");
+    if (hint) {
+      hint.textContent = p === "deepseek"
+        ? "填 DeepSeek 的 Key（sk-…），模型选 deepseek-chat 或 deepseek-reasoner。"
+        : (p === "anthropic"
+          ? "Anthropic 控制台创建，形如 sk-ant-…"
+          : "任何兼容 OpenAI 的接口，需允许浏览器跨域访问。");
+    }
   }
 
   function openSettings() {
@@ -2988,7 +3010,7 @@ body.is-remote .file-hit{opacity:.85}
     if (b) b.addEventListener("click", function (e) { e.preventDefault(); openSettings(); });
   });
 
-  if (fields.provider) fields.provider.addEventListener("change", syncProviderUI);
+  if (fields.provider) fields.provider.addEventListener("change", function () { syncProviderUI(true); });
 
   var toggleKey = $("toggleKey");
   if (toggleKey && fields.key) {
