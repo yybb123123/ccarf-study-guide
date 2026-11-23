@@ -8,6 +8,13 @@
 - 线上：GitHub Pages（legacy）→ https://yybb123123.github.io/ccarf-study-guide/
 - 合并到 `main` 即发布：会触发 Pages 重建。
 
+## 架构决策（2026-11-22）
+
+- **学习数据只保存在本机 Mac**：进度、笔记与 API key 都留在浏览器 local storage 和本机，不上传服务器。
+- **不做 GitHub Gist 跨设备同步**：页面里现有的 Gist 相关代码保持现状，但不再投入开发，也不作为承诺功能；不要基于它扩展新功能。
+- **不部署云数据库**：学习记录没有服务端存储，不引入后端、数据库或账号体系。
+- **GitHub Pages 只发布静态网站**：仓库是公开的，只放站点代码与可公开的资料；私人笔记、密钥、个人信息不得提交。
+
 ## 验证
 
 - 命令：`bash scripts/verify.sh --full`
