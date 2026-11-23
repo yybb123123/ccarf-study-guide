@@ -65,6 +65,12 @@ Key 只存在你自己的浏览器里，不写进仓库，也不会经过第三�
 - 阅读顺序：中文标题优先、英文术语保留、原始文件名次要；官方中文网页与英文 PDF 可能版本不同；
 - AI 学习入口：费曼教学在「资料与工具 → AI 导师」，自由问答在页面 AI 导师区块，两者共享同一份 API 配置。
 
+## DeepSeek 验收状态
+
+- 真实 DeepSeek **未验证**（本机无 Key）；自动化只覆盖请求构造、Schema、引用与本地网络 Mock。
+- 网络 Mock：`scripts/mock-deepseek.mjs` + `tests/prC.test.mjs`（包含 401/429/出题 JSON）。
+- 人工真实验收步骤与成本控制见 `docs/deepseek-acceptance.md`。
+
 ## 工程与测试
 
 ```bash
