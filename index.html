@@ -813,6 +813,16 @@ body.is-remote .file-hit{opacity:.85}
 .exam-report table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
 .exam-report th,.exam-report td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
 .exam-report .big{font-size:28px;font-weight:700}
+
+.studio-tabs.more{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.today-wide{grid-column:1/-1}
+.readiness{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.readiness .r{border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;font-size:12px}
+.readiness .r b{display:block;font-size:16px}
+.tutor-modes{display:flex;gap:6px;margin-bottom:12px}
+.tutor-modes button{border:1px solid var(--line);background:var(--surface);color:var(--ink-3);border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer}
+.tutor-modes button.is-on{background:var(--brand-soft);border-color:var(--brand-line);color:var(--brand-ink)}
+@media(max-width:700px){.readiness{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -1830,14 +1840,17 @@ body.is-remote .file-hit{opacity:.85}
         <p>资料只存在这台 Mac 的浏览器里：导入 → 检索 → 费曼问答 → 错题复习 → 备份。</p>
       </div>
       <div class="studio-tabs" role="tablist" aria-label="工作台">
-        <button class="tab is-on" type="button" role="tab" aria-selected="true" data-tab="today">今日</button>
+        <button class="tab is-on" type="button" role="tab" aria-selected="true" data-tab="today">今日学习</button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="objectives">考纲目标</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="scenarios">情景训练</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="exam">模拟考场</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="review">错题复习</button>
+        <button class="tab" id="tabLibrary" type="button" role="tab" aria-selected="false" data-tab="kb">资料与工具</button>
+      </div>
+      <div class="studio-tabs more" id="moreTabs" hidden role="tablist" aria-label="资料与工具">
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="kb">知识库</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="tutor">导师</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="scenarios">情景</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="exam">考场</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="review">复习</button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="data">数据</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="tutor">AI 导师</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="data">数据管理</button>
       </div>
     </header>
 
@@ -1869,6 +1882,7 @@ body.is-remote .file-hit{opacity:.85}
         <span class="hint" id="kbStatus" role="status" aria-live="polite">尚未导入资料</span>
       </div>
       <p class="hint">支持 Markdown、TXT、可提取文本的 PDF；扫描件不做 OCR，会明确标为「无文本」。资料只写入本机 IndexedDB，不上传。</p>
+      <p class="hint">阅读顺序：中文标题优先、英文术语保留、原始文件名作次要信息。官方中文网页与仓库里的英文 PDF 可能版本不同；未导入译本时会明确显示。</p>
       <div class="kb-search">
         <input id="kbQuery" type="search" placeholder="搜索中文 / English / 术语…" aria-label="检索知识库">
         <select id="kbDomain" aria-label="按领域过滤"><option value="">全部领域</option></select>
@@ -1884,6 +1898,7 @@ body.is-remote .file-hit{opacity:.85}
     </div>
 
     <div class="studio-panel" data-panel="tutor" hidden>
+      <div class="tutor-modes"><button type="button" class="is-on" data-tmode="feynman">费曼教学</button><button type="button" data-tmode="chat">自由问答（页面 AI 导师）</button></div>
       <div class="tutor-grid">
         <div class="tutor-main">
           <div class="tutor-head">
@@ -5005,6 +5020,24 @@ body.is-remote .file-hit{opacity:.85}
         importFiles(input.files).finally(function () { input.value = ""; });
       });
     }
+    var libBtn = $("tabLibrary"), moreTabs = $("moreTabs");
+    if (libBtn && moreTabs) {
+      libBtn.addEventListener("click", function () {
+        moreTabs.hidden = false;
+        var kb = moreTabs.querySelector('[data-tab="kb"]');
+        if (kb) kb.click();
+      });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("[data-tmode]"), function (b) {
+      b.addEventListener("click", function () {
+        if (b.getAttribute("data-tmode") !== "chat") return;
+        var coach = document.getElementById("coach");
+        if (coach) coach.scrollIntoView({ behavior: "smooth", block: "start" });
+        var input = document.getElementById("chatInput");
+        if (input) setTimeout(function () { input.focus(); }, 450);
+      });
+    });
+
     var sBtn = $("kbSearchBtn"), q = $("kbQuery");
     if (sBtn) sBtn.addEventListener("click", runSearch);
     if (q) q.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); runSearch(); } });
@@ -5288,6 +5321,48 @@ body.is-remote .file-hit{opacity:.85}
     });
   }
 
+  async function enhanceToday(box, unit) {
+    var d = await loadExamData();
+    if (!d.reg || !box) return;
+    var ts = loadTS(), cards = loadCards(), hist = readJSON(EXAM_HISTORY, []);
+    var unitMap = (d.map && d.map.units || []).filter(function (u) { return unit && u.day === unit.day; })[0];
+    var ids = unitMap ? unitMap.taskStatementIds : [];
+    var domains = [];
+    ids.forEach(function (id) { var dm = id.split(".")[0]; if (domains.indexOf(dm) === -1) domains.push(dm); });
+    var res = ((d.map && d.map.resources) || []).filter(function (r) {
+      return r.scope === "in-scope" && r.taskStatementIds.some(function (id) { return ids.indexOf(id) !== -1; });
+    }).slice(0, 3);
+    var nb = Array.prototype.slice.call(document.querySelectorAll("#notebooklm .nb-list li"))
+      .map(function (li) { return li.innerText.replace(/\s+/g, " ").trim(); })
+      .filter(function (t) { return domains.some(function (dm) { return t.indexOf(dm) !== -1; }); })
+      .slice(0, 2);
+    var verified = Object.keys(ts).filter(function (id) { return C.tsDisplayState(ts[id]) === "verified"; }).length;
+    var total = d.reg.taskStatements.length;
+    var last = hist.length ? hist[hist.length - 1] : null;
+    var examDate = readJSON("ccarf.examDate", null);
+    var daysLeft = examDate ? Math.ceil((new Date(examDate + "T12:00:00") - new Date(C.todayISO() + "T12:00:00")) / 86400000) : null;
+    var due = C.srsDue(cards, C.todayISO()).length;
+    var perDomain = d.reg.domains.map(function (dom) {
+      var arr = d.reg.taskStatements.filter(function (t) { return t.domain === dom.id; });
+      var v = arr.filter(function (t) { return C.tsDisplayState(ts[t.id]) === "verified"; }).length;
+      return "<div class=\"r\">" + dom.id + "<b>" + v + "/" + arr.length + "</b><span class=\"hint\">" + dom.weight + "%</span></div>";
+    }).join("");
+    var extra = '<div class="today-card today-wide"><span class="k">考试就绪度（本站指标，不是官方概率）</span>' +
+      '<span class="v">已验证 ' + verified + " / " + total + " 条目标 · 待复习 " + due + " 项" + (last ? " · 最近模拟 " + last.pct + "%" : "") + "</span>" +
+      '<div class="readiness">' + perDomain + "</div>" +
+      '<div class="hint" style="margin-top:8px">目标考试日期：<input id="examDateInput" type="date" value="' + esc(examDate || "") + '"> ' +
+      (daysLeft !== null ? "剩余 " + daysLeft + " 天（仅本地保存）" : "未设置则不显示倒计时") + "</div></div>";
+    extra += '<div class="today-card"><span class="k">当前单元目标</span><span class="v">' + (ids.length ? ids.join("、") : "本单元为准备/查漏") + '</span><span class="s">' + (unit ? esc(unit.day + " · " + unit.title) : "") + "</span></div>";
+    extra += '<div class="today-card"><span class="k">今日必读</span><span class="v">' + (res.length ? res.map(function (r) { return esc(r.name); }).join("<br>") : "本单元暂无专属资料") + '</span></div>';
+    extra += '<div class="today-card"><span class="k">NotebookLM 推荐</span><span class="v">' + (nb.length ? nb.map(function (t) { return esc(t.slice(0, 60)); }).join("<br>") : "按领域查看学习中心") + '</span><span class="s"><a href="#notebooklm">打开 NotebookLM →</a></span></div>';
+    box.insertAdjacentHTML("beforeend", extra);
+    var dateInput = $("examDateInput");
+    if (dateInput) dateInput.addEventListener("change", function () {
+      writeJSON("ccarf.examDate", dateInput.value || null);
+      renderToday();
+    });
+  }
+
   function renderToday() {
     var box = $("todayCards");
     if (!box) return;
@@ -5309,6 +5384,7 @@ body.is-remote .file-hit{opacity:.85}
     html += '<div class="today-card"><span class="k">本地知识库</span><span class="v" id="todayDocs">—</span><span class="s"><a href="#studio" data-goto="kb">导入或检索 →</a></span></div>';
     box.innerHTML = html;
     allDocs().then(function (docs) { var el = $("todayDocs"); if (el) el.textContent = docs.length + " 份资料"; }).catch(function () {});
+    enhanceToday(box, unit);
     Array.prototype.forEach.call(box.querySelectorAll("[data-goto]"), function (a) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
@@ -5919,7 +5995,7 @@ body.is-remote .file-hit{opacity:.85}
     examState.submitted = true;
     try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
     if (examTimer) clearInterval(examTimer);
-    var hist = before.concat([{ at: new Date().toISOString(), mode: examState.mode, total: report.total, correct: report.correct, pct: report.pct }]).slice(-10);
+    var hist = before.concat([{ at: new Date().toISOString(), mode: examState.mode, total: report.total, correct: report.correct, pct: report.pct, byDomain: report.byDomain, byType: report.byType, unanswered: report.unanswered }]).slice(-10);
     writeJSON(EXAM_HISTORY, hist);
     // 错题进入错题本，并写入对应 Task Statement 证据
     var cards = loadCards();
