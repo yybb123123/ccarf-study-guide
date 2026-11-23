@@ -2119,7 +2119,6 @@ body.is-remote .file-hit{opacity:.85}
       </div>
       <div class="coach-tools">
         <span class="coach-state" id="coachState">未配置 API Key</span>
-        <span class="sync-chip" id="syncChip" hidden>未启用同步</span>
         <button class="btn btn-quiet" id="openSettings" type="button">配置 API</button>
       </div>
     </header>
@@ -2368,6 +2367,7 @@ body.is-remote .file-hit{opacity:.85}
           </div>
           <p class="hint" id="providerHint">Anthropic 控制台创建，形如 sk-ant-…</p>
           <p class="hint">只存在这台电脑的浏览器里，不进仓库、不上传。公用电脑请取消勾选「记住」。</p>
+          <p class="hint">云同步已移除：旧版保存的 GitHub Token 在加载时会自动从本机清除，远程 Gist 不会被删除。</p>
         </div>
         <div class="field">
           <label for="model">模型</label>
@@ -2391,26 +2391,6 @@ body.is-remote .file-hit{opacity:.85}
           </label>
         </div>
       </section>
-
-      <section class="set-group">
-        <h3>进度云同步（可选）</h3>
-        <p class="hint" style="margin-bottom:12px">用 GitHub Gist 存进度：换电脑、换浏览器都能接着学。需要一枚只有 <code>gist</code> 权限的 Token（GitHub → Settings → Developer settings → Tokens）。</p>
-        <div class="field">
-          <label for="ghToken">GitHub Token</label>
-          <input id="ghToken" type="password" autocomplete="off" spellcheck="false" placeholder="ghp_… 或 github_pat_…">
-        </div>
-        <div class="field">
-          <label for="gistId">Gist ID（留空会自动新建一个私密 Gist）</label>
-          <input id="gistId" type="text" autocomplete="off" spellcheck="false" placeholder="留空即可">
-        </div>
-        <div class="field-row">
-          <label class="switch">
-            <input type="checkbox" id="autoSync">
-            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            勾选完成后自动同步
-          </label>
-        </div>
-      </section>
     </div>
 
     <footer class="sheet-foot">
@@ -2426,6 +2406,40 @@ body.is-remote .file-hit{opacity:.85}
 <button class="to-top" id="toTop" type="button" aria-label="回到顶部" hidden>
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
 </button>
+<script id="ccarf-core">
+(function (global) {
+  "use strict";
+
+  // Pure, DOM-free logic shared by the page and node:test.
+  function has(obj, k) { return obj && Object.prototype.hasOwnProperty.call(obj, k); }
+  function pick(obj, k, d) { return has(obj, k) ? obj[k] : (d === undefined ? null : d); }
+
+  // v1: drop GitHub Gist sync. Keep progress, notes, theme, chat and AI settings.
+  function migrateV1(state) {
+    var src = state && typeof state === "object" ? state : {};
+    var ai = src.ai && typeof src.ai === "object" ? Object.assign({}, src.ai) : null;
+    var stripped = [];
+    if (ai) {
+      ["ghToken", "ghSession", "gistId", "ghEnabled"].forEach(function (k) {
+        if (has(ai, k)) { delete ai[k]; stripped.push("ccarf.ai." + k); }
+      });
+    }
+    return {
+      ai: ai,
+      strippedAiFields: stripped,
+      removedKeys: ["ccarf.ghtoken", "ccarf.lastsync"].concat(stripped),
+      preserved: {
+        units: pick(src, "units"),
+        notes: pick(src, "notes"),
+        theme: pick(src, "theme"),
+        chat: pick(src, "chat")
+      }
+    };
+  }
+
+  global.CCARF_CORE = { migrateV1: migrateV1 };
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
 <script>(function () {
   "use strict";
 
@@ -2999,17 +3013,32 @@ body.is-remote .file-hit{opacity:.85}
   }
   function del(store, k) { try { store.removeItem(k); } catch (e) {} }
 
+  /* v1 迁移：移除 Gist 云同步，保留进度/笔记/主题；只清本机 Token，不动远程 Gist */
+  (function dropLegacyGist() {
+    try {
+      var res = window.CCARF_CORE.migrateV1({
+        units: read(localStorage, "ccarf.units", null),
+        notes: read(localStorage, "ccarf.notes", null),
+        theme: read(localStorage, "ccarf.theme", null),
+        chat: read(localStorage, "ccarf.chat", null),
+        ai: read(localStorage, "ccarf.ai", null)
+      });
+      localStorage.removeItem("ccarf.ghtoken");
+      sessionStorage.removeItem("ccarf.ghtoken");
+      localStorage.removeItem("ccarf.lastsync");
+      if (res.ai) write(localStorage, "ccarf.ai", res.ai);
+    } catch (e) {}
+  })();
+
   var cfgStore = {
     cfg: read(localStorage, "ccarf.ai", {}) || {},
     key: read(localStorage, "ccarf.key", "") || "",
     sessionKey: read(sessionStorage, "ccarf.key", "") || "",
-    ghToken: read(localStorage, "ccarf.ghtoken", "") || "",
-    ghSession: read(sessionStorage, "ccarf.ghtoken", "") || ""
   };
 
   var cfg = Object.assign({
     provider: "anthropic", model: "", baseUrl: "https://api.openai.com/v1",
-    remember: true, ghEnabled: false, gistId: ""
+    remember: true
   }, cfgStore.cfg);
 
   function apiKey() { return cfg.remember ? cfgStore.key : (cfgStore.sessionKey || cfgStore.key); }
@@ -3017,7 +3046,6 @@ body.is-remote .file-hit{opacity:.85}
   function looksLikeUrl(k) {
     return /^(https?:\/\/|www\.|Bearer\s)/i.test(k) || k.indexOf("/") !== -1;
   }
-  function ghToken() { return cfg.remember ? cfgStore.ghToken : (cfgStore.ghSession || cfgStore.ghToken); }
 
   function persist() { write(localStorage, "ccarf.ai", cfg); }
 
@@ -3051,7 +3079,7 @@ body.is-remote .file-hit{opacity:.85}
   var dlg = $("settings");
   var fields = {
     provider: $("provider"), key: $("apiKey"), model: $("model"), baseUrl: $("baseUrl"),
-    remember: $("rememberKey"), ghToken: $("ghToken"), gistId: $("gistId"), autoSync: $("autoSync")
+    remember: $("rememberKey")
   };
 
   function fillForm() {
@@ -3060,9 +3088,6 @@ body.is-remote .file-hit{opacity:.85}
     if (fields.model) fields.model.value = cfg.model || "";
     if (fields.baseUrl) fields.baseUrl.value = cfg.baseUrl || "";
     if (fields.remember) fields.remember.checked = !!cfg.remember;
-    if (fields.ghToken) fields.ghToken.value = ghToken();
-    if (fields.gistId) fields.gistId.value = cfg.gistId || "";
-    if (fields.autoSync) fields.autoSync.checked = !!cfg.ghEnabled;
     syncProviderUI();
   }
 
@@ -3173,29 +3198,18 @@ body.is-remote .file-hit{opacity:.85}
       cfg.model = fields.model.value.trim();
       cfg.baseUrl = fields.baseUrl.value.trim();
       cfg.remember = !!fields.remember.checked;
-      cfg.gistId = fields.gistId.value.trim();
-      cfg.ghEnabled = !!fields.autoSync.checked;
 
       var key = fields.key.value.trim();
-      var tok = fields.ghToken.value.trim();
       if (key && looksLikeUrl(key)) {
         setStatus("这看起来是网址，不是 API Key。Key 以 sk- 开头、不含斜杠。", "err");
-        return;
-      }
-      if (tok && looksLikeUrl(tok)) {
-        setStatus("GitHub Token 那一栏填的像是网址。", "err");
         return;
       }
       if (cfg.remember) {
         cfgStore.key = key; write(localStorage, "ccarf.key", key);
         del(sessionStorage, "ccarf.key");
-        cfgStore.ghToken = tok; write(localStorage, "ccarf.ghtoken", tok);
-        del(sessionStorage, "ccarf.ghtoken");
       } else {
         cfgStore.sessionKey = key; write(sessionStorage, "ccarf.key", key);
         del(localStorage, "ccarf.key");
-        cfgStore.ghSession = tok; write(sessionStorage, "ccarf.ghtoken", tok);
-        del(localStorage, "ccarf.ghtoken");
       }
       persist();
 
@@ -3211,9 +3225,6 @@ body.is-remote .file-hit{opacity:.85}
       updateCoachState();
       setStatus("已保存", "ok");
       toast("设置已保存在这台电脑");
-      if (cfg.ghEnabled && ghToken()) {
-        if (cfg.gistId) { await bootSync(); } else { syncPush(); }
-      }
       setTimeout(function () { if (dlg && dlg.open) dlg.close(); }, 600);
     });
   }
@@ -3470,145 +3481,6 @@ body.is-remote .file-hit{opacity:.85}
     });
   }
 
-  /* ---------------- 云同步（GitHub Gist） ---------------- */
-  var syncChip = $("syncChip");
-  var syncTimer = null;
-  var syncing = false;
-
-  function setSync(text, cls) {
-    if (!syncChip) return;
-    syncChip.hidden = false;
-    syncChip.className = "sync-chip" + (cls ? " " + cls : "");
-    syncChip.textContent = text;
-  }
-
-  function payload() {
-    return {
-      app: "ccarf-guide", version: 1,
-      updatedAt: (window.CCARF && window.CCARF.updatedAt()) || "",
-      progress: window.CCARF ? window.CCARF.snapshot() : {}
-    };
-  }
-
-  async function syncPush(silent) {
-    var tok = ghToken();
-    if (!tok) { if (!silent) toast("还没填 GitHub Token"); return; }
-    if (syncing) return;
-    syncing = true;
-    setSync("同步中…", "busy");
-
-    // 防护：本地为空时不得覆盖非空云端
-    if (cfg.gistId) {
-      var remote = await syncPull(true);
-      if (remote && remote.progress) {
-        var lp = window.CCARF ? window.CCARF.snapshot() : { units: [], accept: [], notes: {} };
-        var localEmpty = !(lp.units || []).length && !(lp.accept || []).length && !Object.keys(lp.notes || {}).length;
-        var remoteEmpty = !(remote.progress.units || []).length && !Object.keys(remote.progress.notes || {}).length;
-        if (localEmpty && !remoteEmpty) {
-          syncing = false;
-          setSync("已阻止覆盖云端", "err");
-          toast("本地为空，未上传，避免覆盖云端进度", "载入云端", function () {
-            if (window.CCARF) window.CCARF.applyProgress(remote.progress);
-            toast("已载入云端进度");
-          });
-          return;
-        }
-      }
-    }
-    try {
-      var body = JSON.stringify({
-        description: "CCARF 学习进度（自动同步）",
-        files: { "ccarf-progress.json": { content: JSON.stringify(payload(), null, 2) } }
-      });
-      var url = cfg.gistId ? "https://api.github.com/gists/" + cfg.gistId : "https://api.github.com/gists";
-      var res = await fetch(url, {
-        method: cfg.gistId ? "PATCH" : "POST",
-        headers: { "authorization": "Bearer " + tok, "accept": "application/vnd.github+json", "content-type": "application/json" },
-        body: cfg.gistId ? body : JSON.stringify(Object.assign({ public: false }, JSON.parse(body)))
-      });
-      if (!res.ok) throw new Error(await errText(res));
-      var data = await res.json();
-      if (!cfg.gistId) { cfg.gistId = data.id; persist(); if (fields.gistId) fields.gistId.value = data.id; }
-      write(localStorage, "ccarf.lastsync", new Date().toISOString());
-      setSync("已同步 " + new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }));
-    } catch (e) {
-      setSync("同步失败", "err");
-      if (!silent) toast("同步失败：" + e.message);
-    } finally {
-      syncing = false;
-    }
-  }
-
-  function scheduleSync() {
-    if (!cfg.ghEnabled || !ghToken()) return;
-    clearTimeout(syncTimer);
-    syncTimer = setTimeout(function () { syncPush(true); }, DEBOUNCE);
-  }
-
-  async function syncPull(silent) {
-    var tok = ghToken();
-    if (!tok || !cfg.gistId) return null;
-    try {
-      var res = await fetch("https://api.github.com/gists/" + cfg.gistId, {
-        headers: { "authorization": "Bearer " + tok, "accept": "application/vnd.github+json" }
-      });
-      if (!res.ok) throw new Error(await errText(res));
-      var data = await res.json();
-      var f = (data.files || {})["ccarf-progress.json"];
-      if (!f) return null;
-      var text = f.content;
-      if (f.truncated && f.raw_url) text = await (await fetch(f.raw_url)).text();
-      var p = JSON.parse(text);
-      if (p.app !== "ccarf-guide") return null;
-      setSync("已同步");
-      return p;
-    } catch (e) {
-      if (!silent) toast("读取云端进度失败：" + e.message);
-      return null;
-    }
-  }
-
-  // 合并规则：单元/验收取并集；笔记按 key 合并，冲突时保留本地原文
-  function mergeProgress(local, remote) {
-    var units = Array.from(new Set([].concat(local.units || [], remote.units || []))).sort();
-    var accept = Array.from(new Set([].concat(local.accept || [], remote.accept || []))).sort();
-    var notes = Object.assign({}, remote.notes || {}, local.notes || {});
-    return { units: units, accept: accept, notes: notes };
-  }
-
-  async function bootSync() {
-    if (!cfg.ghEnabled || !ghToken() || !cfg.gistId) return;
-    setSync("检查云端…", "busy");
-    var remote = await syncPull(true);
-    if (!remote || !remote.progress) { setSync("已启用"); return; }
-    var local = window.CCARF ? window.CCARF.snapshot() : null;
-    var localEmpty = !local || ((local.units || []).length === 0 && Object.keys(local.notes || {}).length === 0);
-    var remoteUnits = (remote.progress.units || []).length;
-    if (localEmpty && remoteUnits > 0) {
-      window.CCARF.applyProgress(remote.progress);
-      toast("已恢复云端进度（" + remoteUnits + " 个单元）");
-      return;
-    }
-    if (remoteUnits > 0) {
-      var lp = window.CCARF ? window.CCARF.snapshot() : { units: [], accept: [], notes: {} };
-      var same = JSON.stringify((lp.units || []).slice().sort()) === JSON.stringify((remote.progress.units || []).slice().sort());
-      toast(
-        same ? "云端进度与本地一致" : "云端有另一份进度（" + remoteUnits + " 个单元）",
-        "载入云端",
-        function () {
-          window.CCARF.applyProgress(remote.progress);
-          toast("已载入云端进度");
-        },
-        same ? null : "合并",
-        function () {
-          if (window.CCARF) window.CCARF.applyProgress(mergeProgress(lp, remote.progress));
-          toast("已合并：单元取并集，笔记本地优先");
-          syncPush(true);
-        }
-      );
-    }
-  }
-
   /* ---------------- 状态刷新 ---------------- */
   function updateCoachState() {
     var el = $("coachState");
@@ -3627,19 +3499,10 @@ body.is-remote .file-hit{opacity:.85}
       el.textContent = model + " · 已保存未测试";
       el.classList.remove("on");
     }
-    if (syncChip) {
-      if (cfg.ghEnabled && ghToken()) {
-        var last = read(localStorage, "ccarf.lastsync", "");
-        setSync(last ? "已同步 " + new Date(last).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "已启用同步");
-      } else {
-        syncChip.hidden = true;
-      }
-    }
   }
 
   window.addEventListener("ccarf:progress", function () {
     renderCtx();
-    scheduleSync();
   });
 
   /* ---------------- 启动 ---------------- */
@@ -3675,7 +3538,6 @@ body.is-remote .file-hit{opacity:.85}
   paintHistory();
   updateCoachState();
   renderCtx();
-  bootSync();
 })();
 </script>
 </body>
