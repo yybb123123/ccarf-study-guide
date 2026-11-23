@@ -89,6 +89,39 @@ if (/49\s*页/.test(html)) fails.push('残留「49 页」考纲页数')
 if (/26\.5/.test(html)) fails.push('残留旧的 26.5 小时')
 if (/20–25\s*小时/.test(html)) fails.push('残留「20–25 小时」范围描述')
 
+
+/* ---------- 学习计划资源必须可点击，且指向仓库中的真实文件 ---------- */
+const planFileBlocks = [...html.matchAll(/<div class="tl-files">([\s\S]*?)<\/div>/g)]
+if (planFileBlocks.length !== unitCount) fails.push(`学习计划资源区数量 ${planFileBlocks.length} 与单元数 ${unitCount} 不一致`)
+let planFileCount = 0
+for (const [i, block] of planFileBlocks.entries()) {
+  const contents = block[1]
+  if (/<span\b[^>]*class="tfile"/i.test(contents)) fails.push(`第 ${i + 1} 个单元仍有不可点击的文件标签`)
+  const links = [...contents.matchAll(/<a\b([^>]*)>([^<]+)<\/a>/g)]
+  if (!links.length) fails.push(`第 ${i + 1} 个单元没有可点击的学习资料`)
+  for (const link of links) {
+    const attrs = link[1], label = link[2]
+    planFileCount++
+    if (!/\bclass="tfile"/.test(attrs) || !/\btarget="_blank"/.test(attrs) || !/\brel="noopener noreferrer"/.test(attrs))
+      fails.push(`学习计划文件链接缺少正确的 class、target 或 rel：${label}`)
+    const href = attrs.match(/\bhref="([^"]+)"/)?.[1]
+    if (!href) { fails.push(`学习计划文件缺少 href：${label}`); continue }
+    const prefix = 'https://github.com/yybb123123/ccarf-study-guide/blob/main/'
+    if (!(href.startsWith(prefix) || !/^https?:/i.test(href))) {
+      fails.push(`学习计划资源指向非仓库地址：${href}`)
+      continue
+    }
+    const relative = href.startsWith(prefix) ? href.slice(prefix.length) : href
+    let path
+    try { path = decodeURIComponent(relative.split('?')[0].split('#')[0]) }
+    catch { fails.push(`文件路径编码无效：${href}`); continue }
+    const abs = resolve(root, path)
+    if (!abs.startsWith(root + '/') || !existsSync(abs) || !statSync(abs).isFile()) fails.push(`学习计划文件不存在：${path}`)
+  }
+}
+if (planFileCount === 0) fails.push('学习计划中没有可点击资料链接')
+console.log(`  plan: ${planFileBlocks.length} units, ${planFileCount} clickable file links`)
+
 const NB = 'notebook.google.com/notebook/c0ddef5c-4758-48a2-bf13-671d108d5933'
 if (!html.includes(NB)) fails.push('缺少 NotebookLM 笔记本入口链接')
 
