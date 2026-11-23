@@ -1,28 +1,28 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-23T04:41:05.308Z",
+  "generatedAt": "2026-11-23T05:01:04.743Z",
   "reviewer": "agent",
   "humanReviewed": false,
-  "method": "结构校验 + 依据 Exam Guide v1.1 的编写者自检；没有独立人工审校证据",
+  "method": "结构校验 + 依据 Exam Guide v1.1 的编写者自检；独立子代理复审记录见 data/question-review-p1.json",
   "disclaimer": "Schema 合法不等于技术答案一定正确；本报告不声称通过 Anthropic 或任何人工审校。",
   "summary": {
-    "total": 72,
-    "single": 58,
-    "multiple": 14,
+    "total": 80,
+    "single": 64,
+    "multiple": 16,
     "byDomain": {
-      "D1": 17,
-      "D2": 12,
-      "D3": 14,
-      "D4": 14,
-      "D5": 15
+      "D1": 18,
+      "D2": 13,
+      "D3": 16,
+      "D4": 16,
+      "D5": 17
     },
     "byScenario": {
-      "S1": 12,
+      "S1": 15,
       "S3": 16,
       "S4": 10,
-      "S2": 12,
+      "S2": 15,
       "S5": 9,
-      "S6": 13
+      "S6": 15
     },
     "taskStatementsCovered": 30,
     "failed": 0,
@@ -1454,6 +1454,166 @@
       "type": "multiple",
       "domain": "D1",
       "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S1-13",
+      "type": "multiple",
+      "domain": "D2",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S1-14",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S1-15",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S2-13",
+      "type": "multiple",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S2-14",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S2-15",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S6-14",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-S6-15",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
       "status": "self-checked",
       "checks": {
         "inScope": true,
