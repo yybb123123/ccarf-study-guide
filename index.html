@@ -5125,12 +5125,12 @@ async function refresh(){try { var records=await getAll();var map=new Map(record
  } catch(e){setStatus("无法读取本机译文："+e.message);} }
 async function sha256(t){if(!crypto||!crypto.subtle)throw new Error("需要安全的 HTTPS 环境");var bytes=new TextEncoder().encode(t);var d=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(d)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
 async function saveOne(item){var db=await database(), source=item.sourceName,lang=item.lang,id=uid(source,lang);var text=item.text;
-  var C=window.CCARF_CORE;var chunks=C&&C.chunkText?C.chunkText(text,1200,150):[{text:text}];
+  var C=window.CCARF_CORE;var chunks=C&&C.chunkText?C.chunkText(text,1200,150):[{text:text}];var domains=/D[1-5]/.test(source)?Array.from(new Set(source.match(/D[1-5]/g))):((C&&C.classify)?C.classify(text).map(function(x){return x.domain}):[]);
   return new Promise(function(resolve,reject){var tx=db.transaction(["docs","chunks"],"readwrite");var docs=tx.objectStore("docs"), st=tx.objectStore("chunks");
     var r=st.index("docId").openCursor(IDBKeyRange.only(id));
     r.onsuccess=function(){var cur=r.result;if(cur){cur.delete();cur.continue();}else{
-      docs.put({id:id,name:source.replace(/\.[^.]+$/,"")+"."+lang+".md",type:"md",size:new TextEncoder().encode(text).length,importedAt:new Date().toISOString(),domains:[],status:"ready",error:"",chars:text.length,chunkCount:chunks.length,bilingualSource:source,bilingualLang:lang,fullText:text});
-      chunks.forEach(function(c,i){st.put({id:id+":"+i,docId:id,ord:i,text:c.text,domains:[]});});
+      docs.put({id:id,name:source.replace(/\.[^.]+$/,"")+"."+lang+".md",type:"md",size:new TextEncoder().encode(text).length,importedAt:new Date().toISOString(),domains:domains,status:"ready",error:"",chars:text.length,chunkCount:chunks.length,bilingualSource:source,bilingualLang:lang,fullText:text});
+      chunks.forEach(function(c,i){st.put({id:id+":"+i,docId:id,ord:i,text:c.text,domains:domains});});
     }};
     tx.oncomplete=function(){resolve()};tx.onerror=function(){reject(tx.error||new Error("存储失败"))};tx.onabort=function(){reject(tx.error||new Error("事务回滚"))};
   });
