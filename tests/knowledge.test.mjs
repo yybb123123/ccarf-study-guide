@@ -125,6 +125,11 @@ test('backup roundtrip validates and detects tampering', () => {
   assert.ok(core.validateBackup(newer).errors.some((e) => e.includes('版本较新')))
 })
 
+test('safeSettings keeps only non-secret fields', () => {
+  const s = core.safeSettings({ provider: 'deepseek', model: 'deepseek-chat', baseUrl: 'https://api.deepseek.com', key: 'sk-secret', ghToken: 'ghp_secret', remember: true })
+  assert.deepEqual(plain(s), { provider: 'deepseek', model: 'deepseek-chat', baseUrl: 'https://api.deepseek.com' })
+})
+
 test('extractPdfText reads a Flate-compressed text stream', async () => {
   const content = 'BT /F1 12 Tf 72 720 Td (Hello Agent) Tj ET'
   const flate = zlib.deflateSync(Buffer.from(content, 'latin1'))

@@ -695,6 +695,40 @@ body.is-remote .file-hit{opacity:.85}
 .tutor-sources .src-name{display:block;color:var(--ink);font-weight:600}
 .tutor-sources .src-text{color:var(--ink-3)}
 @media(max-width:900px){.tutor-grid{grid-template-columns:1fr}}
+
+.today-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.today-card{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:14px 16px}
+.today-card .k{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.today-card .v{font-size:17px;font-weight:600;line-height:1.35}
+.today-card .s{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.review-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px}
+.review-col h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+.review-stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-bottom:14px}
+.review-stats b{font-size:18px;color:var(--ink);margin-right:4px}
+.review-list{display:grid;gap:10px}
+.review-card{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 14px}
+.review-card h4{font-size:14px;margin-bottom:6px;line-height:1.5}
+.review-card .meta{font-size:11.5px;color:var(--ink-3);margin-bottom:8px}
+.review-card .ops{display:flex;gap:8px}
+.practice-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.practice-controls select,.practice-controls input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r);padding:8px 10px;font:inherit;font-size:13px;min-height:38px}
+.practice-controls input{flex:1;min-width:160px}
+.practice-box{display:grid;gap:12px}
+.pq{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:14px 16px}
+.pq .tag{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.pq h4{font-size:14.5px;line-height:1.55;margin-bottom:10px}
+.pq .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--transparent,transparent);color:var(--ink);border-radius:var(--r);padding:9px 12px;font:inherit;font-size:13.5px;margin-bottom:7px;cursor:pointer}
+.pq .opt:hover{border-color:var(--ink-3)}
+.pq .opt.is-right{border-color:var(--brand);background:var(--brand-soft)}
+.pq .opt.is-wrong{border-color:var(--amber);background:var(--amber-soft)}
+.pq .why{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.65}
+@media(max-width:900px){.review-grid{grid-template-columns:1fr}}
+
+.data-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.backup-preview{font-size:13px;color:var(--ink-2);margin:12px 0;line-height:1.7}
+.backup-preview ul{list-style:disc;padding-left:18px}
+.backup-preview .bad{color:var(--amber)}
+@media(max-width:900px){.data-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1721,8 +1755,8 @@ body.is-remote .file-hit{opacity:.85}
     </header>
 
     <div class="studio-panel" data-panel="today">
-      <div id="todayCards" class="kb-results"></div>
-      <p class="hint">今日任务与待复习知识点会在 P3 阶段接入；当前先完成本地知识库。</p>
+      <div id="todayCards" class="today-grid"></div>
+      <p class="hint">今日任务来自现有学习计划与本地错题；不会改动原有计划。</p>
     </div>
 
     <div class="studio-panel" data-panel="kb" hidden>
@@ -1784,10 +1818,50 @@ body.is-remote .file-hit{opacity:.85}
       </div>
     </div>
     <div class="studio-panel" data-panel="review" hidden>
-      <p class="hint">错题与间隔复习（P3）将在这里，当前尚未接入。</p>
+      <div class="review-grid">
+        <section class="review-col">
+          <h3>错题与复习</h3>
+          <div id="reviewStats" class="review-stats"></div>
+          <div id="reviewList" class="review-list"></div>
+        </section>
+        <section class="review-col">
+          <h3>AI 模拟练习</h3>
+          <p class="hint">AI 生成，<strong>不是官方真题</strong>。答错会自动进入错题本，按 1/3/7/16/35/70 天复习。</p>
+          <div class="practice-controls">
+            <select id="practiceMode" aria-label="练习范围">
+              <option value="mixed">综合模拟</option>
+              <option value="D1">D1 · Agent 架构</option>
+              <option value="D2">D2 · 工具与 MCP</option>
+              <option value="D3">D3 · Claude Code</option>
+              <option value="D4">D4 · 提示词与结构化输出</option>
+              <option value="D5">D5 · 上下文与可靠性</option>
+              <option value="topic">按知识点</option>
+              <option value="unit">当前学习单元</option>
+            </select>
+            <input id="practiceTopic" type="text" placeholder="知识点（选「按知识点」时填）">
+            <button class="btn btn-primary" id="practiceGen" type="button">生成 2 题</button>
+          </div>
+          <div id="practiceBox" class="practice-box"></div>
+        </section>
+      </div>
     </div>
     <div class="studio-panel" data-panel="data" hidden>
-      <p class="hint">完整备份与恢复（P4）将在这里，当前尚未接入。</p>
+      <div class="data-grid">
+        <section class="review-col">
+          <h3>导出完整备份</h3>
+          <p class="hint">包含：学习进度、笔记、知识库文档与片段、错题、复习记录、非敏感设置。<br>不包含：DeepSeek API Key、GitHub Token、聊天记录。</p>
+          <button class="btn btn-primary" id="backupExport" type="button">导出 JSON 备份</button>
+          <p class="hint" id="backupInfo"></p>
+          <p class="hint">备份可能包含私人 NotebookLM 资料，请存放在本机安全位置，不要提交到公开仓库。</p>
+        </section>
+        <section class="review-col">
+          <h3>恢复备份</h3>
+          <p class="hint">会覆盖同名的本地资料、错题与进度。恢复前建议先导出当前备份。</p>
+          <input id="backupFile" type="file" accept="application/json,.json">
+          <div id="backupPreview" class="backup-preview"></div>
+          <button class="btn btn-primary" id="backupRestore" type="button" disabled>确认恢复</button>
+        </section>
+      </div>
     </div>
   </div>
 </section>
@@ -2756,10 +2830,17 @@ body.is-remote .file-hit{opacity:.85}
   }
   function srsDue(cards, today) {
     var day = today || new Date().toISOString().slice(0, 10);
-    return (cards || []).filter(function (c) { return !c.next || c.next <= day; });
+    return (cards || []).filter(function (c) { var n = c.next || c.nextReview; return !n || n <= day; });
   }
 
   /* ---------------- 备份 ---------------- */
+  function safeSettings(ai) {
+    var out = {};
+    ["provider", "model", "baseUrl"].forEach(function (k) {
+      if (ai && Object.prototype.hasOwnProperty.call(ai, k) && typeof ai[k] === "string") out[k] = ai[k];
+    });
+    return out;
+  }
   var BACKUP_VERSION = 1;
   function checksumOf(data) { return "fnv1a:" + fnv1a(JSON.stringify(data)).toString(16); }
   function makeBackup(data, now) {
@@ -2860,12 +2941,23 @@ body.is-remote .file-hit{opacity:.85}
     return { text: text, streams: streams, chars: text.length, hasText: text.length > 0 };
   }
 
+
+  function cardId(question) { return "card-" + hashText(String(question || "").trim().toLowerCase()); }
+  function upsertCard(list, card) {
+    var out = (list || []).slice();
+    for (var i = 0; i < out.length; i++) {
+      if (out[i] && out[i].id === card.id) { out[i] = Object.assign({}, out[i], card); return out; }
+    }
+    out.push(card);
+    return out;
+  }
+
   global.CCARF_CORE = {
     migrateV1: migrateV1, hashText: hashText, hashBytes: hashBytes, chunkText: chunkText,
     tokenize: tokenize, classify: classify, DOMAINS: DOMAINS, buildIndex: buildIndex,
     search: search, snippet: snippet, srsNext: srsNext, srsDue: srsDue, addDays: addDays,
     makeBackup: makeBackup, validateBackup: validateBackup, BACKUP_VERSION: BACKUP_VERSION,
-    extractPdfText: extractPdfText
+    extractPdfText: extractPdfText, cardId: cardId, upsertCard: upsertCard, safeSettings: safeSettings
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -4508,6 +4600,372 @@ body.is-remote .file-hit{opacity:.85}
     });
   }
 
+
+  /* ---------------- P3: 错题与间隔复习 ---------------- */
+  var CARDS_KEY = "ccarf.cards";
+  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  function loadCards() { var a = readJSON(CARDS_KEY, []); return Array.isArray(a) ? a : []; }
+  function saveCards(list) { writeJSON(CARDS_KEY, list.slice(-500)); }
+
+  function renderStats(cards) {
+    var el = $("reviewStats");
+    if (!el) return;
+    var due = C.srsDue(cards, todayISO()).length;
+    var mastered = cards.filter(function (c) { return (c.level || 0) >= 4; }).length;
+    el.innerHTML = "<span><b>" + cards.length + "</b>错题</span><span><b>" + due + "</b>今日待复习</span><span><b>" + mastered + "</b>已掌握</span>";
+  }
+
+  function renderReview() {
+    var cards = loadCards();
+    renderStats(cards);
+    var box = $("reviewList");
+    if (!box) return;
+    var due = C.srsDue(cards, todayISO()).slice(0, 20);
+    if (!due.length) {
+      box.innerHTML = '<p class="kb-empty">今天没有到期的错题。做几道 AI 模拟练习，答错的题会自动进入这里。</p>';
+      return;
+    }
+    box.innerHTML = due.map(function (c) {
+      return '<article class="review-card"><h4>' + esc(c.question) + "</h4>" +
+        '<div class="meta">' + esc(c.domain || "未分类") + " · 下次 " + esc(c.nextReview || "今天") + " · 连对 " + (c.level || 0) + " 次</div>" +
+        '<div class="ops"><button class="btn btn-quiet" type="button" data-card="' + esc(c.id) + '" data-ok="1">记得</button>' +
+        '<button class="btn btn-quiet" type="button" data-card="' + esc(c.id) + '" data-ok="0">忘了</button></div></article>';
+    }).join("");
+  }
+
+  function applyCardResult(id, ok) {
+    var cards = loadCards();
+    var card = cards.filter(function (c) { return c.id === id; })[0];
+    if (!card) return;
+    var n = C.srsNext(card, ok, todayISO());
+    card.lastReviewedAt = todayISO();
+    card.nextReview = n.next;
+    card.level = n.level;
+    card.reps = n.reps;
+    card.correct = !!ok;
+    saveCards(C.upsertCard(cards, card));
+    renderReview();
+    renderToday();
+  }
+
+  function renderToday() {
+    var box = $("todayCards");
+    if (!box) return;
+    var cards = loadCards();
+    var due = C.srsDue(cards, todayISO()).length;
+    var unit = null;
+    var items = Array.prototype.slice.call(document.querySelectorAll(".tl-item"));
+    for (var i = 0; i < items.length; i++) {
+      var b = items[i].querySelector(".unit-box");
+      if (b && !b.checked) {
+        unit = {
+          day: items[i].querySelector(".tl-day").textContent.trim(),
+          title: items[i].querySelector(".tl-head h3").textContent.trim(),
+          el: items[i]
+        };
+        break;
+      }
+    }
+    var cardsHtml = "";
+    cardsHtml += '<div class="today-card"><span class="k">当前学习单元</span><span class="v">' + (unit ? esc(unit.day + " · " + unit.title) : "全部单元已完成") + '</span><span class="s"><a href="#plan">回到学习计划 →</a></span></div>';
+    cardsHtml += '<div class="today-card"><span class="k">今日待复习</span><span class="v">' + due + " 个知识点</span><span class=\"s\"><a href=\"#studio\" data-goto=\"review\">打开错题复习 →</a></span></div>";
+    cardsHtml += '<div class="today-card"><span class="k">NotebookLM</span><span class="v">音频 / 报告</span><span class="s"><a href="#notebooklm">打开学习中心 →</a></span></div>';
+    cardsHtml += '<div class="today-card"><span class="k">本地知识库</span><span class="v" id="todayDocs">—</span><span class="s"><a href="#studio" data-goto="kb">导入或检索 →</a></span></div>';
+    box.innerHTML = cardsHtml;
+    allDocs().then(function (docs) {
+      var el = $("todayDocs");
+      if (el) el.textContent = docs.length + " 份资料";
+    }).catch(function () {});
+    Array.prototype.forEach.call(box.querySelectorAll("[data-goto]"), function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        var tab = document.querySelector('#studio .tab[data-tab="' + a.getAttribute("data-goto") + '"]');
+        if (tab) { tab.click(); tab.scrollIntoView({ behavior: "smooth", block: "center" }); }
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('a[href="#plan"]'), function (a) {
+      a.addEventListener("click", function () { if (unit && unit.el) setTimeout(function () { unit.el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); });
+    });
+  }
+
+  var practiceState = { questions: [], idx: 0, answered: false };
+
+  function currentUnitTitle() {
+    var items = Array.prototype.slice.call(document.querySelectorAll(".tl-item"));
+    for (var i = 0; i < items.length; i++) {
+      var b = items[i].querySelector(".unit-box");
+      if (b && !b.checked) return items[i].querySelector(".tl-head h3").textContent.trim();
+    }
+    return "综合复习";
+  }
+
+  function parseQuestions(text) {
+    var raw = String(text || "").replace(/```json/gi, "").replace(/```/g, "");
+    var a = raw.indexOf("["), b = raw.lastIndexOf("]");
+    if (a < 0 || b <= a) throw new Error("模型没有返回 JSON 数组");
+    var arr = JSON.parse(raw.slice(a, b + 1));
+    return arr.filter(function (q) {
+      return q && q.question && Array.isArray(q.options) && q.options.length >= 2 && typeof q.answer === "number";
+    }).slice(0, 3);
+  }
+
+  async function generatePractice() {
+    var box = $("practiceBox");
+    var mode = ($("practiceMode") || {}).value || "mixed";
+    var topicInput = ($("practiceTopic") || {}).value || "";
+    var topic = mode === "topic" ? topicInput.trim() : mode === "unit" ? currentUnitTitle() : "";
+    if (mode === "topic" && !topic) { box.innerHTML = '<p class="kb-empty">先填一个知识点。</p>'; return; }
+    if (!window.CCARF_AI) { box.innerHTML = '<p class="kb-empty">AI 通道未就绪。</p>'; return; }
+    if (!window.CCARF_AI.config().hasKey) { box.innerHTML = '<p class="kb-empty">先配置 API Key。</p>'; return; }
+
+    var domain = /^D[1-5]$/.test(mode) ? mode : "";
+    var query = topic || (domain ? ((C.DOMAINS.filter(function (d) { return d.id === domain; })[0] || {}).name || domain) : "综合");
+    box.innerHTML = '<p class="kb-empty">正在生成 AI 模拟练习…</p>';
+    var sources = await retrieve(query);
+    var ctx = ctxOf(sources);
+    var system = "你是 CCAR-F 单选题出题器。只输出 JSON 数组，不要 markdown，不要解释。每项字段：question, options(4 个), answer(0-3), explanation, domain(D1-D5)。题目必须基于资料片段；资料不足时用通用知识但不要编造页码或官方真题。";
+    var user = "范围：" + (domain || topic || "综合") + "\n资料片段：\n" + ctx + "\n\n请生成 2 道中文单选题。";
+    try {
+      var reply = await window.CCARF_AI.chat([{ role: "user", content: user }], system);
+      var qs = parseQuestions(reply);
+      if (!qs.length) throw new Error("没有可用题目");
+      qs.forEach(function (q) { q.domain = domain || q.domain || ""; q.topic = topic; });
+      practiceState = { questions: qs, idx: 0, answered: false };
+      renderPractice();
+    } catch (e) {
+      box.innerHTML = '<p class="kb-empty">生成失败：' + esc(e.message) + "。可以换一个范围或稍后再试。</p>";
+    }
+  }
+
+  function renderPractice() {
+    var box = $("practiceBox");
+    if (!box) return;
+    if (!practiceState.questions.length) { box.innerHTML = ""; return; }
+    var q = practiceState.questions[practiceState.idx];
+    var html = '<article class="pq"><div class="tag">AI 模拟练习 · 非官方真题</div><h4>' + esc(q.question) + "</h4>";
+    q.options.forEach(function (opt, i) {
+      html += '<button type="button" class="opt" data-i="' + i + '">' + String.fromCharCode(65 + i) + ". " + esc(opt) + "</button>";
+    });
+    html += "</article>";
+    box.innerHTML = html;
+    Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (b) {
+      b.addEventListener("click", function () {
+        if (practiceState.answered) return;
+        practiceState.answered = true;
+        var chosen = parseInt(b.getAttribute("data-i"), 10);
+        Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (x, i) {
+          x.classList.toggle("is-right", i === q.answer);
+          x.classList.toggle("is-wrong", i === chosen && chosen !== q.answer);
+        });
+        var why = document.createElement("p");
+        why.className = "why";
+        why.textContent = (chosen === q.answer ? "答对了。" : "答错了。") + (q.explanation || "");
+        box.querySelector(".pq").appendChild(why);
+        recordAnswer(q, chosen);
+        var next = document.createElement("button");
+        next.type = "button";
+        next.className = "btn btn-quiet";
+        next.style.marginTop = "10px";
+        next.textContent = practiceState.idx + 1 < practiceState.questions.length ? "下一题" : "完成";
+        next.addEventListener("click", function () {
+          practiceState.idx++;
+          practiceState.answered = false;
+          if (practiceState.idx >= practiceState.questions.length) {
+            box.innerHTML = '<p class="kb-empty">本组练习完成；答错的题已加入错题本。</p>';
+            practiceState = { questions: [], idx: 0, answered: false };
+            renderReview(); renderToday();
+          } else renderPractice();
+        });
+        box.querySelector(".pq").appendChild(next);
+      });
+    });
+  }
+
+  function recordAnswer(q, chosen) {
+    var cards = loadCards();
+    var id = C.cardId(q.question);
+    var found = cards.filter(function (c) { return c.id === id; })[0];
+    var today = todayISO();
+    if (chosen !== q.answer) {
+      var card = found || {
+        id: id, question: q.question, options: q.options, answer: q.answer,
+        explanation: q.explanation || "", domain: q.domain || "", topic: q.topic || "",
+        firstWrongAt: today, level: 0, reps: 0
+      };
+      var n = C.srsNext(card, false, today);
+      card.userAnswer = q.options[chosen];
+      card.correct = false;
+      card.lastReviewedAt = today;
+      card.nextReview = n.next;
+      card.level = n.level;
+      card.reps = n.reps;
+      cards = C.upsertCard(cards, card);
+    } else if (found) {
+      var n2 = C.srsNext(found, true, today);
+      found.correct = true;
+      found.lastReviewedAt = today;
+      found.nextReview = n2.next;
+      found.level = n2.level;
+      found.reps = n2.reps;
+      cards = C.upsertCard(cards, found);
+    }
+    saveCards(cards);
+    renderReview(); renderToday();
+  }
+
+  function initReview() {
+    renderReview();
+    renderToday();
+    var gen = $("practiceGen");
+    if (gen) gen.addEventListener("click", generatePractice);
+    var list = $("reviewList");
+    if (list) list.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest("button[data-card]") : null;
+      if (b) applyCardResult(b.getAttribute("data-card"), b.getAttribute("data-ok") === "1");
+    });
+  }
+
+
+  /* ---------------- P4: 备份与恢复 ---------------- */
+  var pendingBackup = null;
+
+  function replaceAllKnowledge(k) {
+    return openDB().then(function (db) {
+      var tx = db.transaction(["docs", "chunks"], "readwrite");
+      tx.objectStore("docs").clear();
+      tx.objectStore("chunks").clear();
+      (k.docs || []).forEach(function (d) { tx.objectStore("docs").put(d); });
+      (k.chunks || []).forEach(function (c) { tx.objectStore("chunks").put(c); });
+      return new Promise(function (res, rej) {
+        tx.oncomplete = function () { res(); };
+        tx.onerror = function () { rej(tx.error); };
+        tx.onabort = function () { rej(tx.error || new Error("事务被中止")); };
+      });
+    });
+  }
+
+  async function collectBackup() {
+    var docs = await allDocs();
+    var chunks = await allChunks();
+    var data = {
+      units: readJSON("ccarf.units", []),
+      notes: readJSON("ccarf.notes", {}),
+      cards: loadCards(),
+      mastery: readJSON(MASTERY_KEY, {}),
+      knowledge: { docs: docs, chunks: chunks },
+      settings: C.safeSettings(readJSON("ccarf.ai", {})),
+      feynman: (function () { var t = readJSON(TUTOR_KEY, null); return t && t.topic ? { topic: t.topic } : null; })()
+    };
+    return C.makeBackup(data, new Date().toISOString());
+  }
+
+  async function exportBackup() {
+    var info = $("backupInfo");
+    try {
+      var b = await collectBackup();
+      var text = JSON.stringify(b, null, 2);
+      var blob = new Blob([text], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "ccarf-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      if (info) info.textContent = "已导出 " + (blob.size / 1024).toFixed(0) + " KB：" + b.data.knowledge.docs.length + " 份资料、" + b.data.cards.length + " 道错题；不含 API Key。";
+    } catch (e) {
+      if (info) info.textContent = "导出失败：" + e.message;
+    }
+  }
+
+  function applyBackup(b) {
+    var d = b.data || {};
+    var oldDocs = null, oldChunks = null;
+    var oldLS = {
+      units: localStorage.getItem("ccarf.units"),
+      notes: localStorage.getItem("ccarf.notes"),
+      cards: localStorage.getItem(CARDS_KEY),
+      mastery: localStorage.getItem(MASTERY_KEY),
+      ai: localStorage.getItem("ccarf.ai")
+    };
+    return allDocs().then(function (docs) {
+      oldDocs = docs;
+      return allChunks();
+    }).then(function (chunks) {
+      oldChunks = chunks;
+      return replaceAllKnowledge(d.knowledge || { docs: [], chunks: [] });
+    }).then(function () {
+      writeJSON("ccarf.units", d.units || []);
+      writeJSON("ccarf.notes", d.notes || {});
+      writeJSON(CARDS_KEY, d.cards || []);
+      writeJSON(MASTERY_KEY, d.mastery || {});
+      if (d.settings) {
+        var cur = readJSON("ccarf.ai", {});
+        writeJSON("ccarf.ai", Object.assign({}, cur, C.safeSettings(d.settings)));
+      }
+    }).catch(function (e) {
+      // 回滚：先恢复旧知识库，再恢复旧 localStorage 文本
+      var p = oldDocs ? replaceAllKnowledge({ docs: oldDocs, chunks: oldChunks || [] }) : Promise.resolve();
+      return p.catch(function () {}).then(function () {
+        Object.keys(oldLS).forEach(function (k) {
+          try {
+            if (oldLS[k] === null) localStorage.removeItem(k);
+            else localStorage.setItem(k, oldLS[k]);
+          } catch (err) {}
+        });
+        throw e;
+      });
+    });
+  }
+
+  function initData() {
+    var ex = $("backupExport");
+    if (ex) ex.addEventListener("click", exportBackup);
+    var file = $("backupFile");
+    var btn = $("backupRestore");
+    var preview = $("backupPreview");
+    if (file) file.addEventListener("change", function () {
+      pendingBackup = null;
+      if (btn) btn.disabled = true;
+      var f = file.files && file.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var obj = JSON.parse(String(reader.result || "{}"));
+          var v = C.validateBackup(obj);
+          if (preview) {
+            preview.innerHTML = "<ul><li>版本：" + esc(String(obj.version)) + "</li>" +
+              "<li>导出时间：" + esc(obj.exportedAt || "未知") + "</li>" +
+              "<li>进度单元：" + v.summary.units + " · 笔记：" + v.summary.notes + "</li>" +
+              "<li>知识库：" + v.summary.docs + " 份 · 错题：" + v.summary.cards + "</li></ul>" +
+              (v.ok ? '<p class="hint">校验通过。确认后会覆盖同名本地数据。</p>' : '<p class="bad">' + v.errors.map(esc).join("；") + "</p>");
+          }
+          if (v.ok) { pendingBackup = obj; if (btn) btn.disabled = false; }
+        } catch (e) {
+          if (preview) preview.innerHTML = '<p class="bad">无法解析备份：' + esc(e.message) + "</p>";
+        }
+      };
+      reader.readAsText(f);
+    });
+    if (btn) btn.addEventListener("click", function () {
+      if (!pendingBackup) return;
+      if (!window.confirm("确认用这份备份覆盖本地学习数据？此操作不可撤销，建议先导出当前备份。")) return;
+      btn.disabled = true;
+      if (preview) preview.innerHTML = "<p class='hint'>正在恢复…</p>";
+      applyBackup(pendingBackup).then(function () {
+        if (preview) preview.innerHTML = '<p class="hint">恢复完成，正在刷新…</p>';
+        setTimeout(function () { location.reload(); }, 800);
+      }).catch(function (e) {
+        if (preview) preview.innerHTML = '<p class="bad">恢复失败，已回滚：' + esc(e.message) + "</p>";
+        btn.disabled = false;
+      });
+    });
+  }
+
+  initData();
+  initReview();
   initTutor();
   fillDomains();
   wire();
