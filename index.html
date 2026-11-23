@@ -3161,11 +3161,20 @@ body.is-remote .file-hit{opacity:.85}
       else if (obj.version > BACKUP_VERSION) errors.push("备份版本较新，请更新网页");
       else if (obj.version < 1) errors.push("不支持的备份版本");
       if (!isObj(obj.data)) errors.push("缺少 data");
-      if (!obj.checksum) errors.push("缺少校验和，拒绝恢复");
-      else if (typeof obj.checksum === "string") {
-        if (obj.checksum !== checksumOf(obj.data)) errors.push("校验和不匹配，文件可能被改动");
-      } else if (isObj(obj.checksum) && obj.checksum.alg === "sha256") {
-        if (!/^[0-9a-f]{64}$/.test(String(obj.checksum.value || ""))) errors.push("SHA-256 校验和格式不正确");
+      if (!obj.checksum) {
+        errors.push("缺少校验和，拒绝恢复");
+      } else if (obj.version === 1) {
+        if (typeof obj.checksum !== "string" || !/^fnv1a:[0-9a-f]+$/.test(obj.checksum)) {
+          errors.push("v1 备份必须使用 FNV 校验和");
+        } else if (obj.checksum !== checksumOf(obj.data)) {
+          errors.push("校验和不匹配，文件可能被改动");
+        }
+      } else if (typeof obj.version === "number" && obj.version >= 2) {
+        if (!isObj(obj.checksum) || obj.checksum.alg !== "sha256") {
+          errors.push("v" + obj.version + " 备份必须使用 SHA-256 校验和");
+        } else if (!/^[0-9a-f]{64}$/.test(String(obj.checksum.value || ""))) {
+          errors.push("SHA-256 校验和格式不正确");
+        }
       } else {
         errors.push("未知的校验和格式");
       }
@@ -3375,7 +3384,12 @@ body.is-remote .file-hit{opacity:.85}
   async function validateBackupFull(obj) {
     var base = validateBackup(obj);
     if (!base.ok) return base;
-    if (obj.version === 2) {
+    if (typeof obj.version === "number" && obj.version >= 2) {
+      if (!obj.checksum || obj.checksum.alg !== "sha256") {
+        base.ok = false;
+        base.errors.push("版本与校验算法不匹配，拒绝恢复");
+        return base;
+      }
       var hex = await sha256Hex(JSON.stringify(obj.data));
       if (!hex) { base.ok = false; base.errors.push("环境无法计算 SHA-256，拒绝恢复"); }
       else if (hex !== obj.checksum.value) { base.ok = false; base.errors.push("SHA-256 校验不匹配，文件可能损坏或被改动"); }
