@@ -302,6 +302,23 @@ input:focus-visible + .box{outline:2px solid var(--brand);outline-offset:2px}
 .pit h4{font-size:14px;font-weight:650;margin-bottom:7px;color:var(--ink)}
 .pit p{font-size:13px;color:var(--ink-2);line-height:1.6}
 
+
+/* ===== NotebookLM study hub (external notebook, no API sync) ===== */
+.nb-intro{max-width:800px;color:var(--ink-2);font-size:14px;line-height:1.8;margin-bottom:24px}
+.nb-intro strong{color:var(--ink)}
+.nb-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.nb-column{border-top:2px solid var(--line);padding-top:14px;min-width:0}
+.nb-column-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.nb-column h3{font-size:17px;color:var(--ink)}
+.nb-count{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.nb-list{list-style:none;margin:0;padding:0}
+.nb-list li{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);padding:10px 0;min-width:0}
+.nb-num{font:600 12px var(--font-mono);color:var(--brand-ink);flex:0 0 23px}
+.nb-name{font-size:13.5px;font-weight:500;line-height:1.5;overflow-wrap:anywhere}
+.nb-muted{display:block;font-size:12px;line-height:1.5;color:var(--ink-3);margin-top:2px}
+.nb-foot{margin-top:20px;font-size:12px;line-height:1.75;color:var(--ink-3)}
+@media(max-width:720px){.nb-layout{grid-template-columns:1fr;gap:24px}.nb-head{gap:16px;flex-direction:column;align-items:flex-start}}
+
 /* ===== footer ===== */
 .foot{border-top:1px solid var(--line);padding:28px 0 40px;background:var(--bg)}
 .foot-in p{font-size:12.5px;color:var(--ink-3)}
@@ -640,6 +657,7 @@ body.is-remote .file-hit{opacity:.85}
       <a href="#overview">考试全景</a>
       <a href="#domains">五大领域</a>
       <a href="#map">资料地图</a>
+      <a href="#notebooklm">NotebookLM</a>
       <a href="#plan">14 天计划</a>
       <a href="#daily">每日节奏</a>
       <a href="#coach">AI 导师</a>
@@ -1582,6 +1600,49 @@ body.is-remote .file-hit{opacity:.85}
 </li></ul>
       </details>
     </div>
+  </div>
+</section>
+
+<section class="band band-alt" id="notebooklm">
+  <div class="wrap">
+    <header class="sec-head sec-head-row nb-head">
+      <div>
+        <h2>NotebookLM 学习中心</h2>
+        <p>35 个来源 · 音频、学习报告、思维导图、闪卡与测验都在原笔记本里</p>
+      </div>
+      <a class="btn btn-primary" href="https://notebook.google.com/notebook/c0ddef5c-4758-48a2-bf13-671d108d5933" target="_blank" rel="noopener noreferrer">打开我的 NotebookLM ↗</a>
+    </header>
+    <p class="nb-intro"><strong>建议用法：</strong>在本页按学习计划勾选进度，到 NotebookLM 听对应音频、看报告并向来源提问，回来做实作和自测。以下是目前笔记本内可见的资料索引，点击上面的按钮后按标题查找。</p>
+    <div class="nb-layout">
+      <div class="nb-column">
+        <div class="nb-column-head"><h3>音频学习顺序</h3><span class="nb-count">9 项 · 在 NotebookLM 播放</span></div>
+        <ol class="nb-list">
+          <li><span class="nb-num">01</span><span><span class="nb-name">Claude架构师两周通关</span><span class="nb-muted">全局路线</span></span></li>
+          <li><span class="nb-num">02</span><span><span class="nb-name">生产级智能体架构</span><span class="nb-muted">D1 · Agent 与 Workflow</span></span></li>
+          <li><span class="nb-num">03</span><span><span class="nb-name">掌控Claude子代理团队</span><span class="nb-muted">D1 · Subagents 与上下文隔离</span></span></li>
+          <li><span class="nb-num">04</span><span><span class="nb-name">MCP协议让AI长出手脚</span><span class="nb-muted">D2 · 工具协议</span></span></li>
+          <li><span class="nb-num">05</span><span><span class="nb-name">用Hooks防止AI助手删库</span><span class="nb-muted">D3 · Claude Code Hooks</span></span></li>
+          <li><span class="nb-num">06</span><span><span class="nb-name">用结构化输出彻底管住AI</span><span class="nb-muted">D4 · Schema 与结构化输出</span></span></li>
+          <li><span class="nb-num">07</span><span><span class="nb-name">AI编程智能体与消息批处理</span><span class="nb-muted">D4 · Batches 与评测</span></span></li>
+          <li><span class="nb-num">08</span><span><span class="nb-name">用代码管住AI代理</span><span class="nb-muted">D3 / D4 · 工程护栏</span></span></li>
+          <li><span class="nb-num">09</span><span><span class="nb-name">不失忆的AI智能体</span><span class="nb-muted">D5 · NotebookLM 当前编号仍为 08，建议改为 09</span></span></li>
+        </ol>
+      </div>
+      <div class="nb-column">
+        <div class="nb-column-head"><h3>学习报告</h3><span class="nb-count">7 份 · 在 NotebookLM 阅读</span></div>
+        <ol class="nb-list">
+          <li><span class="nb-num">01</span><span class="nb-name">掌控 Claude 架构设计：CCAR-F 认证与 Agentic 系统实战指南</span></li>
+          <li><span class="nb-num">02</span><span class="nb-name">掌握 Claude Code 与多智能体架构：从单任务执行到复杂 Agent 系统编排</span></li>
+          <li><span class="nb-num">03</span><span class="nb-name">掌控 Claude Code 子智能体与 Agent SDK：从上下文隔离到多 Agent 架构实践</span></li>
+          <li><span class="nb-num">04</span><span class="nb-name">从连接到扩展：掌握 Model Context Protocol (MCP) 与 Claude Code Skills</span></li>
+          <li><span class="nb-num">05</span><span class="nb-name">精通 Claude Code Hooks：构建自动化、可控且智能的 AI 协同工作流</span></li>
+          <li><span class="nb-num">06</span><span class="nb-name">掌握 Claude 结构化输出与 AI 协作方略：从提示工程到 Schema 约束解码</span></li>
+          <li><span class="nb-num">07</span><span class="nb-name">驾驭 Claude 全栈开发：评估设计、批处理 API 与 Claude Code 智能体实践</span></li>
+        </ol>
+        <p class="nb-foot">D5 的单独文字报告暂未在已查看的目录中找到。思维导图、闪卡、测验与演示稿可在 NotebookLM 的 Studio 面板打开。</p>
+      </div>
+    </div>
+    <p class="nb-foot"><strong>连接范围：</strong>本页提供授权访问入口和资料索引，不会读取、复制或自动同步私人 NotebookLM 内容；本页 AI 导师也不会自动获得其来源。需使用有访问权限的 Google 账号打开笔记本。若要让 AI 导师基于 NotebookLM 的报告答题，须另行导入你选择导出的资料。</p>
   </div>
 </section>
 
