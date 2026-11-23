@@ -556,7 +556,7 @@ kbd{font-family:var(--font-mono);font-size:11px;border:1px solid var(--line);bor
 @media (max-width:480px){.dbars{grid-template-columns:repeat(2,1fr)}}
 @media print{.dbars{display:none}}
 
-/* ===== v5: AI 导师 / 设置 / 云同步 ===== */
+/* ===== v5: AI 导师 / 设置 ===== */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .remote-note{display:none;margin:0 0 16px;padding:12px 14px;border:1px solid var(--amber-line);background:var(--amber-soft);
   border-radius:var(--r);font-size:12.5px;color:var(--ink-2);line-height:1.6}
@@ -805,7 +805,7 @@ body.is-remote .file-hit{opacity:.85}
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="eyebrow">Anthropic 认证 · 备考工作台</p>
-      <h1>31 份官方文档<br>排成<em>两周</em>走完的路</h1>
+      <h1>39 份学习资料<br>排成<em>两周</em>走完的路</h1>
       <p class="lede">42 页考纲、167 页 Hooks、10 门需登录的课程页——资料不缺，缺的是顺序。
       这台页面把三件事放在一起：<strong>考什么</strong>（权重）、<strong>读什么</strong>（资料地图）、<strong>今天做什么</strong>（14 天 + D0 准备）。</p>
       <div class="hero-cta">
@@ -827,7 +827,7 @@ body.is-remote .file-hit{opacity:.85}
         </button>
       </div>
 
-      <p class="hero-hint">计划 27.5 小时（15 个单元）· 每天 60 分钟起 · 全部资料已在本文件夹离线可用</p>
+      <p class="hero-hint">计划 27.5 小时（15 个单元）· 每天 60 分钟起 · 资料随仓库离线可读，AI 与外部链接需联网</p>
     </div>
 
     <div class="hero-panel" aria-label="考试关键事实">
@@ -1911,7 +1911,9 @@ body.is-remote .file-hit{opacity:.85}
 
     <div class="stats">
       <div class="stat"><span class="stat-n" id="statDone">0</span><span class="stat-l">已完成单元</span></div>
-      <div class="stat"><span class="stat-n" id="statHours">0</span><span class="stat-l">已投入小时 / 计划 27.5</span></div>
+      <div class="stat"><span class="stat-n" id="statHours">0</span><span class="stat-l">已完成计划学时 / 27.5</span></div>
+      <div class="stat"><span class="stat-n" id="statActual">0.0</span><span class="stat-l">实际学习小时</span></div>
+      <div class="stat"><span class="stat-n" id="statToday">0</span><span class="stat-l">今日学习分钟</span></div>
       <div class="stat"><span class="stat-n" id="statLeft">15</span><span class="stat-l">剩余单元</span></div>
       <div class="stat"><span class="stat-n" id="statNotes">0</span><span class="stat-l">条学习笔记</span></div>
     </div>
@@ -2602,7 +2604,7 @@ body.is-remote .file-hit{opacity:.85}
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <p>资料整理于 2026-11-21 · 全部离线可用 · 官方来源见 <code>00_开始这里/03_所有来源链接.txt</code></p>
+    <p>资料整理于 2026-11-21 · 资料本地可读 · AI 需联网 · 官方来源见 <code>00_开始这里/03_所有来源链接.txt</code></p>
     <p class="foot-note">本页为自主学习辅助，非 Anthropic 官方材料；考纲以官方 PDF 为准。</p>
     <p class="foot-keys">快捷键：<kbd>/</kbd> 搜索资料 · <kbd>t</kbd> 切换深浅色 · <kbd>Esc</kbd> 清空搜索</p>
   </div>
@@ -2635,7 +2637,7 @@ body.is-remote .file-hit{opacity:.85}
           </div>
           <p class="hint" id="providerHint">Anthropic 控制台创建，形如 sk-ant-…</p>
           <p class="hint">只存在这台电脑的浏览器里，不进仓库、不上传。公用电脑请取消勾选「记住」。</p>
-          <p class="hint">云同步已移除：旧版保存的 GitHub Token 在加载时会自动从本机清除，远程 Gist 不会被删除。</p>
+          <p class="hint">旧版 GitHub Token 已在加载时自动从本机清除；远程 Gist 不受影响，也不会再被读取或上传。</p>
         </div>
         <div class="field">
           <label for="model">模型</label>
@@ -2862,23 +2864,135 @@ body.is-remote .file-hit{opacity:.85}
 
   /* ---------------- 间隔复习 ---------------- */
   var SRS_STEPS = [1, 3, 7, 16, 35, 70];
+  var SRS_SPEC = "答错→1天并回到 level 0；答对→level+1，间隔取 SRS_STEPS[level]（3/7/16/35/70，最高 70）；level 只增不减，答错清零";
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  // 浏览器本地日期（YYYY-MM-DD），不受 UTC 提前换日影响
+  function localISODate(d) {
+    var x = d || new Date();
+    return x.getFullYear() + "-" + pad2(x.getMonth() + 1) + "-" + pad2(x.getDate());
+  }
+  function todayISO() { return localISODate(new Date()); }
   function addDays(iso, n) {
     var parts = String(iso || "").split("-").map(Number);
-    var t = Date.UTC(parts[0], (parts[1] || 1) - 1, parts[2] || 1) + n * 86400000;
-    var d = new Date(t);
-    return d.toISOString().slice(0, 10);
+    var base = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1, 12, 0, 0, 0);
+    base.setDate(base.getDate() + n);
+    return localISODate(base);
   }
   function srsNext(card, correct, today) {
     var c = card || {}, level = typeof c.level === "number" ? c.level : 0;
-    var day = today || new Date().toISOString().slice(0, 10);
+    var day = today || todayISO();
     if (correct) { level = Math.min(level + 1, SRS_STEPS.length - 1); }
     else { level = 0; }
     var interval = correct ? SRS_STEPS[level] : 1;
     return { level: level, interval: interval, last: day, next: addDays(day, interval), lastResult: !!correct, reps: (c.reps || 0) + 1 };
   }
   function srsDue(cards, today) {
-    var day = today || new Date().toISOString().slice(0, 10);
+    var day = today || todayISO();
     return (cards || []).filter(function (c) { var n = c.next || c.nextReview; return !n || n <= day; });
+  }
+
+  /* ---------------- 实际学习时长（可测试的累加器） ---------------- */
+  // 只累计可见且有活动的时段；单次 tick 最多 capMs，避免休眠/刷新重复累计
+  function studyTick(state, nowMs, eligible, capMs) {
+    var s = state && typeof state === "object" ? Object.assign({ total: 0, byDate: {} }, state) : { total: 0, byDate: {} };
+    var last = typeof s.last === "number" ? s.last : nowMs;
+    var gap = nowMs - last;
+    // 大于单次上限的空档说明页面曾休眠/关闭，不能补记成学习时间
+    var delta = gap > 0 && gap <= (capMs || 30000) ? gap : 0;
+    if (!eligible) delta = 0;
+    s.total = (s.total || 0) + delta;
+    s.byDate = s.byDate || {};
+    var day = localISODate(new Date(nowMs));
+    s.byDate[day] = (s.byDate[day] || 0) + delta;
+    s.last = nowMs;
+    return s;
+  }
+  function studyTotals(state, today) {
+    var s = state || {};
+    var day = today || todayISO();
+    return { totalMs: s.total || 0, todayMs: (s.byDate || {})[day] || 0 };
+  }
+
+  /* ---------------- 题目 Schema、判分与引用校验 ---------------- */
+  var SOURCE_LEVELS = { officialGuide: 1, officialTech: 2, translation: 3, personal: 4, model: 5 };
+  var QUESTION_DOMAINS = ["D1", "D2", "D3", "D4", "D5"];
+  function normText(s) { return String(s == null ? "" : s).replace(/\s+/g, " ").trim(); }
+  function validateQuestion(raw, ctx) {
+    var c = ctx || {}, errors = [], q = {};
+    if (!raw || typeof raw !== "object") return { ok: false, errors: ["题目不是对象"], question: null };
+    q.type = raw.type === undefined ? "single" : String(raw.type);
+    if (q.type !== "single" && q.type !== "multiple") errors.push("type 必须是 single 或 multiple");
+    q.question = normText(raw.question);
+    if (q.question.length < 8) errors.push("题干过短");
+    q.options = Array.isArray(raw.options) ? raw.options.map(normText) : [];
+    if (q.options.length < 2 || q.options.length > 6) errors.push("选项数量必须是 2–6");
+    if (q.options.some(function (o) { return !o; })) errors.push("存在空选项");
+    var seen = {}, dup = false;
+    q.options.forEach(function (o) { var k = o.toLowerCase(); if (seen[k]) dup = true; seen[k] = 1; });
+    if (dup) errors.push("选项重复");
+    var answers = Array.isArray(raw.correctAnswers) ? raw.correctAnswers.slice() : (typeof raw.answer === "number" ? [raw.answer] : []);
+    answers = answers.filter(function (n) { return typeof n === "number" && n >= 0 && n < q.options.length; });
+    q.correctAnswers = answers.filter(function (n, i) { return answers.indexOf(n) === i; }).sort(function (a, b) { return a - b; });
+    if (!q.correctAnswers.length) errors.push("正确答案索引缺失或越界");
+    if (q.type === "single" && q.correctAnswers.length !== 1) errors.push("单选题必须且只能有 1 个正确答案");
+    if (q.type === "multiple" && q.correctAnswers.length < 2) errors.push("多选题至少需要 2 个正确答案");
+    if (q.type === "multiple" && q.correctAnswers.length >= q.options.length) errors.push("多选题不能所有选项都正确");
+    q.explanation = normText(raw.explanation);
+    if (q.explanation.length < 12) errors.push("解析过短或缺失");
+    q.domain = String(raw.domain || "");
+    if (QUESTION_DOMAINS.indexOf(q.domain) === -1) errors.push("领域必须是 D1–D5");
+    q.taskStatementIds = Array.isArray(raw.taskStatementIds) ? raw.taskStatementIds.map(String) : [];
+    if (c.taskIds) {
+      q.taskStatementIds.forEach(function (id) { if (c.taskIds.indexOf(id) === -1) errors.push("未知 Task Statement: " + id); });
+    }
+    if (c.requireTask && !q.taskStatementIds.length) errors.push("缺少 Task Statement 映射");
+    q.sourceReferences = Array.isArray(raw.sourceReferences) ? raw.sourceReferences.filter(function (n) { return typeof n === "number"; }) : [];
+    var sourceCount = typeof c.sourcesCount === "number" ? c.sourcesCount : 0;
+    q.sourceReferences.forEach(function (n) { if (n < 1 || n > sourceCount) errors.push("来源编号越界: " + n); });
+    if (sourceCount === 0 && q.sourceReferences.length) errors.push("没有来源却引用了来源编号");
+    if (c.requireSource && !q.sourceReferences.length) errors.push("正式题目必须引用至少一个检索片段");
+    q.difficulty = typeof raw.difficulty === "number" ? raw.difficulty : 2;
+    if ([1, 2, 3].indexOf(q.difficulty) === -1) errors.push("难度必须是 1–3");
+    q.scenarioId = raw.scenarioId ? String(raw.scenarioId) : "";
+    if (q.scenarioId && c.scenarioIds && c.scenarioIds.indexOf(q.scenarioId) === -1) errors.push("未知情景: " + q.scenarioId);
+    var maxLevel = 5;
+    q.sourceReferences.forEach(function (n) { var s = (c.sources || [])[n - 1]; if (s && typeof s.level === "number") maxLevel = Math.min(maxLevel, s.level); });
+    q.evidence = !q.sourceReferences.length ? "model" : maxLevel <= 2 ? "official" : maxLevel === 3 ? "translation" : "personal";
+    if (c.formal && q.evidence !== "official") errors.push("正式模拟题必须基于官方级别资料");
+    if (c.formal && q.options.length !== 4) errors.push("正式模拟题必须是 4 个选项");
+    return { ok: errors.length === 0, errors: errors, question: errors.length ? null : q };
+  }
+  function gradeQuestion(q, selected) {
+    var sel = Array.isArray(selected) ? selected.slice().sort(function (a, b) { return a - b; }) : [];
+    var ans = (q.correctAnswers || []).slice().sort(function (a, b) { return a - b; });
+    if (selected && typeof selected === "number") sel = [selected];
+    if (sel.length !== ans.length) return { correct: false, selected: sel, correctAnswers: ans };
+    for (var i = 0; i < ans.length; i++) if (sel[i] !== ans[i]) return { correct: false, selected: sel, correctAnswers: ans };
+    return { correct: true, selected: sel, correctAnswers: ans };
+  }
+  function invalidCitations(text, max) {
+    var bad = [], m, re = /\[(\d+)\]/g, src = String(text || "");
+    while ((m = re.exec(src))) {
+      var n = parseInt(m[1], 10);
+      if (n < 1 || n > max) bad.push(n);
+    }
+    return bad.filter(function (n, i) { return bad.indexOf(n) === i; });
+  }
+  function parseQuestionPayload(text, ctx) {
+    var raw = String(text || "").replace(/```json/gi, "").replace(/```/g, "");
+    var a = raw.indexOf("["), b = raw.lastIndexOf("]");
+    if (a < 0 || b <= a) return { ok: false, questions: [], errors: ["模型没有返回 JSON 数组"] };
+    var arr;
+    try { arr = JSON.parse(raw.slice(a, b + 1)); }
+    catch (e) { return { ok: false, questions: [], errors: ["JSON 解析失败: " + e.message] }; }
+    if (!Array.isArray(arr) || !arr.length) return { ok: false, questions: [], errors: ["题目数组为空"] };
+    var out = [], errors = [];
+    arr.forEach(function (item, i) {
+      var v = validateQuestion(item, ctx || {});
+      if (v.ok) out.push(v.question);
+      else errors.push("第 " + (i + 1) + " 题: " + v.errors.join("；"));
+    });
+    return { ok: errors.length === 0 && out.length > 0, questions: out, errors: errors };
   }
 
   /* ---------------- 备份 ---------------- */
@@ -2923,6 +3037,7 @@ body.is-remote .file-hit{opacity:.85}
       if (d.chat !== undefined && !Array.isArray(d.chat)) errors.push("chat 结构不正确");
       if (d.mastery !== undefined && !isObj(d.mastery)) errors.push("mastery 结构不正确");
       if (d.feynman !== undefined && d.feynman !== null && !isObj(d.feynman)) errors.push("feynman 结构不正确");
+      if (d.time !== undefined && d.time !== null && !isObj(d.time)) errors.push("time 结构不正确");
       if (d.settings !== undefined && !isObj(d.settings)) errors.push("settings 结构不正确");
       if (d.knowledge !== undefined) {
         if (!isObj(d.knowledge)) errors.push("knowledge 结构不正确");
@@ -2947,7 +3062,8 @@ body.is-remote .file-hit{opacity:.85}
         cards: (d.cards || []).length,
         accept: (d.accept || []).length,
         chat: (d.chat || []).length,
-        feynman: d.feynman && d.feynman.topic ? 1 : 0
+        feynman: d.feynman && d.feynman.topic ? 1 : 0,
+        time: d.time && typeof d.time.total === "number" ? 1 : 0
       }
     };
   }
@@ -3123,7 +3239,10 @@ body.is-remote .file-hit{opacity:.85}
     makeBackup: makeBackup, validateBackup: validateBackup, BACKUP_VERSION: BACKUP_VERSION,
     extractPdfText: extractPdfText, cardId: cardId, upsertCard: upsertCard, safeSettings: safeSettings,
     TUTOR_SYSTEM: TUTOR_SYSTEM, buildTutorRequest: buildTutorRequest, formatSources: formatSources,
-    makeBackupV2: makeBackupV2, validateBackupFull: validateBackupFull, MAX_BACKUP_BYTES: MAX_BACKUP_BYTES, sha256Hex: sha256Hex
+    makeBackupV2: makeBackupV2, validateBackupFull: validateBackupFull, MAX_BACKUP_BYTES: MAX_BACKUP_BYTES, sha256Hex: sha256Hex,
+    localISODate: localISODate, todayISO: todayISO, studyTick: studyTick, studyTotals: studyTotals, SRS_SPEC: SRS_SPEC,
+    validateQuestion: validateQuestion, gradeQuestion: gradeQuestion, invalidCitations: invalidCitations, parseQuestionPayload: parseQuestionPayload,
+    SOURCE_LEVELS: SOURCE_LEVELS, QUESTION_DOMAINS: QUESTION_DOMAINS
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -3172,11 +3291,38 @@ body.is-remote .file-hit{opacity:.85}
 
   var notes = store.get("ccarf.notes", {}) || {};
 
+  /* 实际学习时长：可见 + 近 2 分钟有操作才计时；每次最多累计 30 秒，避免刷新/休眠重复 */
+  var lastActivity = Date.now();
+  function markActive() { lastActivity = Date.now(); }
+  ["mousemove", "keydown", "scroll", "touchstart", "click"].forEach(function (ev) {
+    window.addEventListener(ev, markActive, { passive: true });
+  });
+  function updateStudyTime() {
+    var C = window.CCARF_CORE;
+    if (!C) return;
+    var t = C.studyTotals(store.get("ccarf.time", null), C.todayISO());
+    if (statActual) statActual.textContent = (t.totalMs / 3600000).toFixed(1);
+    if (statToday) statToday.textContent = String(Math.round(t.todayMs / 60000));
+  }
+  function flushStudyTime() {
+    var C = window.CCARF_CORE;
+    if (!C) return;
+    var eligible = document.visibilityState === "visible" && (Date.now() - lastActivity < 120000);
+    var next = C.studyTick(store.get("ccarf.time", null), Date.now(), eligible, 30000);
+    store.set("ccarf.time", next);
+    updateStudyTime();
+  }
+  setInterval(flushStudyTime, 15000);
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") flushStudyTime(); else { markActive(); flushStudyTime(); } });
+  window.addEventListener("pagehide", flushStudyTime);
+
   var textEl = document.getElementById("progressText");
   var barEl = document.getElementById("planBar");
   var barWrap = document.querySelector(".plan-progress");
   var statDone = document.getElementById("statDone");
   var statHours = document.getElementById("statHours");
+  var statActual = document.getElementById("statActual");
+  var statToday = document.getElementById("statToday");
   var statLeft = document.getElementById("statLeft");
   var statNotes = document.getElementById("statNotes");
   var resumeEl = document.getElementById("resume");
@@ -3210,6 +3356,7 @@ body.is-remote .file-hit{opacity:.85}
     }
     if (statDone) statDone.textContent = String(n);
     if (statHours) statHours.textContent = (Math.round(hours * 10) / 10).toString();
+    updateStudyTime();
     if (statLeft) statLeft.textContent = String(total - n);
     if (statNotes) statNotes.textContent = String(Object.keys(notes).filter(function (k) { return notes[k] && notes[k].trim(); }).length);
 
@@ -3222,14 +3369,14 @@ body.is-remote .file-hit{opacity:.85}
       if (n >= total) {
         resumeEl.hidden = false;
         resumeText.textContent = "15 个单元全部完成 · 现在只需要过一遍五道自测题";
-        resumeStat.textContent = "累计投入 " + (Math.round(hours * 10) / 10) + " 小时";
+        resumeStat.textContent = "已完成计划 " + (Math.round(hours * 10) / 10) + " 小时";
         nextTarget = null;
         if (resumeGo) resumeGo.textContent = "去看自测";
       } else {
         var m = unitMeta(items[nextIdx], nextIdx);
         resumeEl.hidden = false;
         resumeText.textContent = m.day + " · " + m.title + "（约 " + m.hrs + " 小时）";
-        resumeStat.textContent = "已完成 " + n + " / " + total + " 天 · 累计 " + (Math.round(hours * 10) / 10) + " 小时";
+        resumeStat.textContent = "已完成 " + n + " / " + total + " 天 · 计划学时 " + (Math.round(hours * 10) / 10) + " 小时";
         nextTarget = items[nextIdx];
         if (resumeGo) {
           resumeGo.innerHTML = '跳到这一节 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
@@ -3401,7 +3548,7 @@ body.is-remote .file-hit{opacity:.85}
       var blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
       var a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "CCAR-F-学习记录-" + new Date().toISOString().slice(0, 10) + ".md";
+      a.download = "CCAR-F-学习记录-" + (window.CCARF_CORE ? window.CCARF_CORE.localISODate() : new Date().toISOString().slice(0, 10)) + ".md";
       document.body.appendChild(a);
       a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
@@ -3610,7 +3757,7 @@ body.is-remote .file-hit{opacity:.85}
       }
     });
   }
-  /* ---------------- public API（AI 导师 / 云同步调用） ---------------- */
+  /* ---------------- public API（AI 导师调用） ---------------- */
   function snapshot() {
     return {
       units: boxes.map(function (b, i) { return b.checked ? String(i + 1) : null; }).filter(Boolean),
@@ -3679,7 +3826,7 @@ body.is-remote .file-hit{opacity:.85}
     }
   };
 })();
-/* AI 导师 + 设置 + 进度云同步 */
+/* AI 导师 + 设置 */
 (function () {
   "use strict";
 
@@ -4450,7 +4597,7 @@ body.is-remote .file-hit{opacity:.85}
     var domains = text ? C.classify(text).map(function (x) { return x.domain; }) : [];
     var doc = {
       id: hash, name: file.name, type: type, size: file.size, importedAt: new Date().toISOString(),
-      domains: domains, status: status, error: err, chars: text.length, chunkCount: 0
+      domains: domains, status: status, error: err, chars: text.length, chunkCount: 0, evidenceLevel: 4
     };
     if (text) {
       var chunks = C.chunkText(text, 1200, 150).map(function (c, i) {
@@ -4628,7 +4775,7 @@ body.is-remote .file-hit{opacity:.85}
       var hits = C.search(idx, query, { limit: 4 });
       return hits.map(function (h) {
         var row = rows.filter(function (r) { return r.id === h.id; })[0] || {};
-        return { id: h.id, docId: h.docId, name: row.name || "", text: String(row.text || "").slice(0, 900), score: h.score };
+        return { id: h.id, docId: h.docId, name: row.name || "", text: String(row.text || "").slice(0, 900), score: h.score, level: (byId[h.docId] || {}).evidenceLevel || 4 };
       });
     } catch (e) { return []; }
   }
@@ -4690,6 +4837,8 @@ body.is-remote .file-hit{opacity:.85}
     renderTutor();
     try {
       var reply = await window.CCARF_AI.chat(req.messages, req.system);
+      var badRefs = C.invalidCitations(reply || "", sources.length);
+      if (badRefs.length) reply = (reply || "") + "\n\n（引用校验：本次资料只有 " + sources.length + " 段，[" + badRefs.join("], [") + "] 没有对应来源，请以右侧来源列表为准。）";
       tutor.messages[tutor.messages.length - 1] = { role: "assistant", content: (tutor.noEvidence ? "本地学习资料中暂未找到足够依据，以下是模型的一般性解释。\n\n" : "") + (reply || "（没有返回内容）") };
       tutor.phase = phase === "explain" ? "restate" : phase === "probe" ? "answer" : phase === "correct" ? "practice" : "done";
       saveTutor();
@@ -4743,11 +4892,17 @@ body.is-remote .file-hit{opacity:.85}
   }
 
 
-  /* ---------------- P3: 错题与间隔复习 ---------------- */
+  /* ---------------- P3: 错题、客观判分与间隔复习 ---------------- */
   var CARDS_KEY = "ccarf.cards";
-  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  var EVIDENCE_LABEL = { official: "官方依据", translation: "译文依据", personal: "个人资料依据", model: "模型知识 · 非官方" };
+  function todayISO() { return C.todayISO(); }
   function loadCards() { var a = readJSON(CARDS_KEY, []); return Array.isArray(a) ? a : []; }
   function saveCards(list) { writeJSON(CARDS_KEY, list.slice(-500)); }
+  function cardAnswers(c) {
+    if (Array.isArray(c.correctAnswers)) return c.correctAnswers.slice().sort(function (a, b) { return a - b; });
+    if (typeof c.answer === "number") return [c.answer];
+    return [];
+  }
 
   function renderStats(cards) {
     var el = $("reviewStats");
@@ -4768,26 +4923,87 @@ body.is-remote .file-hit{opacity:.85}
       return;
     }
     box.innerHTML = due.map(function (c) {
-      return '<article class="review-card"><h4>' + esc(c.question) + "</h4>" +
-        '<div class="meta">' + esc(c.domain || "未分类") + " · 下次 " + esc(c.nextReview || "今天") + " · 连对 " + (c.level || 0) + " 次</div>" +
-        '<div class="ops"><button class="btn btn-quiet" type="button" data-card="' + esc(c.id) + '" data-ok="1">记得</button>' +
-        '<button class="btn btn-quiet" type="button" data-card="' + esc(c.id) + '" data-ok="0">忘了</button></div></article>';
+      var opts = Array.isArray(c.options) ? c.options : [];
+      var ans = cardAnswers(c);
+      if (opts.length < 2 || !ans.length) {
+        return '<article class="review-card" data-card="' + esc(c.id) + '"><h4>' + esc(c.question) + "</h4>" +
+          '<div class="meta">旧卡片缺少选项与标准答案，无法客观判分；不会提升掌握等级。</div>' +
+          '<div class="ops"><button class="btn btn-quiet" type="button" data-drop="' + esc(c.id) + '">删除这张卡</button></div></article>';
+      }
+      return '<article class="review-card" data-card="' + esc(c.id) + '" data-type="' + esc(c.type || "single") + '">' +
+        '<div class="meta">' + esc(c.domain || "未分类") + " · " + (c.type === "multiple" ? "多选题" : "单选题") + " · 下次 " + esc(c.nextReview || "今天") + "</div>" +
+        "<h4>" + esc(c.question) + "</h4>" +
+        opts.map(function (o, i) { return '<button type="button" class="opt" data-opt="' + i + '">' + String.fromCharCode(65 + i) + ". " + esc(o) + "</button>"; }).join("") +
+        '<div class="ops"><button class="btn btn-quiet" type="button" data-submit="' + esc(c.id) + '">提交答案</button></div>' +
+        '<div class="why" hidden></div></article>';
     }).join("");
   }
 
-  function applyCardResult(id, ok) {
-    var cards = loadCards();
-    var card = cards.filter(function (c) { return c.id === id; })[0];
-    if (!card) return;
-    var n = C.srsNext(card, ok, todayISO());
+  function recordAttempt(card, correct, selected) {
+    var n = C.srsNext(card, correct, todayISO());
     card.lastReviewedAt = todayISO();
     card.nextReview = n.next;
     card.level = n.level;
     card.reps = n.reps;
-    card.correct = !!ok;
+    card.correct = !!correct;
+    card.attempts = (card.attempts || []).concat([{ at: new Date().toISOString(), selected: selected, correct: !!correct }]).slice(-20);
+    var cards = loadCards();
     saveCards(C.upsertCard(cards, card));
-    renderReview();
+    renderStats(loadCards());
     renderToday();
+  }
+
+  function bindReview() {
+    var list = $("reviewList");
+    if (!list || list.dataset.bound) return;
+    list.dataset.bound = "1";
+    list.addEventListener("click", function (e) {
+      var t = e.target;
+      var opt = t.closest ? t.closest("button[data-opt]") : null;
+      var submit = t.closest ? t.closest("button[data-submit]") : null;
+      var drop = t.closest ? t.closest("button[data-drop]") : null;
+      if (opt) {
+        var cardEl = opt.closest(".review-card");
+        var multi = cardEl.getAttribute("data-type") === "multiple";
+        if (multi) opt.classList.toggle("is-sel");
+        else Array.prototype.forEach.call(cardEl.querySelectorAll("button[data-opt]"), function (b) { b.classList.remove("is-sel"); });
+        if (!multi) opt.classList.add("is-sel");
+        return;
+      }
+      if (drop) {
+        if (!window.confirm("删除这张旧卡片？")) return;
+        saveCards(loadCards().filter(function (c) { return c.id !== drop.getAttribute("data-drop"); }));
+        renderReview();
+        return;
+      }
+      if (submit) {
+        var id = submit.getAttribute("data-submit");
+        var el = submit.closest(".review-card");
+        var card = loadCards().filter(function (c) { return c.id === id; })[0];
+        if (!card || el.dataset.done) return;
+        var picked = Array.prototype.slice.call(el.querySelectorAll("button[data-opt].is-sel")).map(function (b) { return parseInt(b.getAttribute("data-opt"), 10); });
+        if (!picked.length) { var w = el.querySelector(".why"); w.hidden = false; w.textContent = "先选择答案再提交。"; return; }
+        var graded = C.gradeQuestion({ correctAnswers: cardAnswers(card) }, picked);
+        el.dataset.done = "1";
+        el.setAttribute("data-type", card.type || "single");
+        Array.prototype.forEach.call(el.querySelectorAll("button[data-opt]"), function (b) {
+          var i = parseInt(b.getAttribute("data-opt"), 10);
+          b.classList.remove("is-sel");
+          if (graded.correctAnswers.indexOf(i) !== -1) b.classList.add("is-right");
+          else if (picked.indexOf(i) !== -1) b.classList.add("is-wrong");
+        });
+        var why = el.querySelector(".why");
+        why.hidden = false;
+        why.textContent = (graded.correct ? "答对了。" : "答错了。") + (card.explanation || "") +
+          (graded.correct ? "" : " 正确答案：" + graded.correctAnswers.map(function (i) { return String.fromCharCode(65 + i); }).join("、")) +
+          " 下次复习：" + C.srsNext(card, graded.correct, todayISO()).next + "。";
+        recordAttempt(card, graded.correct, picked);
+        submit.textContent = "下一张";
+        submit.setAttribute("data-next", "1");
+        submit.removeAttribute("data-submit");
+        submit.addEventListener("click", function once() { renderReview(); }, { once: true });
+      }
+    });
   }
 
   function renderToday() {
@@ -4800,24 +5016,17 @@ body.is-remote .file-hit{opacity:.85}
     for (var i = 0; i < items.length; i++) {
       var b = items[i].querySelector(".unit-box");
       if (b && !b.checked) {
-        unit = {
-          day: items[i].querySelector(".tl-day").textContent.trim(),
-          title: items[i].querySelector(".tl-head h3").textContent.trim(),
-          el: items[i]
-        };
+        unit = { day: items[i].querySelector(".tl-day").textContent.trim(), title: items[i].querySelector(".tl-head h3").textContent.trim(), el: items[i] };
         break;
       }
     }
-    var cardsHtml = "";
-    cardsHtml += '<div class="today-card"><span class="k">当前学习单元</span><span class="v">' + (unit ? esc(unit.day + " · " + unit.title) : "全部单元已完成") + '</span><span class="s"><a href="#plan">回到学习计划 →</a></span></div>';
-    cardsHtml += '<div class="today-card"><span class="k">今日待复习</span><span class="v">' + due + " 个知识点</span><span class=\"s\"><a href=\"#studio\" data-goto=\"review\">打开错题复习 →</a></span></div>";
-    cardsHtml += '<div class="today-card"><span class="k">NotebookLM</span><span class="v">音频 / 报告</span><span class="s"><a href="#notebooklm">打开学习中心 →</a></span></div>';
-    cardsHtml += '<div class="today-card"><span class="k">本地知识库</span><span class="v" id="todayDocs">—</span><span class="s"><a href="#studio" data-goto="kb">导入或检索 →</a></span></div>';
-    box.innerHTML = cardsHtml;
-    allDocs().then(function (docs) {
-      var el = $("todayDocs");
-      if (el) el.textContent = docs.length + " 份资料";
-    }).catch(function () {});
+    var html = "";
+    html += '<div class="today-card"><span class="k">当前学习单元</span><span class="v">' + (unit ? esc(unit.day + " · " + unit.title) : "全部单元已完成") + '</span><span class="s"><a href="#plan">回到学习计划 →</a></span></div>';
+    html += '<div class="today-card"><span class="k">今日待复习</span><span class="v">' + due + ' 个知识点</span><span class="s"><a href="#studio" data-goto="review">打开错题复习 →</a></span></div>';
+    html += '<div class="today-card"><span class="k">NotebookLM</span><span class="v">音频 / 报告</span><span class="s"><a href="#notebooklm">打开学习中心 →</a></span></div>';
+    html += '<div class="today-card"><span class="k">本地知识库</span><span class="v" id="todayDocs">—</span><span class="s"><a href="#studio" data-goto="kb">导入或检索 →</a></span></div>';
+    box.innerHTML = html;
+    allDocs().then(function (docs) { var el = $("todayDocs"); if (el) el.textContent = docs.length + " 份资料"; }).catch(function () {});
     Array.prototype.forEach.call(box.querySelectorAll("[data-goto]"), function (a) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
@@ -4825,13 +5034,18 @@ body.is-remote .file-hit{opacity:.85}
         if (tab) { tab.click(); tab.scrollIntoView({ behavior: "smooth", block: "center" }); }
       });
     });
-    Array.prototype.forEach.call(box.querySelectorAll('a[href="#plan"]'), function (a) {
-      a.addEventListener("click", function () { if (unit && unit.el) setTimeout(function () { unit.el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); });
-    });
   }
 
-  var practiceState = { questions: [], idx: 0, answered: false };
-
+  var practiceState = { questions: [], idx: 0, selected: [], done: false };
+  var EXAM_CACHE = null;
+  async function examRegistry() {
+    if (EXAM_CACHE !== null) return EXAM_CACHE;
+    try {
+      var res = await fetch("data/exam-objectives.json", { cache: "no-cache" });
+      EXAM_CACHE = res.ok ? await res.json() : null;
+    } catch (e) { EXAM_CACHE = null; }
+    return EXAM_CACHE;
+  }
   function currentUnitTitle() {
     var items = Array.prototype.slice.call(document.querySelectorAll(".tl-item"));
     for (var i = 0; i < items.length; i++) {
@@ -4839,16 +5053,6 @@ body.is-remote .file-hit{opacity:.85}
       if (b && !b.checked) return items[i].querySelector(".tl-head h3").textContent.trim();
     }
     return "综合复习";
-  }
-
-  function parseQuestions(text) {
-    var raw = String(text || "").replace(/```json/gi, "").replace(/```/g, "");
-    var a = raw.indexOf("["), b = raw.lastIndexOf("]");
-    if (a < 0 || b <= a) throw new Error("模型没有返回 JSON 数组");
-    var arr = JSON.parse(raw.slice(a, b + 1));
-    return arr.filter(function (q) {
-      return q && q.question && Array.isArray(q.options) && q.options.length >= 2 && typeof q.answer === "number";
-    }).slice(0, 3);
   }
 
   async function generatePractice() {
@@ -4859,24 +5063,50 @@ body.is-remote .file-hit{opacity:.85}
     if (mode === "topic" && !topic) { box.innerHTML = '<p class="kb-empty">先填一个知识点。</p>'; return; }
     if (!window.CCARF_AI) { box.innerHTML = '<p class="kb-empty">AI 通道未就绪。</p>'; return; }
     if (!window.CCARF_AI.config().hasKey) { box.innerHTML = '<p class="kb-empty">先配置 API Key。</p>'; return; }
-
     var domain = /^D[1-5]$/.test(mode) ? mode : "";
-    var query = topic || (domain ? ((C.DOMAINS.filter(function (d) { return d.id === domain; })[0] || {}).name || domain) : "综合");
-    box.innerHTML = '<p class="kb-empty">正在生成 AI 模拟练习…</p>';
+    var query = topic || (domain
+      ? ((C.DOMAINS.filter(function (d) { return d.id === domain; })[0] || {}).name || domain)
+      : C.DOMAINS.map(function (d) { return d.name; }).join(" "));
+    box.innerHTML = '<p class="kb-empty">正在生成并校验 AI 模拟练习…</p>';
     var sources = await retrieve(query);
-    var ctx = ctxOf(sources);
-    var system = "你是 CCAR-F 单选题出题器。只输出 JSON 数组，不要 markdown，不要解释。每项字段：question, options(4 个), answer(0-3), explanation, domain(D1-D5)。题目必须基于资料片段；资料不足时用通用知识但不要编造页码或官方真题。";
-    var user = "范围：" + (domain || topic || "综合") + "\n资料片段：\n" + ctx + "\n\n请生成 2 道中文单选题。";
+    var exam = await examRegistry();
+    var taskIds = exam ? exam.taskStatements.map(function (t) { return t.id; }) : [];
+    var scenarioIds = exam ? exam.scenarios.map(function (x) { return x.id; }) : [];
+    var ctx = {
+      sourcesCount: sources.length,
+      sources: sources.map(function (x) { return { level: x.level || 4 }; }),
+      taskIds: taskIds.length ? taskIds : null,
+      scenarioIds: scenarioIds.length ? scenarioIds : null,
+      requireTask: false, requireSource: false, formal: false
+    };
+    var system = [
+      "你是 CCAR-F 单选题/多选题出题器。只输出 JSON 数组，不要 markdown，不要解释。",
+      "每项字段：question, type(\"single\" 或 \"multiple\"), options(4 个), correctAnswers(索引数组), explanation(至少 20 字), domain(D1-D5), taskStatementIds(数组), sourceReferences(1..n 的来源编号数组), difficulty(1-3)。",
+      "单选题 correctAnswers 恰好 1 个；多选题至少 2 个且不能全选；选项不得重复。",
+      "只能引用给定资料片段的编号；资料不足时 sourceReferences 留空，不要编造 Task Statement 或页码。",
+      taskIds.length ? "可用 Task Statement：" + taskIds.join(",") : "不要输出 Task Statement 编号。"
+    ].join("\n");
+    var user = "范围：" + (domain || topic || "综合") + "\n资料片段：\n" + ctxOfSources(sources) + "\n\n请生成 2 道中文题目。";
     try {
       var reply = await window.CCARF_AI.chat([{ role: "user", content: user }], system);
-      var qs = parseQuestions(reply);
-      if (!qs.length) throw new Error("没有可用题目");
-      qs.forEach(function (q) { q.domain = domain || q.domain || ""; q.topic = topic; });
-      practiceState = { questions: qs, idx: 0, answered: false };
+      var parsed = C.parseQuestionPayload(reply, ctx);
+      if (!parsed.ok) {
+        box.innerHTML = '<p class="kb-empty">第一次返回未通过校验：' + esc(parsed.errors.slice(0, 2).join("；")) + "。正在按约束重试一次…</p>";
+        reply = await window.CCARF_AI.chat([{ role: "user", content: user + "\n\n上次错误：" + parsed.errors.slice(0, 3).join("；") + "。请严格按 Schema 重新输出。" }], system);
+        parsed = C.parseQuestionPayload(reply, ctx);
+      }
+      if (!parsed.ok) throw new Error(parsed.errors.slice(0, 3).join("；"));
+      parsed.questions.forEach(function (q) { q.domain = domain || q.domain; q.topic = topic; });
+      practiceState = { questions: parsed.questions, idx: 0, selected: [], done: false };
       renderPractice();
     } catch (e) {
-      box.innerHTML = '<p class="kb-empty">生成失败：' + esc(e.message) + "。可以换一个范围或稍后再试。</p>";
+      box.innerHTML = '<p class="kb-empty">生成失败或题目未通过校验：' + esc(e.message) + "。没有把不合格题目展示为可作答题目。</p>";
     }
+  }
+
+  function ctxOfSources(sources) {
+    if (!sources.length) return "（没有检索到本地资料；不要填写 sourceReferences）";
+    return sources.map(function (s, i) { return "[" + (i + 1) + "] " + s.name + "：" + String(s.text || "").slice(0, 900); }).join("\n\n");
   }
 
   function renderPractice() {
@@ -4884,87 +5114,95 @@ body.is-remote .file-hit{opacity:.85}
     if (!box) return;
     if (!practiceState.questions.length) { box.innerHTML = ""; return; }
     var q = practiceState.questions[practiceState.idx];
-    var html = '<article class="pq"><div class="tag">AI 模拟练习 · 非官方真题</div><h4>' + esc(q.question) + "</h4>";
+    var evidence = EVIDENCE_LABEL[q.evidence] || EVIDENCE_LABEL.model;
+    var html = '<article class="pq"><div class="tag">AI 模拟练习 · 非官方真题 · ' + esc(evidence) + '</div>' +
+      '<div class="meta">' + (q.type === "multiple" ? "多选题（选 " + q.correctAnswers.length + " 项）" : "单选题") + " · " + esc(q.domain) + "</div>" +
+      "<h4>" + esc(q.question) + "</h4>";
     q.options.forEach(function (opt, i) {
       html += '<button type="button" class="opt" data-i="' + i + '">' + String.fromCharCode(65 + i) + ". " + esc(opt) + "</button>";
     });
-    html += "</article>";
+    html += '<div class="ops"><button class="btn btn-quiet" id="pqSubmit" type="button">提交答案</button></div><div class="why" hidden></div></article>';
     box.innerHTML = html;
     Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (b) {
       b.addEventListener("click", function () {
-        if (practiceState.answered) return;
-        practiceState.answered = true;
-        var chosen = parseInt(b.getAttribute("data-i"), 10);
-        Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (x, i) {
-          x.classList.toggle("is-right", i === q.answer);
-          x.classList.toggle("is-wrong", i === chosen && chosen !== q.answer);
+        if (practiceState.done) return;
+        var i = parseInt(b.getAttribute("data-i"), 10);
+        if (q.type === "multiple") {
+          var at = practiceState.selected.indexOf(i);
+          if (at >= 0) practiceState.selected.splice(at, 1); else practiceState.selected.push(i);
+        } else {
+          practiceState.selected = [i];
+        }
+        Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (x) {
+          x.classList.toggle("is-sel", practiceState.selected.indexOf(parseInt(x.getAttribute("data-i"), 10)) >= 0);
         });
-        var why = document.createElement("p");
-        why.className = "why";
-        why.textContent = (chosen === q.answer ? "答对了。" : "答错了。") + (q.explanation || "");
-        box.querySelector(".pq").appendChild(why);
-        recordAnswer(q, chosen);
-        var next = document.createElement("button");
-        next.type = "button";
-        next.className = "btn btn-quiet";
-        next.style.marginTop = "10px";
-        next.textContent = practiceState.idx + 1 < practiceState.questions.length ? "下一题" : "完成";
-        next.addEventListener("click", function () {
-          practiceState.idx++;
-          practiceState.answered = false;
-          if (practiceState.idx >= practiceState.questions.length) {
-            box.innerHTML = '<p class="kb-empty">本组练习完成；答错的题已加入错题本。</p>';
-            practiceState = { questions: [], idx: 0, answered: false };
-            renderReview(); renderToday();
-          } else renderPractice();
-        });
-        box.querySelector(".pq").appendChild(next);
       });
+    });
+    var submit = $("pqSubmit");
+    if (submit) submit.addEventListener("click", function () {
+      if (practiceState.done) return;
+      if (!practiceState.selected.length) { var w = box.querySelector(".why"); w.hidden = false; w.textContent = "先选择答案。"; return; }
+      practiceState.done = true;
+      var graded = C.gradeQuestion(q, practiceState.selected);
+      Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (b) {
+        var i = parseInt(b.getAttribute("data-i"), 10);
+        b.classList.remove("is-sel");
+        if (graded.correctAnswers.indexOf(i) !== -1) b.classList.add("is-right");
+        else if (practiceState.selected.indexOf(i) !== -1) b.classList.add("is-wrong");
+      });
+      var why = box.querySelector(".why");
+      why.hidden = false;
+      why.textContent = (graded.correct ? "答对了。" : "答错了。") + (q.explanation || "") +
+        (graded.correct ? "" : " 正确答案：" + graded.correctAnswers.map(function (i) { return String.fromCharCode(65 + i); }).join("、"));
+      recordAnswer(q, practiceState.selected);
+      submit.textContent = practiceState.idx + 1 < practiceState.questions.length ? "下一题" : "完成";
+      submit.addEventListener("click", function () {
+        practiceState.idx++;
+        practiceState.selected = [];
+        practiceState.done = false;
+        if (practiceState.idx >= practiceState.questions.length) {
+          box.innerHTML = '<p class="kb-empty">本组练习完成；答错的题已加入错题本。</p>';
+          practiceState = { questions: [], idx: 0, selected: [], done: false };
+          renderReview(); renderToday();
+        } else renderPractice();
+      }, { once: true });
     });
   }
 
-  function recordAnswer(q, chosen) {
+  function recordAnswer(q, selected) {
     var cards = loadCards();
     var id = C.cardId(q.question);
     var found = cards.filter(function (c) { return c.id === id; })[0];
-    var today = todayISO();
-    if (chosen !== q.answer) {
+    var correct = C.gradeQuestion(q, selected).correct;
+    if (!correct) {
       var card = found || {
-        id: id, question: q.question, options: q.options, answer: q.answer,
-        explanation: q.explanation || "", domain: q.domain || "", topic: q.topic || "",
-        firstWrongAt: today, level: 0, reps: 0
+        id: id, question: q.question, options: q.options, correctAnswers: q.correctAnswers,
+        type: q.type, explanation: q.explanation || "", domain: q.domain || "", topic: q.topic || "",
+        taskStatementIds: q.taskStatementIds || [], sourceReferences: q.sourceReferences || [],
+        evidence: q.evidence || "model", firstWrongAt: todayISO(), level: 0, reps: 0
       };
-      var n = C.srsNext(card, false, today);
-      card.userAnswer = q.options[chosen];
-      card.correct = false;
-      card.lastReviewedAt = today;
-      card.nextReview = n.next;
-      card.level = n.level;
-      card.reps = n.reps;
+      Object.assign(card, { userAnswer: selected, lastReviewedAt: todayISO() });
+      var n = C.srsNext(card, false, todayISO());
+      Object.assign(card, { nextReview: n.next, level: n.level, reps: n.reps });
+      card.attempts = (card.attempts || []).concat([{ at: new Date().toISOString(), selected: selected, correct: false }]).slice(-20);
       cards = C.upsertCard(cards, card);
     } else if (found) {
-      var n2 = C.srsNext(found, true, today);
-      found.correct = true;
-      found.lastReviewedAt = today;
-      found.nextReview = n2.next;
-      found.level = n2.level;
-      found.reps = n2.reps;
+      var n2 = C.srsNext(found, true, todayISO());
+      Object.assign(found, { lastReviewedAt: todayISO(), nextReview: n2.next, level: n2.level, reps: n2.reps, correct: true });
+      found.attempts = (found.attempts || []).concat([{ at: new Date().toISOString(), selected: selected, correct: true }]).slice(-20);
       cards = C.upsertCard(cards, found);
     }
     saveCards(cards);
-    renderReview(); renderToday();
+    renderStats(cards);
+    renderToday();
   }
 
   function initReview() {
     renderReview();
     renderToday();
+    bindReview();
     var gen = $("practiceGen");
     if (gen) gen.addEventListener("click", generatePractice);
-    var list = $("reviewList");
-    if (list) list.addEventListener("click", function (e) {
-      var b = e.target.closest ? e.target.closest("button[data-card]") : null;
-      if (b) applyCardResult(b.getAttribute("data-card"), b.getAttribute("data-ok") === "1");
-    });
   }
 
 
@@ -4997,6 +5235,7 @@ body.is-remote .file-hit{opacity:.85}
       cards: loadCards(),
       mastery: readJSON(MASTERY_KEY, {}),
       feynman: readJSON(TUTOR_KEY, null),
+      time: readJSON("ccarf.time", null),
       knowledge: { docs: docs, chunks: chunks },
       settings: C.safeSettings(readJSON("ccarf.ai", {}))
     };
@@ -5012,7 +5251,7 @@ body.is-remote .file-hit{opacity:.85}
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "ccarf-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+      a.download = "ccarf-backup-" + C.localISODate() + ".json";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -5028,7 +5267,7 @@ body.is-remote .file-hit{opacity:.85}
     var oldDocs = null, oldChunks = null;
     var keys = {
       units: "ccarf.units", notes: "ccarf.notes", accept: "ccarf.accept", chat: "ccarf.chat",
-      cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, ai: "ccarf.ai"
+      cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, time: "ccarf.time", ai: "ccarf.ai"
     };
     var oldLS = {};
     Object.keys(keys).forEach(function (k) { oldLS[k] = localStorage.getItem(keys[k]); });
@@ -5047,6 +5286,7 @@ body.is-remote .file-hit{opacity:.85}
       if (has("cards")) writeJSON(keys.cards, d.cards || []);
       if (has("mastery")) writeJSON(keys.mastery, d.mastery || {});
       if (has("feynman")) writeJSON(keys.feynman, d.feynman || null);
+      if (has("time")) writeJSON(keys.time, d.time || null);
       if (has("settings")) {
         var cur = readJSON("ccarf.ai", {});
         writeJSON(keys.ai, Object.assign({}, cur, C.safeSettings(d.settings)));
