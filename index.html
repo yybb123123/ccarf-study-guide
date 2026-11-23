@@ -3142,7 +3142,7 @@ body.is-remote .file-hit{opacity:.85}
     });
     return out;
   }
-  var BACKUP_VERSION = 2;
+  var BACKUP_VERSION = 3;
   function checksumOf(data) { return "fnv1a:" + fnv1a(JSON.stringify(data)).toString(16); }
   function makeBackup(data, now) {
     var body = { app: "ccarf-study-guide", version: 1, exportedAt: now || new Date().toISOString(), data: data };
@@ -3178,6 +3178,10 @@ body.is-remote .file-hit{opacity:.85}
       if (d.feynman !== undefined && d.feynman !== null && !isObj(d.feynman)) errors.push("feynman 结构不正确");
       if (d.time !== undefined && d.time !== null && !isObj(d.time)) errors.push("time 结构不正确");
       if (d.ts !== undefined && d.ts !== null && !isObj(d.ts)) errors.push("ts 结构不正确");
+      if (d.tsLedger !== undefined && d.tsLedger !== null && !isObj(d.tsLedger)) errors.push("tsLedger 结构不正确");
+      if (d.exam !== undefined && d.exam !== null && !isObj(d.exam)) errors.push("exam 结构不正确");
+      if (d.exams !== undefined && d.exams !== null && !Array.isArray(d.exams)) errors.push("exams 结构不正确");
+      if (d.examDate !== undefined && d.examDate !== null && typeof d.examDate !== "string") errors.push("examDate 结构不正确");
       if (d.settings !== undefined && !isObj(d.settings)) errors.push("settings 结构不正确");
       if (d.knowledge !== undefined) {
         if (!isObj(d.knowledge)) errors.push("knowledge 结构不正确");
@@ -3204,7 +3208,11 @@ body.is-remote .file-hit{opacity:.85}
         chat: (d.chat || []).length,
         feynman: d.feynman && d.feynman.topic ? 1 : 0,
         time: d.time && typeof d.time.total === "number" ? 1 : 0,
-        ts: d.ts ? Object.keys(d.ts).length : 0
+        ts: d.ts ? Object.keys(d.ts).length : 0,
+        ledger: d.tsLedger ? Object.keys(d.tsLedger).length : 0,
+        exams: (d.exams || []).length,
+        inProgressExam: d.exam && d.exam.id ? 1 : 0,
+        examDate: d.examDate || ""
       }
     };
   }
@@ -3524,6 +3532,64 @@ body.is-remote .file-hit{opacity:.85}
     return (h ? h + ":" : "") + (m < 10 ? "0" : "") + m + ":" + (sec < 10 ? "0" : "") + sec;
   }
 
+
+  /* ---------------- PR A: 考试证据幂等记账 ---------------- */
+  var TS_LEDGER_MAX = 2000;
+  function examAttemptId(examId, questionId) { return String(examId) + "::" + String(questionId); }
+  function buildExamEvidence(examId, questions, answers, at) {
+    return (questions || []).map(function (q) {
+      var sel = answers && answers[q.id];
+      var answered = Array.isArray(sel) && sel.length > 0;
+      return {
+        attemptId: examAttemptId(examId, q.id), examId: String(examId), questionId: q.id,
+        tsIds: (q.taskStatementIds || []).slice(), type: q.type,
+        answered: answered, correct: answered ? gradeQuestion(q, sel).correct : false,
+        at: at || new Date().toISOString()
+      };
+    });
+  }
+  function pruneLedger(ledger, max) {
+    var keys = Object.keys(ledger || {});
+    if (keys.length <= (max || TS_LEDGER_MAX)) return ledger;
+    keys.sort(function (a, b) { return String(ledger[a].at || "").localeCompare(String(ledger[b].at || "")); });
+    var out = {};
+    keys.slice(keys.length - (max || TS_LEDGER_MAX)).forEach(function (k) { out[k] = ledger[k]; });
+    return out;
+  }
+  // 同一 attemptId 只记一次；未作答不计入任何分母；一题多 TS 全部更新
+  function applyExamEvidence(tsStore, ledger, entries) {
+    var ts = Object.assign({}, tsStore || {});
+    var led = Object.assign({}, ledger || {});
+    var applied = 0, skipped = 0;
+    (entries || []).forEach(function (e) {
+      if (!e.answered || led[e.attemptId]) { skipped++; return; }
+      led[e.attemptId] = { examId: e.examId, questionId: e.questionId, correct: !!e.correct, at: e.at, tsIds: e.tsIds.slice(), type: e.type };
+      (e.tsIds || []).forEach(function (id) {
+        var rec = Object.assign({ manual: null, evidence: {} }, ts[id] || {});
+        var ev = Object.assign({ attempts: 0, correct: 0, questions: [], days: [], lastAt: null }, rec.evidence || {});
+        ev.attempts += 1;
+        if (e.correct) ev.correct += 1;
+        if (e.questionId && ev.questions.indexOf(e.questionId) === -1) ev.questions.push(e.questionId);
+        var day = String(e.at || "").slice(0, 10);
+        if (day && ev.days.indexOf(day) === -1) ev.days.push(day);
+        if (day) ev.lastAt = day;
+        ev.questions = ev.questions.slice(-50);
+        ev.days = ev.days.slice(-30);
+        rec.evidence = ev;
+        rec.updatedAt = new Date().toISOString();
+        ts[id] = rec;
+      });
+      applied++;
+    });
+    return { ts: ts, ledger: pruneLedger(led), applied: applied, skipped: skipped };
+  }
+
+  async function makeBackupV3(data, now) {
+    var b = await makeBackupV2(data, now);
+    b.version = 3;
+    return b;
+  }
+
   global.CCARF_CORE = {
     migrateV1: migrateV1, hashText: hashText, hashBytes: hashBytes, chunkText: chunkText,
     tokenize: tokenize, classify: classify, DOMAINS: DOMAINS, buildIndex: buildIndex,
@@ -3538,7 +3604,9 @@ body.is-remote .file-hit{opacity:.85}
     TS_MASTERY_RULE: TS_MASTERY_RULE, tsEvidenceStatus: tsEvidenceStatus, recordTsAttempt: recordTsAttempt,
     tsDisplayState: tsDisplayState, setTsManual: setTsManual,
     EXAM_WEIGHTS: EXAM_WEIGHTS, examBankFilter: examBankFilter, examAllocate: examAllocate, buildExam: buildExam,
-    gradeExam: gradeExam, examRemainingMs: examRemainingMs, formatDuration: formatDuration
+    gradeExam: gradeExam, examRemainingMs: examRemainingMs, formatDuration: formatDuration,
+    examAttemptId: examAttemptId, buildExamEvidence: buildExamEvidence, applyExamEvidence: applyExamEvidence,
+    makeBackupV3: makeBackupV3, pruneLedger: pruneLedger
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -5717,10 +5785,14 @@ body.is-remote .file-hit{opacity:.85}
       feynman: readJSON(TUTOR_KEY, null),
       time: readJSON("ccarf.time", null),
       ts: readJSON(TS_KEY, null),
+      tsLedger: readJSON(TS_LEDGER_KEY, null),
+      exam: readJSON(EXAM_KEY, null),
+      exams: readJSON(EXAM_HISTORY, null),
+      examDate: readJSON("ccarf.examDate", null),
       knowledge: { docs: docs, chunks: chunks },
       settings: C.safeSettings(readJSON("ccarf.ai", {}))
     };
-    return C.makeBackupV2(data, new Date().toISOString());
+    return C.makeBackupV3(data, new Date().toISOString());
   }
 
   async function exportBackup() {
@@ -5748,7 +5820,8 @@ body.is-remote .file-hit{opacity:.85}
     var oldDocs = null, oldChunks = null;
     var keys = {
       units: "ccarf.units", notes: "ccarf.notes", accept: "ccarf.accept", chat: "ccarf.chat",
-      cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, time: "ccarf.time", ts: TS_KEY, ai: "ccarf.ai"
+      cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, time: "ccarf.time", ts: TS_KEY, tsLedger: TS_LEDGER_KEY,
+      exam: EXAM_KEY, exams: EXAM_HISTORY, examDate: "ccarf.examDate", ai: "ccarf.ai"
     };
     var oldLS = {};
     Object.keys(keys).forEach(function (k) { oldLS[k] = localStorage.getItem(keys[k]); });
@@ -5769,6 +5842,10 @@ body.is-remote .file-hit{opacity:.85}
       if (has("feynman")) writeJSON(keys.feynman, d.feynman || null);
       if (has("time")) writeJSON(keys.time, d.time || null);
       if (has("ts")) writeJSON(keys.ts, d.ts || null);
+      if (has("tsLedger")) writeJSON(keys.tsLedger, d.tsLedger || null);
+      if (has("exam")) writeJSON(keys.exam, d.exam || null);
+      if (has("exams")) writeJSON(keys.exams, d.exams || []);
+      if (has("examDate")) writeJSON(keys.examDate, d.examDate || null);
       if (has("settings")) {
         var cur = readJSON("ccarf.ai", {});
         writeJSON(keys.ai, Object.assign({}, cur, C.safeSettings(d.settings)));
@@ -5810,7 +5887,8 @@ body.is-remote .file-hit{opacity:.85}
             "<li>导出时间：" + esc(obj.exportedAt || "未知") + "</li>" +
             "<li>进度单元：" + v.summary.units + " · 笔记：" + v.summary.notes + " · 实作验收：" + v.summary.accept + "</li>" +
             "<li>聊天记录：" + v.summary.chat + " 条 · 费曼状态：" + (v.summary.feynman ? "有" : "无") + "</li>" +
-            "<li>知识库：" + v.summary.docs + " 份 / " + v.summary.chunks + " 段 · 错题：" + v.summary.cards + "</li></ul>" +
+            "<li>知识库：" + v.summary.docs + " 份 / " + v.summary.chunks + " 段 · 错题：" + v.summary.cards + "</li>" +
+            "<li>进行中考试：" + (v.summary.inProgressExam ? "有" : "无") + " · 历史成绩：" + v.summary.exams + " 次 · 目标日期：" + esc(v.summary.examDate || "未设置") + "</li></ul>" +
             '<p class="hint">校验和只能帮助发现意外损坏，不能证明备份来自可信来源。</p>' +
             (v.ok ? '<p class="hint">校验通过。确认后会覆盖同名本地数据。</p>' : '<p class="bad">' + v.errors.map(esc).join("；") + "</p>");
         }
@@ -5984,24 +6062,46 @@ body.is-remote .file-hit{opacity:.85}
     tick();
     examTimer = setInterval(tick, 1000);
   }
+  var TS_LEDGER_KEY = "ccarf.tsLedger";
+  function loadLedger() { var v = readJSON(TS_LEDGER_KEY, {}); return v && typeof v === "object" ? v : {}; }
+  function writeBatch(pairs) {
+    var backups = {};
+    try {
+      pairs.forEach(function (p) {
+        backups[p[0]] = localStorage.getItem(p[0]);
+        localStorage.setItem(p[0], JSON.stringify(p[1]));
+      });
+    } catch (e) {
+      Object.keys(backups).forEach(function (k) {
+        try {
+          if (backups[k] === null) localStorage.removeItem(k);
+          else localStorage.setItem(k, backups[k]);
+        } catch (err) {}
+      });
+      throw e;
+    }
+  }
   function submitExam(auto) {
     if (!examState || examState.submitted) return;
+    var history = readJSON(EXAM_HISTORY, []);
+    if (history.some(function (h) { return h.examId === examState.id; })) {
+      try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
+      examState.submitted = true;
+      return;
+    }
     var unanswered = examState.questions.length - answeredCount();
     if (!auto && unanswered > 0 && !window.confirm("还有 " + unanswered + " 题未答，确认交卷？")) return;
     var report = C.gradeExam(examState.questions, examState.answers);
-    var before = readJSON(EXAM_HISTORY, []);
-    var prev = before.length ? before[before.length - 1] : null;
+    var prev = history.length ? history[history.length - 1] : null;
     var used = Math.min(examState.minutes * 60000, Date.now() - examState.startedAt);
-    examState.submitted = true;
-    try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
-    if (examTimer) clearInterval(examTimer);
-    var hist = before.concat([{ at: new Date().toISOString(), mode: examState.mode, total: report.total, correct: report.correct, pct: report.pct, byDomain: report.byDomain, byType: report.byType, unanswered: report.unanswered }]).slice(-10);
-    writeJSON(EXAM_HISTORY, hist);
-    // 错题进入错题本，并写入对应 Task Statement 证据
+    var at = new Date().toISOString();
+    var evidence = C.buildExamEvidence(examState.id, examState.questions, examState.answers, at);
+    var applied = C.applyExamEvidence(loadTS(), loadLedger(), evidence);
+
+    // 只有实际答错的题进入错题本；未作答不建卡
     var cards = loadCards();
-    report.wrong.forEach(function (w) {
-      // 未作答的题不进入错题本；只有实际答错才安排复习
-      if (!w.selected || !w.selected.length) return;
+    var wrongAnswered = report.wrong.filter(function (w) { return w.selected && w.selected.length; });
+    wrongAnswered.forEach(function (w) {
       var q = examState.questions.filter(function (x) { return x.id === w.id; })[0];
       if (!q) return;
       var id = C.cardId(q.question);
@@ -6012,12 +6112,32 @@ body.is-remote .file-hit{opacity:.85}
       };
       var n = C.srsNext(card, false, C.todayISO());
       Object.assign(card, { nextReview: n.next, level: n.level, reps: n.reps, lastReviewedAt: C.todayISO() });
-      card.attempts = (card.attempts || []).concat([{ at: new Date().toISOString(), selected: w.selected, correct: false }]).slice(-20);
+      card.attempts = (card.attempts || []).concat([{ at: at, selected: w.selected, correct: false }]).slice(-20);
       cards = C.upsertCard(cards, card);
-      recordTs(q.taskStatementIds, id, false);
     });
-    saveCards(cards);
+    var hist = history.concat([{
+      examId: examState.id, at: at, mode: examState.mode, total: report.total,
+      correct: report.correct, pct: report.pct, byDomain: report.byDomain, byType: report.byType,
+      unanswered: report.unanswered, evidenceApplied: applied.applied
+    }]).slice(-10);
+
+    try {
+      writeBatch([
+        [TS_KEY, applied.ts],
+        [TS_LEDGER_KEY, applied.ledger],
+        [CARDS_KEY, cards],
+        [EXAM_HISTORY, hist]
+      ]);
+    } catch (e) {
+      var notice = $("examNotice");
+      if (notice) notice.textContent = "交卷写入本地存储失败（" + e.message + "），本次未记账，考试仍保留，可重试。";
+      return;
+    }
+    examState.submitted = true;
+    try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
+    if (examTimer) clearInterval(examTimer);
     renderReview(); renderToday();
+
     $("examView").hidden = true;
     $("examSetup").hidden = false;
     $("examReport").hidden = false;
@@ -6025,7 +6145,6 @@ body.is-remote .file-hit{opacity:.85}
       var x = report.byDomain[d];
       return "<tr><td>" + d + "</td><td>" + x.correct + " / " + x.total + "</td><td>" + Math.round(x.correct / x.total * 100) + "%</td></tr>";
     }).join("");
-    var wrongAnswered = report.wrong.filter(function (w) { return w.selected && w.selected.length; });
     var weak = Object.keys(report.byTs).map(function (id) {
       var x = report.byTs[id];
       return { id: id, pct: x.correct / x.total, correct: x.correct, total: x.total };
@@ -6033,7 +6152,7 @@ body.is-remote .file-hit{opacity:.85}
     $("examReport").innerHTML = '<div class="exam-report"><h3>' + (auto ? "时间到，已自动交卷" : "交卷完成") + "</h3>" +
       '<div class="big">' + report.pct + '%</div><p class="hint">' + report.correct + " / " + report.total + " 题 · 未答 " + report.unanswered + " · 答错 " + wrongAnswered.length + " · 用时 " + C.formatDuration(used) + " · 模式：" + esc(examState.mode) + "</p>" +
       '<p class="hint">单选 ' + Math.round((report.byType.single.correct / (report.byType.single.total || 1)) * 100) + "% · 多选 " + Math.round((report.byType.multiple.correct / (report.byType.multiple.total || 1)) * 100) + "%" +
-      (prev ? " · 上次 " + prev.pct + "%" : "") + "</p>" +
+      (prev ? " · 上次 " + prev.pct + "%" : "") + " · TS 证据新增 " + applied.applied + " 条（未答不计）</p>" +
       "<table><thead><tr><th>领域</th><th>正确</th><th>正确率</th></tr></thead><tbody>" + doms + "</tbody></table>" +
       (weak.length ? "<p class=\"hint\">薄弱目标：" + weak.map(function (x) { return x.id + "（" + x.correct + "/" + x.total + "）"; }).join("、") + "</p>" : "") +
       (wrongAnswered.length ? "<details><summary>错题 " + wrongAnswered.length + " 道（含解析）</summary><ul>" + wrongAnswered.map(function (w) {
@@ -6045,7 +6164,12 @@ body.is-remote .file-hit{opacity:.85}
     loadBank().then(function (bank) {
       examBankInfo(bank);
       var saved = readJSON(EXAM_KEY, null);
-      if (saved && !saved.submitted && Array.isArray(saved.questions) && saved.questions.length) {
+      var hist = readJSON(EXAM_HISTORY, []);
+      if (saved && (saved.submitted || hist.some(function (h) { return h.examId === saved.id; }))) {
+        try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
+        saved = null;
+      }
+      if (saved && Array.isArray(saved.questions) && saved.questions.length) {
         examState = saved;
         if (examLeft() <= 0) { examState.submitted = false; submitExam(true); }
         else {
