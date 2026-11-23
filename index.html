@@ -238,6 +238,19 @@ a.tfile{display:inline-flex;align-items:center;max-width:100%;text-decoration:no
 a.tfile::after{content:"↗";font-family:var(--font-sans);margin-left:5px;font-size:12px;flex:none}
 a.tfile:hover,a.tfile:focus-visible{color:var(--brand-ink);background:var(--brand-soft);border-color:var(--brand);text-decoration:underline;text-underline-offset:2px}
 a.tfile:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+/* 中文 / EN 双语阅读：本地译文保存在 ccarf-kb，随学习数据备份导出 */
+.tfile-pair{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;max-width:100%;padding:4px 6px;border:1px solid var(--line-2);background:var(--surface-2);border-radius:5px}
+.tfile-title{font-family:var(--font-mono);font-size:11px;color:var(--ink-2);overflow-wrap:anywhere;max-width:100%}
+.tfile-pair .tfile{font-size:11px;font-weight:650;color:var(--brand-ink);background:var(--surface);text-decoration:none;border:1px solid var(--line-2);padding:4px 7px;line-height:1.4;cursor:pointer}
+.tfile-pair .tfile:hover,.tfile-pair .tfile:focus-visible{outline:2px solid var(--brand);outline-offset:1px;text-decoration:underline}
+.tfile-pair .tfile::after{content:none}
+.tfile-local{font-family:inherit;max-width:100%}
+.bilingual-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0;color:var(--ink-2);font-size:12px}
+.bilingual-reader{max-width:min(960px,94vw);max-height:90vh;width:90vw;padding:22px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 70px rgba(0,0,0,.22)}
+.bilingual-reader::backdrop{background:rgba(0,0,0,.6)}
+.bilingual-reader-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.bilingual-reader h3{font-size:17px;overflow-wrap:anywhere}
+.bilingual-reader-content{font-family:inherit;line-height:1.85;font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:68vh;overflow:auto;padding:12px;background:var(--bg);border-radius:6px}
 .tl-check{margin-left:auto;display:flex;align-items:center;gap:8px;cursor:pointer;
   font-size:12.5px;color:var(--ink-2);padding:4px;border-radius:var(--r);user-select:none}
 .tl-check:hover{color:var(--ink)}
@@ -1887,6 +1900,7 @@ body.is-remote .file-hit{opacity:.85}
       </div>
     </header>
 
+    <div class="bilingual-controls"><button id="bilingualImportButton" type="button" class="btn btn-quiet">导入本机双语译文包（JSON）</button><input id="bilingualImportFile" type="file" accept=".json,application/json" hidden><span id="bilingualImportStatus" role="status">中文链接优先使用官方译文；其他资料可导入个人译本。</span></div>
     <div class="dbars" id="dbars" aria-label="按考试领域统计的学习进度"></div>
 
     <div class="stats">
@@ -1911,7 +1925,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：通读考纲目录与五大领域标题，用笔记列出每个领域下的 Task Statement 编号</p>
-          <div class="tl-files"><a class="tfile" href="01_%E5%AE%98%E6%96%B9%E8%80%83%E7%BA%B2_%E5%BF%85%E8%AF%BB_%E6%9C%80%E4%BC%98%E5%85%88/00_CCAR-F_Exam_Guide_v1.1_%E5%AE%98%E6%96%B942%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf（新标签页）">00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf</a><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/00_%E5%BC%80%E5%A7%8B%E8%BF%99%E9%87%8C/01_%E8%80%83%E8%AF%95%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95_%E5%85%88%E8%AF%BB%E8%BF%99%E4%B8%AA.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_考试资料索引_先读这个.md（新标签页）">01_考试资料索引_先读这个.md</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf">00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf</span><button class="tfile tfile-local" data-bilingual-source="00_CCAR-F_Exam_Guide_v1.1_%E5%AE%98%E6%96%B942%E9%A1%B5.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="01_%E5%AE%98%E6%96%B9%E8%80%83%E7%BA%B2_%E5%BF%85%E8%AF%BB_%E6%9C%80%E4%BC%98%E5%85%88/00_CCAR-F_Exam_Guide_v1.1_%E5%AE%98%E6%96%B942%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="01_考试资料索引_先读这个.md">01_考试资料索引_先读这个.md</span><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/00_%E5%BC%80%E5%A7%8B%E8%BF%99%E9%87%8C/01_%E8%80%83%E8%AF%95%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95_%E5%85%88%E8%AF%BB%E8%BF%99%E4%B8%AA.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_考试资料索引_先读这个.md 中文原版">中文</a><button class="tfile tfile-local" data-bilingual-source="01_%E8%80%83%E8%AF%95%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95_%E5%85%88%E8%AF%BB%E8%BF%99%E4%B8%AA.md" data-bilingual-lang="en" type="button" aria-label="打开 01_考试资料索引_先读这个.md 的英文译本">EN（未导入）</button></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="1" aria-expanded="false" aria-controls="note-1">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1935,7 +1949,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Workflow 和 Agent 的分界线在哪？SDK 能做什么、不能做什么？</p>
-          <div class="tl-files"><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/01_D1_Building_Effective_Agents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_Building_Effective_Agents.pdf（新标签页）">01_D1_Building_Effective_Agents.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/02_D1_Claude_Agent_SDK_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf（新标签页）">02_D1_Claude_Agent_SDK_Overview.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="01_D1_Building_Effective_Agents.pdf">01_D1_Building_Effective_Agents.pdf</span><button class="tfile tfile-local" data-bilingual-source="01_D1_Building_Effective_Agents.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 01_D1_Building_Effective_Agents.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/01_D1_Building_Effective_Agents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_Building_Effective_Agents.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="02_D1_Claude_Agent_SDK_Overview.pdf">02_D1_Claude_Agent_SDK_Overview.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/agent-sdk/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/02_D1_Claude_Agent_SDK_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="2" aria-expanded="false" aria-controls="note-2">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1959,7 +1973,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：规则该写在 CLAUDE.md 还是代码里？MCP 的三角色分别解决什么？</p>
-          <div class="tl-files"><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D2_MCP官方介绍.pdf（新标签页）">03_D2_MCP官方介绍.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/04_D3_Memory%E4%B8%8ECLAUDE_md.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf（新标签页）">04_D3_Memory与CLAUDE_md.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf（新标签页）">05_D4_Anthropic_Prompting指南.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="03_D2_MCP官方介绍.pdf">03_D2_MCP官方介绍.pdf</span><button class="tfile tfile-local" data-bilingual-source="03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 03_D2_MCP官方介绍.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D2_MCP官方介绍.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="04_D3_Memory与CLAUDE_md.pdf">04_D3_Memory与CLAUDE_md.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/memory" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/04_D3_Memory%E4%B8%8ECLAUDE_md.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="05_D4_Anthropic_Prompting指南.pdf">05_D4_Anthropic_Prompting指南.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="3" aria-expanded="false" aria-controls="note-3">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1983,7 +1997,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：画出 coordinator → subagent → 汇总的消息流，标出哪里可能重复工作</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/01_D1_27pct_Multi-agent_Research_System.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_27pct_Multi-agent_Research_System.pdf（新标签页）">01_D1_27pct_Multi-agent_Research_System.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="01_D1_27pct_Multi-agent_Research_System.pdf">01_D1_27pct_Multi-agent_Research_System.pdf</span><button class="tfile tfile-local" data-bilingual-source="01_D1_27pct_Multi-agent_Research_System.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 01_D1_27pct_Multi-agent_Research_System.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/01_D1_27pct_Multi-agent_Research_System.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_27pct_Multi-agent_Research_System.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="4" aria-expanded="false" aria-controls="note-4">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2007,7 +2021,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：上下文隔离到底传什么、不传什么？失败时子代理怎么上报？</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/02_D1_27pct_Claude_Code_Subagents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_27pct_Claude_Code_Subagents.pdf（新标签页）">02_D1_27pct_Claude_Code_Subagents.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="02_D1_27pct_Claude_Code_Subagents.pdf">02_D1_27pct_Claude_Code_Subagents.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/sub-agents" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_27pct_Claude_Code_Subagents.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/02_D1_27pct_Claude_Code_Subagents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_27pct_Claude_Code_Subagents.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="5" aria-expanded="false" aria-controls="note-5">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2031,7 +2045,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Skills / Rules / Hooks 三者的职责边界，各举一个必须用的场景</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/03_D3_20pct_Claude_Code_Skills.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D3_20pct_Claude_Code_Skills.pdf（新标签页）">03_D3_20pct_Claude_Code_Skills.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="03_D3_20pct_Claude_Code_Skills.pdf">03_D3_20pct_Claude_Code_Skills.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/skills" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D3_20pct_Claude_Code_Skills.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/03_D3_20pct_Claude_Code_Skills.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D3_20pct_Claude_Code_Skills.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="6" aria-expanded="false" aria-controls="note-6">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2055,7 +2069,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Hooks 上半：有哪些执行点，每个点在什么时机触发</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf（新标签页）">04_D3_20pct_Claude_Code_Hooks.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="04_D3_20pct_Claude_Code_Hooks.pdf">04_D3_20pct_Claude_Code_Hooks.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/hooks" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="7" aria-expanded="false" aria-controls="note-7">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2079,7 +2093,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Hooks 下半 + 动手：写一个能拦截危险命令的 hook，验证退出码</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf（新标签页）">04_D3_20pct_Claude_Code_Hooks.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="04_D3_20pct_Claude_Code_Hooks.pdf">04_D3_20pct_Claude_Code_Hooks.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/hooks" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="8" aria-expanded="false" aria-controls="note-8">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2103,7 +2117,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：区分「JSON 合法」与「业务事实正确」，设计字段级错误回传</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/05_D4_20pct_Structured_Outputs.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_20pct_Structured_Outputs.pdf（新标签页）">05_D4_20pct_Structured_Outputs.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="05_D4_20pct_Structured_Outputs.pdf">05_D4_20pct_Structured_Outputs.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/build-with-claude/structured-outputs" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_20pct_Structured_Outputs.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/05_D4_20pct_Structured_Outputs.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_20pct_Structured_Outputs.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="9" aria-expanded="false" aria-controls="note-9">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2127,7 +2141,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：设计一个能抓出误报的评测集；说明什么时候该用批处理</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/06_D4_20pct_Develop_Evaluations.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 06_D4_20pct_Develop_Evaluations.pdf（新标签页）">06_D4_20pct_Develop_Evaluations.pdf</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/07_D4_20pct_Message_Batches_API.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 07_D4_20pct_Message_Batches_API.pdf（新标签页）">07_D4_20pct_Message_Batches_API.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="06_D4_20pct_Develop_Evaluations.pdf">06_D4_20pct_Develop_Evaluations.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/test-and-evaluate/develop-tests" target="_blank" rel="noopener noreferrer" aria-label="打开 06_D4_20pct_Develop_Evaluations.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/06_D4_20pct_Develop_Evaluations.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 06_D4_20pct_Develop_Evaluations.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="07_D4_20pct_Message_Batches_API.pdf">07_D4_20pct_Message_Batches_API.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/build-with-claude/batch-processing" target="_blank" rel="noopener noreferrer" aria-label="打开 07_D4_20pct_Message_Batches_API.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/07_D4_20pct_Message_Batches_API.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 07_D4_20pct_Message_Batches_API.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="10" aria-expanded="false" aria-controls="note-10">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2151,7 +2165,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：三种「没结果」的区别；两个相似工具怎样写描述避免误选</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/08_D2_18pct_Claude_Tool_Use_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 08_D2_18pct_Claude_Tool_Use_Overview.pdf（新标签页）">08_D2_18pct_Claude_Tool_Use_Overview.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="08_D2_18pct_Claude_Tool_Use_Overview.pdf">08_D2_18pct_Claude_Tool_Use_Overview.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/agents-and-tools/tool-use/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 08_D2_18pct_Claude_Tool_Use_Overview.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/08_D2_18pct_Claude_Tool_Use_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 08_D2_18pct_Claude_Tool_Use_Overview.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="11" aria-expanded="false" aria-controls="note-11">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2175,7 +2189,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：来源归属怎么记录；什么条件下必须转人工</p>
-          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/09_D5_15pct_Contextual_Retrieval.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 09_D5_15pct_Contextual_Retrieval.pdf（新标签页）">09_D5_15pct_Contextual_Retrieval.pdf</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/10_D5_15pct_Demystifying_Evals.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 10_D5_15pct_Demystifying_Evals.pdf（新标签页）">10_D5_15pct_Demystifying_Evals.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="09_D5_15pct_Contextual_Retrieval.pdf">09_D5_15pct_Contextual_Retrieval.pdf</span><button class="tfile tfile-local" data-bilingual-source="09_D5_15pct_Contextual_Retrieval.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 09_D5_15pct_Contextual_Retrieval.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/09_D5_15pct_Contextual_Retrieval.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 09_D5_15pct_Contextual_Retrieval.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="10_D5_15pct_Demystifying_Evals.pdf">10_D5_15pct_Demystifying_Evals.pdf</span><button class="tfile tfile-local" data-bilingual-source="10_D5_15pct_Demystifying_Evals.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 10_D5_15pct_Demystifying_Evals.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/10_D5_15pct_Demystifying_Evals.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 10_D5_15pct_Demystifying_Evals.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="12" aria-expanded="false" aria-controls="note-12">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2199,7 +2213,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：完成 Exercise 1 与 Exercise 3，留下可复现的失败案例</p>
-          <div class="tl-files"><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/02_%E5%9B%9B%E9%A1%B9%E5%AE%9E%E4%BD%9C%E4%BB%BB%E5%8A%A1.md" target="_blank" rel="noopener noreferrer" aria-label="打开 02_四项实作任务.md（新标签页）">02_四项实作任务.md</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="02_四项实作任务.md">02_四项实作任务.md</span><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/02_%E5%9B%9B%E9%A1%B9%E5%AE%9E%E4%BD%9C%E4%BB%BB%E5%8A%A1.md" target="_blank" rel="noopener noreferrer" aria-label="打开 02_四项实作任务.md 中文原版">中文</a><button class="tfile tfile-local" data-bilingual-source="02_%E5%9B%9B%E9%A1%B9%E5%AE%9E%E4%BD%9C%E4%BB%BB%E5%8A%A1.md" data-bilingual-lang="en" type="button" aria-label="打开 02_四项实作任务.md 的英文译本">EN（未导入）</button></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="13" aria-expanded="false" aria-controls="note-13">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2223,7 +2237,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：五道自测题全过一遍，答不上来的回 03 文件夹补</p>
-          <div class="tl-files"><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/02_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81FAQ.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_官方认证FAQ.pdf（新标签页）">02_官方认证FAQ.pdf</a><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/01_CCAR-F_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81%E4%B8%BB%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_CCAR-F_官方认证主页.pdf（新标签页）">01_CCAR-F_官方认证主页.pdf</a><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/01_%E4%BA%94%E5%A4%A7%E9%A2%86%E5%9F%9F%E5%AD%A6%E4%B9%A0%E5%8D%A1%E7%89%87.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_五大领域学习卡片.md（新标签页）">01_五大领域学习卡片.md</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="02_官方认证FAQ.pdf">02_官方认证FAQ.pdf</span><button class="tfile tfile-local" data-bilingual-source="02_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81FAQ.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 02_官方认证FAQ.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/02_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81FAQ.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_官方认证FAQ.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="01_CCAR-F_官方认证主页.pdf">01_CCAR-F_官方认证主页.pdf</span><button class="tfile tfile-local" data-bilingual-source="01_CCAR-F_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81%E4%B8%BB%E9%A1%B5.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 01_CCAR-F_官方认证主页.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/01_CCAR-F_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81%E4%B8%BB%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_CCAR-F_官方认证主页.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="01_五大领域学习卡片.md">01_五大领域学习卡片.md</span><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/01_%E4%BA%94%E5%A4%A7%E9%A2%86%E5%9F%9F%E5%AD%A6%E4%B9%A0%E5%8D%A1%E7%89%87.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_五大领域学习卡片.md 中文原版">中文</a><button class="tfile tfile-local" data-bilingual-source="01_%E4%BA%94%E5%A4%A7%E9%A2%86%E5%9F%9F%E5%AD%A6%E4%B9%A0%E5%8D%A1%E7%89%87.md" data-bilingual-lang="en" type="button" aria-label="打开 01_五大领域学习卡片.md 的英文译本">EN（未导入）</button></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="14" aria-expanded="false" aria-controls="note-14">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2247,7 +2261,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：补漏，或用费曼法把五领域各讲 3 分钟；有余力再碰深水区</p>
-          <div class="tl-files"><a class="tfile" href="04_%E9%AB%98%E9%9A%BE%E5%BA%A6_%E9%80%89%E8%AF%BB_%E6%B7%B1%E6%B0%B4%E5%8C%BA/01_D2_MCP_Python_SDK.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D2_MCP_Python_SDK.pdf（新标签页）">01_D2_MCP_Python_SDK.pdf</a></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="01_D2_MCP_Python_SDK.pdf">01_D2_MCP_Python_SDK.pdf</span><a class="tfile" href="https://py.sdk.modelcontextprotocol.io/zh/get-started/first-steps/" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D2_MCP_Python_SDK.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="04_%E9%AB%98%E9%9A%BE%E5%BA%A6_%E9%80%89%E8%AF%BB_%E6%B7%B1%E6%B0%B4%E5%8C%BA/01_D2_MCP_Python_SDK.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D2_MCP_Python_SDK.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="15" aria-expanded="false" aria-controls="note-15">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -5078,5 +5092,69 @@ body.is-remote .file-hit{opacity:.85}
 })();
 </script>
 
+<dialog class="bilingual-reader" id="bilingualReader" aria-labelledby="bilingualReaderTitle"><div class="bilingual-reader-top"><h3 id="bilingualReaderTitle">双语资料</h3><button id="bilingualReaderClose" type="button" class="btn btn-quiet">关闭</button></div><p class="hint">个人学习辅助译文，代码与重要条款应对照英文原版。</p><pre class="bilingual-reader-content" id="bilingualReaderBody"></pre></dialog>
+<script id="ccarf-bilingual">
+(function () {
+"use strict";
+var list = Array.from(document.querySelectorAll(".tfile-local"));
+var input = document.getElementById("bilingualImportFile");
+var button = document.getElementById("bilingualImportButton");
+var status = document.getElementById("bilingualImportStatus");
+var reader = document.getElementById("bilingualReader");
+var title = document.getElementById("bilingualReaderTitle");
+var body = document.getElementById("bilingualReaderBody");
+var dbPromise;
+function uid(source, lang) { return "bilingual:" + source + ":" + lang; }
+function database() {
+  if (!dbPromise) dbPromise = new Promise(function(resolve,reject) {
+    var r=indexedDB.open("ccarf-kb",1);
+    r.onsuccess=function(){resolve(r.result);};
+    r.onerror=function(){reject(r.error||new Error("知识库存储无法打开"));};
+    r.onupgradeneeded=function(){ var db=r.result;
+      if(!db.objectStoreNames.contains("docs"))db.createObjectStore("docs",{keyPath:"id"});
+      if(!db.objectStoreNames.contains("chunks")) { var c=db.createObjectStore("chunks",{keyPath:"id"}); c.createIndex("docId","docId",{unique:false}); }
+    };
+  }).catch(function(e){ dbPromise=null;throw e; });
+  return dbPromise;
+}
+function request(req) { return new Promise(function(resolve,reject){req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error)}}); }
+async function getAll(){var db=await database(); return request(db.transaction("docs","readonly").objectStore("docs").getAll());}
+function setStatus(msg){if(status)status.textContent=msg;}
+async function refresh(){try { var records=await getAll();var map=new Map(records.filter(function(d){return d.bilingualSource&&d.fullText}).map(function(d){return[d.id,d]}));
+  list.forEach(function(b){var source=decodeURIComponent(b.dataset.bilingualSource);var lang=b.dataset.bilingualLang;var found=map.has(uid(source,lang)); b.textContent=(lang==="en"?"EN":"中文")+(found?"":"（未导入）");b.dataset.bilingualReady=found?"true":"false";});
+ } catch(e){setStatus("无法读取本机译文："+e.message);} }
+async function sha256(t){if(!crypto||!crypto.subtle)throw new Error("需要安全的 HTTPS 环境");var bytes=new TextEncoder().encode(t);var d=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(d)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
+async function saveOne(item){var db=await database(), source=item.sourceName,lang=item.lang,id=uid(source,lang);var text=item.text;
+  var C=window.CCARF_CORE;var chunks=C&&C.chunkText?C.chunkText(text,1200,150):[{text:text}];var domains=/D[1-5]/.test(source)?Array.from(new Set(source.match(/D[1-5]/g))):((C&&C.classify)?C.classify(text).map(function(x){return x.domain}):[]);
+  return new Promise(function(resolve,reject){var tx=db.transaction(["docs","chunks"],"readwrite");var docs=tx.objectStore("docs"), st=tx.objectStore("chunks");
+    var r=st.index("docId").openCursor(IDBKeyRange.only(id));
+    r.onsuccess=function(){var cur=r.result;if(cur){cur.delete();cur.continue();}else{
+      docs.put({id:id,name:source.replace(/\.[^.]+$/,"")+"."+lang+".md",type:"md",size:new TextEncoder().encode(text).length,importedAt:new Date().toISOString(),domains:domains,status:"ready",error:"",chars:text.length,chunkCount:chunks.length,bilingualSource:source,bilingualLang:lang,fullText:text});
+      chunks.forEach(function(c,i){st.put({id:id+":"+i,docId:id,ord:i,text:c.text,domains:domains});});
+    }};
+    tx.oncomplete=function(){resolve()};tx.onerror=function(){reject(tx.error||new Error("存储失败"))};tx.onabort=function(){reject(tx.error||new Error("事务回滚"))};
+  });
+}
+async function loadBundle(file){if(!file||file.size>12*1024*1024)throw new Error("译文包必须是 12 MB 以下的 JSON 文件");var data=JSON.parse(await file.text());
+ if(data.schema!=="ccarf-bilingual-v1"||!Array.isArray(data.translations))throw new Error("不是 CCAR-F 双语译文包");
+ var allowed=new Set(list.map(function(b){return uid(decodeURIComponent(b.dataset.bilingualSource),b.dataset.bilingualLang)}));
+ var entries=data.translations.filter(function(d){return d&&allowed.has(uid(d.sourceName,d.lang))});
+ if(!entries.length)throw new Error("此包没有学习计划所需的对应译文");
+ if(entries.length>60)throw new Error("导入条目过多");
+ for(var i=0;i<entries.length;i++){var d=entries[i];if(typeof d.text!=="string"||d.text.length>2e6||d.text.length<10)throw new Error("译文内容不合法");
+ if(d.sha256&&await sha256(d.text)!==d.sha256)throw new Error("译文校验和不匹配："+d.sourceName);}
+ for(var j=0;j<entries.length;j++){setStatus("正在导入译文 "+(j+1)+"/"+entries.length);await saveOne(entries[j]);}
+ await refresh();setStatus("成功导入 "+entries.length+" 份译文；只存 Mac 浏览器本地，并随学习数据备份导出。");
+}
+if(button&&input){button.addEventListener("click",function(){input.click()});input.addEventListener("change",function(){var f=input.files&&input.files[0];if(!f)return;
+ loadBundle(f).catch(function(e){setStatus("译文包导入失败："+e.message)}).finally(function(){input.value=""}); });}
+list.forEach(function(b){b.addEventListener("click",async function(){try{var source=decodeURIComponent(b.dataset.bilingualSource),lang=b.dataset.bilingualLang,id=uid(source,lang);var docs=await getAll();var doc=docs.find(function(x){return x.id===id&&x.fullText});
+ if(!doc){setStatus("尚未导入："+source+" 的"+(lang==="en"?"英文":"中文")+"译本。请先选择本机译文 JSON 包。");if(input)input.click();return;}
+ title.textContent=doc.name;body.textContent=doc.fullText;reader.showModal();
+ }catch(e){setStatus("打开译文失败："+e.message)}});});
+var closer=document.getElementById("bilingualReaderClose");if(closer)closer.addEventListener("click",function(){reader.close()});
+refresh();
+})();
+</script>
 </body>
 </html>

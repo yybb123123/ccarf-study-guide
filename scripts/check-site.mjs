@@ -107,8 +107,14 @@ for (const [i, block] of planFileBlocks.entries()) {
     const href = attrs.match(/\bhref="([^"]+)"/)?.[1]
     if (!href) { fails.push(`学习计划文件缺少 href：${label}`); continue }
     const prefix = 'https://github.com/yybb123123/ccarf-study-guide/blob/main/'
+    const officialChinese = [
+      'https://code.claude.com/docs/zh-CN/',
+      'https://platform.claude.com/docs/zh-CN/',
+      'https://py.sdk.modelcontextprotocol.io/zh/'
+    ]
+    if (officialChinese.some((prefix) => href.startsWith(prefix))) continue
     if (!(href.startsWith(prefix) || !/^https?:/i.test(href))) {
-      fails.push(`学习计划资源指向非仓库地址：${href}`)
+      fails.push(`学习计划资源指向未核验的外部地址：${href}`)
       continue
     }
     const relative = href.startsWith(prefix) ? href.slice(prefix.length) : href
@@ -121,6 +127,10 @@ for (const [i, block] of planFileBlocks.entries()) {
 }
 if (planFileCount === 0) fails.push('学习计划中没有可点击资料链接')
 console.log(`  plan: ${planFileBlocks.length} units, ${planFileCount} clickable file links`)
+
+const bilingualPairs = (html.match(/class="tfile-pair"/g) ?? []).length
+if (bilingualPairs !== 23) fails.push(`预期学习计划有 23 个中英双语资料入口，实际 ${bilingualPairs}`)
+if (!html.includes('id="bilingualReader"') || !html.includes('id="bilingualImportButton"')) fails.push('缺少本机双语译文阅读或导入入口')
 
 const NB = 'notebook.google.com/notebook/c0ddef5c-4758-48a2-bf13-671d108d5933'
 if (!html.includes(NB)) fails.push('缺少 NotebookLM 笔记本入口链接')
