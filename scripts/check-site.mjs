@@ -68,6 +68,32 @@ for (const h of local) {
 }
 if (missing.length) fails.push(`本地链接失效 ${missing.length} 个: ${missing.slice(0, 5).join(', ')}`)
 
+
+/* ---------- 数据一致性：防止「天数/单元」「计划时长」「考纲页数」再次漂移 ---------- */
+const hrs = [...html.matchAll(/data-hrs="([0-9.]+)"/g)].map((m) => Number(m[1]))
+const totalHrs = hrs.reduce((a, b) => a + b, 0)
+const unitCount = (html.match(/class="tl-item"/g) ?? []).length
+
+if (unitCount === 0) fails.push('未找到学习单元（.tl-item）')
+const declaredHours = html.match(/计划\s*([0-9.]+)(?![0-9])/)
+if (!declaredHours) fails.push('未找到「计划 N」小时描述')
+else if (Math.abs(Number(declaredHours[1]) - totalHrs) > 0.001)
+  fails.push(`计划小时 ${declaredHours[1]} 与 data-hrs 合计 ${totalHrs} 不一致`)
+
+for (const n of new Set([...html.matchAll(/(\d+)\s*个单元/g)].map((m) => Number(m[1])))) {
+  if (n !== unitCount) fails.push(`页面写 ${n} 个单元，实际 ${unitCount} 个 .tl-item`)
+}
+if (html.includes('14 天全部完成')) fails.push('仍存在「14 天全部完成」')
+if (!html.includes('42 页')) fails.push('缺少「42 页」考纲页数')
+if (/49\s*页/.test(html)) fails.push('残留「49 页」考纲页数')
+if (/26\.5/.test(html)) fails.push('残留旧的 26.5 小时')
+if (/20–25\s*小时/.test(html)) fails.push('残留「20–25 小时」范围描述')
+
+const NB = 'notebook.google.com/notebook/c0ddef5c-4758-48a2-bf13-671d108d5933'
+if (!html.includes(NB)) fails.push('缺少 NotebookLM 笔记本入口链接')
+
+console.log(`  data: units=${unitCount}, hours=${totalHrs}`)
+
 console.log(`check-site: ${file}`)
 const kb = (Buffer.byteLength(html) / 1024).toFixed(0)
 console.log(`  size: ${kb} KB, local links: ${local.length}, images: ${imgs.length}, inline scripts: ${inlineChecked}`)

@@ -658,7 +658,7 @@ body.is-remote .file-hit{opacity:.85}
       <a href="#domains">五大领域</a>
       <a href="#map">资料地图</a>
       <a href="#notebooklm">NotebookLM</a>
-      <a href="#plan">14 天计划</a>
+      <a href="#plan">学习计划</a>
       <a href="#daily">每日节奏</a>
       <a href="#coach">AI 导师</a>
       <a href="#practice">实作</a>
@@ -668,7 +668,7 @@ body.is-remote .file-hit{opacity:.85}
     <div class="topbar-actions">
       <div class="progress-chip" title="学习进度">
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3v9l5 3"/><circle cx="12" cy="12" r="9"/></svg>
-        <span id="progressText">0 / 15 天</span>
+        <span id="progressText">0 / 15 个单元</span>
       </div>
       <button class="icon-btn" id="settingsBtn" type="button" aria-label="设置 API 与同步">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
@@ -691,10 +691,10 @@ body.is-remote .file-hit{opacity:.85}
     <div class="hero-copy">
       <p class="eyebrow">Anthropic 认证 · 备考工作台</p>
       <h1>31 份官方文档<br>排成<em>两周</em>走完的路</h1>
-      <p class="lede">49 页考纲、167 页 Hooks、10 门需登录的课程页——资料不缺，缺的是顺序。
-      这台页面把三件事放在一起：<strong>考什么</strong>（权重）、<strong>读什么</strong>（资料地图）、<strong>今天做什么</strong>（14 天计划）。</p>
+      <p class="lede">42 页考纲、167 页 Hooks、10 门需登录的课程页——资料不缺，缺的是顺序。
+      这台页面把三件事放在一起：<strong>考什么</strong>（权重）、<strong>读什么</strong>（资料地图）、<strong>今天做什么</strong>（14 天 + D0 准备）。</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#plan">开始 14 天计划
+        <a class="btn btn-primary" href="#plan">开始 15 个单元
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn btn-ghost" href="#map">先看资料怎么分</a>
@@ -712,7 +712,7 @@ body.is-remote .file-hit{opacity:.85}
         </button>
       </div>
 
-      <p class="hero-hint">预计 20–25 小时 · 每天 60 分钟起 · 全部资料已在本文件夹离线可用</p>
+      <p class="hero-hint">计划 27.5 小时（15 个单元）· 每天 60 分钟起 · 全部资料已在本文件夹离线可用</p>
     </div>
 
     <div class="hero-panel" aria-label="考试关键事实">
@@ -1650,8 +1650,8 @@ body.is-remote .file-hit{opacity:.85}
   <div class="wrap">
     <header class="sec-head sec-head-row">
       <div>
-        <h2>14 天计划</h2>
-        <p>勾选勾上会自动保存在这台电脑上，关掉网页也不会丢。</p>
+        <h2>14 天计划 + D0 准备</h2>
+        <p>D0 为准备阶段，D1–D14 为正式学习；共 15 个单元，勾选即存本机。</p>
       </div>
       <div class="plan-tools">
         <div class="plan-progress" role="progressbar" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0" aria-label="已完成天数">
@@ -1665,9 +1665,9 @@ body.is-remote .file-hit{opacity:.85}
     <div class="dbars" id="dbars" aria-label="按考试领域统计的学习进度"></div>
 
     <div class="stats">
-      <div class="stat"><span class="stat-n" id="statDone">0</span><span class="stat-l">已完成天数</span></div>
-      <div class="stat"><span class="stat-n" id="statHours">0</span><span class="stat-l">已投入小时 / 计划 26.5</span></div>
-      <div class="stat"><span class="stat-n" id="statLeft">15</span><span class="stat-l">剩余天数</span></div>
+      <div class="stat"><span class="stat-n" id="statDone">0</span><span class="stat-l">已完成单元</span></div>
+      <div class="stat"><span class="stat-n" id="statHours">0</span><span class="stat-l">已投入小时 / 计划 27.5</span></div>
+      <div class="stat"><span class="stat-n" id="statLeft">15</span><span class="stat-l">剩余单元</span></div>
       <div class="stat"><span class="stat-n" id="statNotes">0</span><span class="stat-l">条学习笔记</span></div>
     </div>
 
@@ -2501,7 +2501,7 @@ body.is-remote .file-hit{opacity:.85}
     });
     var total = boxes.length;
 
-    if (textEl) textEl.textContent = n + " / " + total + " 天";
+    if (textEl) textEl.textContent = n + " / " + total + " 个单元";
     if (barEl) barEl.style.width = (total ? (n / total) * 100 : 0) + "%";
     if (barWrap) {
       barWrap.setAttribute("aria-valuenow", String(n));
@@ -2520,7 +2520,7 @@ body.is-remote .file-hit{opacity:.85}
     if (resumeEl && resumeText && resumeStat) {
       if (n >= total) {
         resumeEl.hidden = false;
-        resumeText.textContent = "15 天全部完成 · 现在只需要过一遍五道自测题";
+        resumeText.textContent = "15 个单元全部完成 · 现在只需要过一遍五道自测题";
         resumeStat.textContent = "累计投入 " + (Math.round(hours * 10) / 10) + " 小时";
         nextTarget = null;
         if (resumeGo) resumeGo.textContent = "去看自测";
@@ -2914,11 +2914,30 @@ body.is-remote .file-hit{opacity:.85}
     return {
       units: boxes.map(function (b, i) { return b.checked ? String(i + 1) : null; }).filter(Boolean),
       accept: accs.filter(function (b) { return b.checked; }).map(function (b) { return b.getAttribute("data-acc"); }),
-      notes: notes,
-      updatedAt: new Date().toISOString()
+      notes: notes
     };
   }
+  // 内容指纹：只有真正变化才推进版本与时间（读取不再产生新时间）
+  function snapshotVersion() {
+    var s0 = snapshot();
+    var raw = JSON.stringify({
+      u: (s0.units || []).slice().sort(),
+      a: (s0.accept || []).slice().sort(),
+      n: s0.notes || {}
+    });
+    var h = 5381;
+    for (var i = 0; i < raw.length; i++) h = ((h << 5) + h + raw.charCodeAt(i)) | 0;
+    return String(h >>> 0);
+  }
+  function touchVersion() {
+    var v = snapshotVersion();
+    if (store.get("ccarf.contentVersion", "") !== v) {
+      store.set("ccarf.contentVersion", v);
+      store.set("ccarf.updatedAt", new Date().toISOString());
+    }
+  }
   function emit() {
+    touchVersion();
     window.dispatchEvent(new CustomEvent("ccarf:progress", { detail: snapshot() }));
   }
   function reloadFromStore() {
@@ -2947,6 +2966,8 @@ body.is-remote .file-hit{opacity:.85}
     snapshot: snapshot,
     reload: reloadFromStore,
     refresh: refresh,
+    version: snapshotVersion,
+    updatedAt: function () { return store.get("ccarf.updatedAt", ""); },
     applyProgress: function (p) {
       if (!p) return;
       if (Array.isArray(p.units)) store.set("ccarf.units", p.units);
@@ -3005,20 +3026,23 @@ body.is-remote .file-hit{opacity:.85}
   toastWrap.className = "toast-wrap";
   document.body.appendChild(toastWrap);
 
-  function toast(msg, actionLabel, onAction) {
+  function toast(msg, actionLabel, onAction, actionLabel2, onAction2) {
     var el = document.createElement("div");
     el.className = "toast";
     el.setAttribute("role", "status");
     var span = document.createElement("span");
     span.textContent = msg;
     el.appendChild(span);
-    if (actionLabel) {
+    function addBtn(label, cb) {
+      if (!label) return;
       var b = document.createElement("button");
       b.type = "button";
-      b.textContent = actionLabel;
-      b.addEventListener("click", function () { onAction(); el.remove(); });
+      b.textContent = label;
+      b.addEventListener("click", function () { cb(); el.remove(); });
       el.appendChild(b);
     }
+    addBtn(actionLabel, onAction);
+    addBtn(actionLabel2, onAction2);
     toastWrap.appendChild(el);
     setTimeout(function () { el.remove(); }, actionLabel ? 9000 : 3200);
   }
@@ -3182,10 +3206,14 @@ body.is-remote .file-hit{opacity:.85}
         } catch (e) {}
       }
 
+      cfg.verified = false;
+      persist();
       updateCoachState();
       setStatus("已保存", "ok");
       toast("设置已保存在这台电脑");
-      if (cfg.ghEnabled && ghToken()) syncPush();
+      if (cfg.ghEnabled && ghToken()) {
+        if (cfg.gistId) { await bootSync(); } else { syncPush(); }
+      }
       setTimeout(function () { if (dlg && dlg.open) dlg.close(); }, 600);
     });
   }
@@ -3220,6 +3248,7 @@ body.is-remote .file-hit{opacity:.85}
         });
         if (!res.ok) throw new Error(await errText(res));
         var data = await res.json();
+        cfg.lastError = ""; persist(); updateCoachState();
         return (data.content || []).map(function (b) { return b.text || ""; }).join("\n").trim();
       }
       var base = (cfg.baseUrl || "https://api.openai.com/v1").replace(/\/$/, "");
@@ -3233,9 +3262,11 @@ body.is-remote .file-hit{opacity:.85}
         })
       });
       if (!r2.ok) throw new Error(await errText(r2));
+      cfg.lastError = ""; persist(); updateCoachState();
       var d2 = await r2.json();
       return ((d2.choices || [])[0] || {}).message ? d2.choices[0].message.content.trim() : "";
     } catch (e) {
+      cfg.lastError = e.message; persist(); updateCoachState();
       if (e.name === "AbortError") throw new Error("请求超时（60 秒），稍后重试");
       if (e instanceof TypeError) throw new Error("网络不可达：可能是接口不支持浏览器跨域访问");
       throw e;
@@ -3284,7 +3315,7 @@ body.is-remote .file-hit{opacity:.85}
       ns.forEach(function (k) {
         var idx = parseInt(k, 10) - 1;
         var u = units[idx];
-        lines.push("- " + (u ? u.day + " " + u.title : "第 " + k + " 天") + "：" + notes[k].trim().slice(0, 160));
+        lines.push("- " + (u ? u.day + " " + u.title : "第 " + k + " 个单元") + "：" + notes[k].trim().slice(0, 160));
       });
     }
     return lines.join("\n");
@@ -3304,8 +3335,8 @@ body.is-remote .file-hit{opacity:.85}
     var p = window.CCARF ? window.CCARF.snapshot() : { notes: {} };
     var nNotes = Object.keys(p.notes || {}).filter(function (k) { return (p.notes[k] || "").trim(); }).length;
     var items = [
-      "已完成 " + done + " / " + units.length + " 天",
-      next ? "当前指向：" + next.day + " " + next.title : "14 天全部完成",
+      "已完成 " + done + " / " + units.length + " 个单元",
+      next ? "当前指向：" + next.day + " " + next.title : "15 个单元全部完成",
       nNotes + " 条学习笔记（最近 5 条会一起发给模型）",
       "五领域提纲与权重（本页内容）"
     ];
@@ -3454,7 +3485,7 @@ body.is-remote .file-hit{opacity:.85}
   function payload() {
     return {
       app: "ccarf-guide", version: 1,
-      updatedAt: new Date().toISOString(),
+      updatedAt: (window.CCARF && window.CCARF.updatedAt()) || "",
       progress: window.CCARF ? window.CCARF.snapshot() : {}
     };
   }
@@ -3465,6 +3496,25 @@ body.is-remote .file-hit{opacity:.85}
     if (syncing) return;
     syncing = true;
     setSync("同步中…", "busy");
+
+    // 防护：本地为空时不得覆盖非空云端
+    if (cfg.gistId) {
+      var remote = await syncPull(true);
+      if (remote && remote.progress) {
+        var lp = window.CCARF ? window.CCARF.snapshot() : { units: [], accept: [], notes: {} };
+        var localEmpty = !(lp.units || []).length && !(lp.accept || []).length && !Object.keys(lp.notes || {}).length;
+        var remoteEmpty = !(remote.progress.units || []).length && !Object.keys(remote.progress.notes || {}).length;
+        if (localEmpty && !remoteEmpty) {
+          syncing = false;
+          setSync("已阻止覆盖云端", "err");
+          toast("本地为空，未上传，避免覆盖云端进度", "载入云端", function () {
+            if (window.CCARF) window.CCARF.applyProgress(remote.progress);
+            toast("已载入云端进度");
+          });
+          return;
+        }
+      }
+    }
     try {
       var body = JSON.stringify({
         description: "CCARF 学习进度（自动同步）",
@@ -3518,6 +3568,14 @@ body.is-remote .file-hit{opacity:.85}
     }
   }
 
+  // 合并规则：单元/验收取并集；笔记按 key 合并，冲突时保留本地原文
+  function mergeProgress(local, remote) {
+    var units = Array.from(new Set([].concat(local.units || [], remote.units || []))).sort();
+    var accept = Array.from(new Set([].concat(local.accept || [], remote.accept || []))).sort();
+    var notes = Object.assign({}, remote.notes || {}, local.notes || {});
+    return { units: units, accept: accept, notes: notes };
+  }
+
   async function bootSync() {
     if (!cfg.ghEnabled || !ghToken() || !cfg.gistId) return;
     setSync("检查云端…", "busy");
@@ -3528,12 +3586,26 @@ body.is-remote .file-hit{opacity:.85}
     var remoteUnits = (remote.progress.units || []).length;
     if (localEmpty && remoteUnits > 0) {
       window.CCARF.applyProgress(remote.progress);
-      toast("已恢复云端进度（" + remoteUnits + " 天）");
-    } else if (remoteUnits > 0) {
-      toast("云端有另一份进度（" + remoteUnits + " 天）", "载入云端", function () {
-        window.CCARF.applyProgress(remote.progress);
-        toast("已载入云端进度");
-      });
+      toast("已恢复云端进度（" + remoteUnits + " 个单元）");
+      return;
+    }
+    if (remoteUnits > 0) {
+      var lp = window.CCARF ? window.CCARF.snapshot() : { units: [], accept: [], notes: {} };
+      var same = JSON.stringify((lp.units || []).slice().sort()) === JSON.stringify((remote.progress.units || []).slice().sort());
+      toast(
+        same ? "云端进度与本地一致" : "云端有另一份进度（" + remoteUnits + " 个单元）",
+        "载入云端",
+        function () {
+          window.CCARF.applyProgress(remote.progress);
+          toast("已载入云端进度");
+        },
+        same ? null : "合并",
+        function () {
+          if (window.CCARF) window.CCARF.applyProgress(mergeProgress(lp, remote.progress));
+          toast("已合并：单元取并集，笔记本地优先");
+          syncPush(true);
+        }
+      );
     }
   }
 
@@ -3541,11 +3613,18 @@ body.is-remote .file-hit{opacity:.85}
   function updateCoachState() {
     var el = $("coachState");
     if (!el) return;
-    if (apiKey()) {
-      el.textContent = (cfg.model || DEFAULT_MODEL[cfg.provider]) + " 已连接";
+    var model = cfg.model || DEFAULT_MODEL[cfg.provider];
+    if (!apiKey()) {
+      el.textContent = "未配置 API Key";
+      el.classList.remove("on");
+    } else if (cfg.lastError) {
+      el.textContent = "请求失败 · " + model;
+      el.classList.remove("on");
+    } else if (cfg.verified) {
+      el.textContent = model + " · 已验证";
       el.classList.add("on");
     } else {
-      el.textContent = "未配置 API Key";
+      el.textContent = model + " · 已保存未测试";
       el.classList.remove("on");
     }
     if (syncChip) {
@@ -3581,8 +3660,10 @@ body.is-remote .file-hit{opacity:.85}
       cfgStore.key = key; cfgStore.sessionKey = key;
       try {
         var out = await callModel([{ role: "user", content: "回复两个字：可用" }], "你是连通性测试，直接回答。");
+        cfg.verified = true; cfg.lastError = ""; persist(); updateCoachState();
         setStatus("连接正常：" + (out || "").slice(0, 20), "ok");
       } catch (e) {
+        cfg.verified = false; cfg.lastError = e.message; persist(); updateCoachState();
         setStatus("失败：" + e.message, "err");
       } finally {
         cfg.provider = old.p; cfg.model = old.m; cfg.baseUrl = old.b;
