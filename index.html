@@ -639,6 +639,40 @@ body.is-remote .file-hit{opacity:.85}
 
 /* 全局 hidden 兜底：避免 display:flex 覆盖 HTML hidden 属性 */
 [hidden]{display:none!important}
+
+/* ===== local studio ===== */
+#studio .studio-tabs{display:flex;gap:6px;flex-wrap:wrap}
+#studio .tab{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-3);
+  font:inherit;font-size:13px;padding:8px 14px;border-radius:999px;cursor:pointer;min-height:36px}
+#studio .tab:hover{color:var(--ink);border-color:var(--ink-3)}
+#studio .tab.is-on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+#studio .studio-panel{margin-top:26px}
+.kb-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.kb-search{display:grid;grid-template-columns:minmax(0,1fr) 150px 190px auto;gap:10px;margin:18px 0 14px}
+.kb-search input,.kb-search select,#studio .kb-table select{border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);border-radius:var(--r);padding:9px 11px;font:inherit;font-size:14px;min-height:40px}
+.kb-search input:focus,.kb-search select:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px var(--brand-soft)}
+.kb-results{display:grid;gap:10px;margin:8px 0 26px}
+.kb-hit{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 14px}
+.kb-hit h4{font-size:14px;margin-bottom:4px}
+.kb-hit .kb-src{font-size:11.5px;color:var(--ink-3);margin-bottom:6px}
+.kb-hit p{font-size:13.5px;color:var(--ink-2);line-height:1.65}
+.kb-hit mark{background:var(--brand-soft);color:var(--brand-ink);padding:0 2px;border-radius:2px}
+.kb-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.kb-table th{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.kb-table th,.kb-table td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+.kb-table td.kb-name{max-width:260px;word-break:break-word}
+.kb-chip{display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--surface-3);color:var(--ink-2);margin:1px 3px 1px 0}
+.kb-chip.d1{background:var(--d1-soft);color:var(--d1)} .kb-chip.d2{background:var(--d2-soft);color:var(--d2)}
+.kb-chip.d3{background:var(--d3-soft);color:var(--d3)} .kb-chip.d4{background:var(--d4-soft);color:var(--d4)}
+.kb-chip.d5{background:var(--d5-soft);color:var(--d5)}
+.kb-empty{font-size:13px;color:var(--ink-3);padding:18px 0}
+.kb-actions{display:flex;gap:6px;flex-wrap:wrap}
+.kb-actions button{font-size:12px;padding:4px 8px;border:1px solid var(--line);background:transparent;color:var(--ink-3);border-radius:3px;cursor:pointer}
+.kb-actions button:hover{color:var(--ink);border-color:var(--ink-3)}
+.kb-quota{font-size:11.5px;color:var(--amber);margin-top:8px}
+@media(max-width:820px){.kb-search{grid-template-columns:1fr 1fr}.kb-search input{grid-column:1/-1}}
+@media(max-width:560px){.kb-search{grid-template-columns:1fr}.kb-table thead{display:none}.kb-table tr{display:block;border-bottom:1px solid var(--line);padding:8px 0}.kb-table td{display:block;border:0;padding:3px 0}}
 </style>
 </head>
 <body>
@@ -658,6 +692,7 @@ body.is-remote .file-hit{opacity:.85}
       <a href="#domains">五大领域</a>
       <a href="#map">资料地图</a>
       <a href="#notebooklm">NotebookLM</a>
+      <a href="#studio">本地知识库</a>
       <a href="#plan">学习计划</a>
       <a href="#daily">每日节奏</a>
       <a href="#coach">AI 导师</a>
@@ -1643,6 +1678,61 @@ body.is-remote .file-hit{opacity:.85}
       </div>
     </div>
     <p class="nb-foot"><strong>连接范围：</strong>本页提供授权访问入口和资料索引，不会读取、复制或自动同步私人 NotebookLM 内容；本页 AI 导师也不会自动获得其来源。需使用有访问权限的 Google 账号打开笔记本。若要让 AI 导师基于 NotebookLM 的报告答题，须另行导入你选择导出的资料。</p>
+  </div>
+</section>
+
+
+<section class="band" id="studio">
+  <div class="wrap">
+    <header class="sec-head sec-head-row">
+      <div>
+        <h2>本地学习工作台</h2>
+        <p>资料只存在这台 Mac 的浏览器里：导入 → 检索 → 费曼问答 → 错题复习 → 备份。</p>
+      </div>
+      <div class="studio-tabs" role="tablist" aria-label="工作台">
+        <button class="tab is-on" type="button" role="tab" aria-selected="true" data-tab="today">今日</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="kb">知识库</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="tutor">导师</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="review">复习</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="data">数据</button>
+      </div>
+    </header>
+
+    <div class="studio-panel" data-panel="today">
+      <div id="todayCards" class="kb-results"></div>
+      <p class="hint">今日任务与待复习知识点会在 P3 阶段接入；当前先完成本地知识库。</p>
+    </div>
+
+    <div class="studio-panel" data-panel="kb" hidden>
+      <div class="kb-tools">
+        <button class="btn btn-primary" id="kbImportBtn" type="button">导入资料</button>
+        <input id="kbFiles" type="file" accept=".md,.txt,.pdf,text/markdown,text/plain,application/pdf" multiple hidden>
+        <span class="hint" id="kbStatus" role="status" aria-live="polite">尚未导入资料</span>
+      </div>
+      <p class="hint">支持 Markdown、TXT、可提取文本的 PDF；扫描件不做 OCR，会明确标为「无文本」。资料只写入本机 IndexedDB，不上传。</p>
+      <div class="kb-search">
+        <input id="kbQuery" type="search" placeholder="搜索中文 / English / 术语…" aria-label="检索知识库">
+        <select id="kbDomain" aria-label="按领域过滤"><option value="">全部领域</option></select>
+        <select id="kbDoc" aria-label="按资料过滤"><option value="">全部资料</option></select>
+        <button class="btn btn-quiet" id="kbSearchBtn" type="button">检索</button>
+      </div>
+      <div id="kbResults" class="kb-results"></div>
+      <table class="kb-table">
+        <thead><tr><th>资料</th><th>类型</th><th>领域</th><th>大小</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody id="kbRows"></tbody>
+      </table>
+      <p class="kb-quota" id="kbQuota" hidden></p>
+    </div>
+
+    <div class="studio-panel" data-panel="tutor" hidden>
+      <p class="hint">费曼导师（P2）将在这里读取知识库片段并引用来源，当前尚未接入。</p>
+    </div>
+    <div class="studio-panel" data-panel="review" hidden>
+      <p class="hint">错题与间隔复习（P3）将在这里，当前尚未接入。</p>
+    </div>
+    <div class="studio-panel" data-panel="data" hidden>
+      <p class="hint">完整备份与恢复（P4）将在这里，当前尚未接入。</p>
+    </div>
   </div>
 </section>
 
@@ -3823,5 +3913,373 @@ body.is-remote .file-hit{opacity:.85}
   renderCtx();
 })();
 </script>
+
+<script id="ccarf-studio">
+(function () {
+  "use strict";
+  var C = window.CCARF_CORE;
+  if (!C || !window.indexedDB) return;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var DB_NAME = "ccarf-kb", DB_VER = 1;
+  var MAX_TEXT = 5 * 1024 * 1024, MAX_PDF = 20 * 1024 * 1024;
+  var dbPromise = null;
+
+  function openDB() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise(function (res, rej) {
+      var r = indexedDB.open(DB_NAME, DB_VER);
+      r.onupgradeneeded = function () {
+        var db = r.result;
+        if (!db.objectStoreNames.contains("docs")) db.createObjectStore("docs", { keyPath: "id" });
+        if (!db.objectStoreNames.contains("chunks")) {
+          var st = db.createObjectStore("chunks", { keyPath: "id" });
+          st.createIndex("docId", "docId", { unique: false });
+        }
+      };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error || new Error("IndexedDB 打开失败")); };
+    });
+    return dbPromise;
+  }
+  function store(name, mode) {
+    return openDB().then(function (db) { return db.transaction(name, mode).objectStore(name); });
+  }
+  function req(r) {
+    return new Promise(function (res, rej) {
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error); };
+    });
+  }
+  function allDocs() { return store("docs", "readonly").then(function (s) { return req(s.getAll()); }); }
+  function allChunks() { return store("chunks", "readonly").then(function (s) { return req(s.getAll()); }); }
+  function getDoc(id) { return store("docs", "readonly").then(function (s) { return req(s.get(id)); }); }
+  function put(name, val) { return store(name, "readwrite").then(function (s) { return req(s.put(val)); }); }
+
+  function deleteDoc(id) {
+    return openDB().then(function (db) {
+      var tx = db.transaction(["docs", "chunks"], "readwrite");
+      tx.objectStore("docs").delete(id);
+      var cur = tx.objectStore("chunks").index("docId").openCursor(IDBKeyRange.only(id));
+      cur.onsuccess = function () {
+        var c = cur.result;
+        if (c) { c.delete(); c.continue(); }
+      };
+      return new Promise(function (res, rej) {
+        tx.oncomplete = function () { res(); };
+        tx.onerror = function () { rej(tx.error); };
+      });
+    });
+  }
+
+  function updateDomains(id, domains) {
+    return openDB().then(function (db) {
+      var tx = db.transaction(["docs", "chunks"], "readwrite");
+      var docs = tx.objectStore("docs");
+      var get = docs.get(id);
+      get.onsuccess = function () {
+        var d = get.result;
+        if (!d) return;
+        d.domains = domains;
+        docs.put(d);
+      };
+      var cur = tx.objectStore("chunks").index("docId").openCursor(IDBKeyRange.only(id));
+      cur.onsuccess = function () {
+        var c = cur.result;
+        if (c) { c.value.domains = domains; c.update(c.value); c.continue(); }
+      };
+      return new Promise(function (res, rej) {
+        tx.oncomplete = function () { res(); };
+        tx.onerror = function () { rej(tx.error); };
+      });
+    });
+  }
+
+  function fmtSize(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(0) + " KB";
+    return (n / 1048576).toFixed(1) + " MB";
+  }
+  function typeOf(name) {
+    var m = /\.([a-z0-9]+)$/i.exec(name || "");
+    var ext = m ? m[1].toLowerCase() : "";
+    if (ext === "md" || ext === "markdown") return "md";
+    if (ext === "txt") return "txt";
+    if (ext === "pdf") return "pdf";
+    return "";
+  }
+  function setStatus(msg, kind) {
+    var el = $("kbStatus");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = kind === "err" ? "var(--amber)" : "";
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function chip(d) {
+    var meta = C.DOMAINS.filter(function (x) { return x.id === d; })[0];
+    return '<span class="kb-chip ' + d.toLowerCase() + '" title="' + esc(meta ? meta.name : "") + '">' + esc(d) + "</span>";
+  }
+
+  async function quotaNote() {
+    var el = $("kbQuota");
+    if (!el || !navigator.storage || !navigator.storage.estimate) return;
+    try {
+      var est = await navigator.storage.estimate();
+      var pct = est.quota ? est.usage / est.quota : 0;
+      if (pct > 0.8) {
+        el.hidden = false;
+        el.textContent = "浏览器存储已用 " + Math.round(pct * 100) + "%（" + fmtSize(est.usage) + " / " + fmtSize(est.quota) + "）。建议先导出备份，再删除不再需要的大文件。";
+      } else {
+        el.hidden = true;
+      }
+    } catch (e) {}
+  }
+
+  function renderRows(docs) {
+    var body = $("kbRows");
+    if (!body) return;
+    body.innerHTML = "";
+    if (!docs.length) {
+      body.innerHTML = '<tr><td colspan="6" class="kb-empty">还没有资料。点「导入资料」选择 Markdown、TXT 或可提取文本的 PDF。</td></tr>';
+      return;
+    }
+    docs.forEach(function (d) {
+      var tr = document.createElement("tr");
+      var domains = (d.domains || []).map(chip).join("") || '<span class="hint">未分类</span>';
+      var status = d.status === "ready" ? (d.chunkCount + " 段") : (d.status === "no-text" ? "无文本" : "失败");
+      if (d.error) status += " · " + d.error;
+      tr.innerHTML =
+        '<td class="kb-name">' + esc(d.name) + "</td>" +
+        "<td>" + esc(d.type.toUpperCase()) + "</td>" +
+        '<td class="kb-domains">' + domains + "</td>" +
+        "<td>" + fmtSize(d.size) + "</td>" +
+        "<td>" + esc(status) + "</td>" +
+        '<td><div class="kb-actions">' +
+        '<button type="button" data-act="domains" data-id="' + esc(d.id) + '">分类</button>' +
+        '<button type="button" data-act="delete" data-id="' + esc(d.id) + '">删除</button>' +
+        "</div></td>";
+      body.appendChild(tr);
+    });
+  }
+
+  function fillDocFilter(docs) {
+    var sel = $("kbDoc");
+    if (!sel) return;
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">全部资料</option>';
+    docs.forEach(function (d) {
+      var o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.name;
+      sel.appendChild(o);
+    });
+    sel.value = cur;
+  }
+
+  function fillDomains() {
+    var sel = $("kbDomain");
+    if (!sel) return;
+    C.DOMAINS.forEach(function (d) {
+      var o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.id + " · " + d.zh;
+      sel.appendChild(o);
+    });
+  }
+
+  async function refresh() {
+    try {
+      var docs = (await allDocs()).sort(function (a, b) { return String(b.importedAt).localeCompare(String(a.importedAt)); });
+      renderRows(docs);
+      fillDocFilter(docs);
+      var chunks = (await allChunks()).length;
+      setStatus(docs.length ? docs.length + " 份资料 · " + chunks + " 个可检索片段" : "尚未导入资料");
+      quotaNote();
+    } catch (e) {
+      setStatus("读取本地资料失败：" + e.message, "err");
+    }
+  }
+
+  async function importOne(file) {
+    var type = typeOf(file.name);
+    if (!type) return { error: "不支持的类型（仅 md/txt/pdf）" };
+    var limit = type === "pdf" ? MAX_PDF : MAX_TEXT;
+    if (file.size > limit) return { error: "超过 " + fmtSize(limit) + " 上限" };
+    var buf = await file.arrayBuffer();
+    var hash = await C.hashBytes(buf);
+    if (await getDoc(hash)) return { duplicate: true, name: file.name };
+    var text = "", status = "ready", err = "";
+    try {
+      if (type === "pdf") {
+        var out = await C.extractPdfText(buf);
+        if (!out.hasText) { status = "no-text"; err = "未提取到文本（可能是扫描件，未做 OCR）"; }
+        else text = out.text;
+      } else {
+        text = new TextDecoder("utf-8", { fatal: false }).decode(buf);
+      }
+    } catch (e) {
+      status = "error";
+      err = e.message;
+    }
+    var domains = text ? C.classify(text).map(function (x) { return x.domain; }) : [];
+    var doc = {
+      id: hash, name: file.name, type: type, size: file.size, importedAt: new Date().toISOString(),
+      domains: domains, status: status, error: err, chars: text.length, chunkCount: 0
+    };
+    if (text) {
+      var chunks = C.chunkText(text, 1200, 150).map(function (c, i) {
+        return { id: hash + ":" + i, docId: hash, ord: i, text: c.text, domains: domains };
+      });
+      doc.chunkCount = chunks.length;
+      try {
+        for (var i = 0; i < chunks.length; i++) await put("chunks", chunks[i]);
+      } catch (e) {
+        await deleteDoc(hash).catch(function () {});
+        return { error: "写入本地存储失败：" + e.message };
+      }
+    }
+    await put("docs", doc);
+    return { doc: doc };
+  }
+
+  async function importFiles(files) {
+    if (!files || !files.length) return;
+    var ok = 0, dup = 0, bad = 0;
+    for (var i = 0; i < files.length; i++) {
+      setStatus("导入中 " + (i + 1) + " / " + files.length + "：" + files[i].name);
+      try {
+        var r = await importOne(files[i]);
+        if (r.error) { bad++; setStatus(files[i].name + "：" + r.error, "err"); }
+        else if (r.duplicate) { dup++; }
+        else { ok++; }
+      } catch (e) {
+        bad++;
+        setStatus(files[i].name + " 导入失败：" + e.message, "err");
+      }
+      await new Promise(function (res) { setTimeout(res, 0); });
+    }
+    await refresh();
+    setStatus("本次导入 " + ok + " 份" + (dup ? "，跳过重复 " + dup + " 份" : "") + (bad ? "，失败 " + bad + " 份" : ""));
+  }
+
+  function highlight(text, query) {
+    var safe = esc(text);
+    var terms = C.tokenize(query).filter(function (t) { return t.length > 1; }).slice(0, 8);
+    terms.forEach(function (t) {
+      var re = new RegExp("(" + t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+      safe = safe.replace(re, "<mark>$1</mark>");
+    });
+    return safe;
+  }
+
+  async function runSearch() {
+    var q = ($("kbQuery") || {}).value || "";
+    q = q.trim();
+    var box = $("kbResults");
+    if (!q) { if (box) box.innerHTML = ""; return; }
+    try {
+      var docs = await allDocs();
+      var byId = {};
+      docs.forEach(function (d) { byId[d.id] = d; });
+      var chunks = await allChunks();
+      var rows = chunks.map(function (c) {
+        var d = byId[c.docId] || {};
+        return { id: c.id, docId: c.docId, name: d.name || "(已删除)", domains: c.domains || [], text: c.text };
+      });
+      var idx = C.buildIndex(rows);
+      var hits = C.search(idx, q, { domain: ($("kbDomain") || {}).value || "", docId: ($("kbDoc") || {}).value || "", limit: 12 });
+      if (!box) return;
+      if (!hits.length) {
+        box.innerHTML = '<p class="kb-empty">没有找到匹配片段。换一个关键词，或检查是否已导入相关资料。</p>';
+        return;
+      }
+      box.innerHTML = hits.map(function (h) {
+        var d = byId[h.docId] || {};
+        var snip = C.snippet((rows.filter(function (r) { return r.id === h.id; })[0] || {}).text || "", q, 110);
+        return '<article class="kb-hit"><h4>' + esc(d.name || "") + "</h4>" +
+          '<div class="kb-src">' + (h.domains || []).map(function (x) { return esc(x); }).join(" · ") + " · 相关度 " + h.score.toFixed(1) + "</div>" +
+          "<p>" + highlight(snip, q) + "</p></article>";
+      }).join("");
+    } catch (e) {
+      if (box) box.innerHTML = '<p class="kb-empty">检索失败：' + esc(e.message) + "</p>";
+    }
+  }
+
+  function editDomains(doc) {
+    var chosen = {};
+    (doc.domains || []).forEach(function (d) { chosen[d] = true; });
+    var dlg = document.createElement("dialog");
+    dlg.className = "sheet";
+    dlg.innerHTML = '<form method="dialog" class="sheet-in"><header class="sheet-head"><h2>修正分类 · ' + esc(doc.name) + "</h2>" +
+      '<button class="icon-btn" type="submit" value="cancel" aria-label="关闭">×</button></header>' +
+      '<div class="sheet-body"><p class="hint" style="margin-bottom:12px">一份资料可以归入多个领域；自动分类只是初稿。</p>' +
+      C.DOMAINS.map(function (d) {
+        return '<label class="field-row" style="margin-bottom:8px"><input type="checkbox" value="' + d.id + '"' + (chosen[d.id] ? " checked" : "") + "> " + d.id + " · " + esc(d.name) + "（" + d.weight + "%）</label>";
+      }).join("") +
+      '</div><footer class="sheet-foot"><button class="btn btn-quiet" type="submit" value="cancel">取消</button>' +
+      '<button class="btn btn-primary" type="submit" value="save">保存</button></footer></form>';
+    document.body.appendChild(dlg);
+    dlg.addEventListener("close", function () {
+      if (dlg.returnValue === "save") {
+        var picked = Array.prototype.slice.call(dlg.querySelectorAll('input[type="checkbox"]:checked')).map(function (i) { return i.value; });
+        updateDomains(doc.id, picked).then(refresh).catch(function (e) { setStatus("保存分类失败：" + e.message, "err"); });
+      }
+      dlg.remove();
+    });
+    dlg.showModal();
+  }
+
+  function wire() {
+    var tabs = document.querySelectorAll("#studio .tab");
+    Array.prototype.forEach.call(tabs, function (t) {
+      t.addEventListener("click", function () {
+        Array.prototype.forEach.call(tabs, function (x) {
+          var on = x === t;
+          x.classList.toggle("is-on", on);
+          x.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        Array.prototype.forEach.call(document.querySelectorAll("#studio .studio-panel"), function (p) {
+          p.hidden = p.getAttribute("data-panel") !== t.getAttribute("data-tab");
+        });
+      });
+    });
+
+    var btn = $("kbImportBtn"), input = $("kbFiles");
+    if (btn && input) {
+      btn.addEventListener("click", function () { input.click(); });
+      input.addEventListener("change", function () {
+        importFiles(input.files).finally(function () { input.value = ""; });
+      });
+    }
+    var sBtn = $("kbSearchBtn"), q = $("kbQuery");
+    if (sBtn) sBtn.addEventListener("click", runSearch);
+    if (q) q.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); runSearch(); } });
+
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest("#kbRows button[data-act]") : null;
+      if (!b) return;
+      var id = b.getAttribute("data-id");
+      if (b.getAttribute("data-act") === "delete") {
+        if (!window.confirm("删除这份资料及其全部可检索片段？此操作只影响本机，不可撤销。")) return;
+        deleteDoc(id).then(refresh).catch(function (err) { setStatus("删除失败：" + err.message, "err"); });
+      } else {
+        allDocs().then(function (docs) {
+          var d = docs.filter(function (x) { return x.id === id; })[0];
+          if (d) editDomains(d);
+        });
+      }
+    });
+  }
+
+  fillDomains();
+  wire();
+  refresh();
+})();
+</script>
+
 </body>
 </html>
