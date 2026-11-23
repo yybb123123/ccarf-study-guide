@@ -1,0 +1,327 @@
+{
+  "schema": 1,
+  "exam": "CCAR-F",
+  "guideVersion": "1.1",
+  "effective": "November 2026",
+  "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+  "sourceSha256": "d4b17b38f6e82efb6ffca39c7ae51eec47a3ab8efb3288d1a7c2b4c444323e01",
+  "extractedAt": "2026-11-23T03:32:30.298Z",
+  "extractionMethod": "PDFKit via osascript (macOS), page-preserving text; page numbers are PDF page indices",
+  "format": {
+    "items": 60,
+    "minutes": 120,
+    "itemFormat": "multiple-choice and multiple-response",
+    "scenariosShown": 4,
+    "scenariosTotal": 6,
+    "scaledMin": 100,
+    "scaledMax": 1000,
+    "scaledCut": 720
+  },
+  "domains": [
+    {
+      "id": "D1",
+      "name": "Agentic Architecture & Orchestration",
+      "weight": 27
+    },
+    {
+      "id": "D2",
+      "name": "Tool Design & MCP Integration",
+      "weight": 18
+    },
+    {
+      "id": "D3",
+      "name": "Claude Code Configuration & Workflows",
+      "weight": 20
+    },
+    {
+      "id": "D4",
+      "name": "Prompt Engineering & Structured Output",
+      "weight": 20
+    },
+    {
+      "id": "D5",
+      "name": "Context Management & Reliability",
+      "weight": 15
+    }
+  ],
+  "taskStatements": [
+    {
+      "id": "D1.1",
+      "domain": "D1",
+      "officialTitle": "Design and implement agentic loops for autonomous task execution",
+      "officialText": "Knowledge of:\nThe agentic loop lifecycle: sending requests to Claude, inspecting stop_reason (\"tool_use\" vs\n\"end_turn\"), executing requested tools, and returning results for the next iteration\nHow tool results are appended to conversation history so the model can reason about the next\naction\nThe distinction between model-driven decision-making (Claude reasons about which tool to call\nnext based on context) and pre-configured decision trees or tool sequences\nSkills in:\nImplementing agentic loop control flow that continues when stop_reason is \"tool_use\" and\nterminates when stop_reason is \"end_turn\"\nAdding tool results to conversation context between iterations so the model can incorporate new\ninformation into its reasoning\nAvoiding anti-patterns such as parsing natural language signals to determine loop termination,\nsetting arbitrary iteration caps as the primary stopping mechanism, or checking for assistant text\ncontent as a completion indicator",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 5
+    },
+    {
+      "id": "D1.2",
+      "domain": "D1",
+      "officialTitle": "Orchestrate multi-agent systems with coordinator-subagent patterns",
+      "officialText": "Knowledge of:\nHub-and-spoke architecture where a coordinator agent manages all inter-subagent\ncommunication, error handling, and information routing\nHow subagents operate with isolated context—they do not inherit the coordinator's conversation\nhistory automatically\n\nThe role of the coordinator in task decomposition, delegation, result aggregation, and deciding\nwhich subagents to invoke based on query complexity\nRisks of overly narrow task decomposition by the coordinator, leading to incomplete coverage of\nbroad research topics\nSkills in:\nDesigning coordinator agents that analyze query requirements and dynamically select which\nsubagents to invoke rather than always routing through the full pipeline\nPartitioning research scope across subagents to minimize duplication (e.g., assigning distinct\nsubtopics or source types to each agent)\nImplementing iterative refinement loops where the coordinator evaluates synthesis output for\ngaps, re-delegates to search and analysis subagents with targeted queries, and re-invokes\nsynthesis until coverage is sufficient\nRouting all subagent communication through the coordinator for observability, consistent error\nhandling, and controlled information flow",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 5
+    },
+    {
+      "id": "D1.3",
+      "domain": "D1",
+      "officialTitle": "Configure subagent invocation, context passing, and spawning",
+      "officialText": "Knowledge of:\nThe Task tool as the mechanism for spawning subagents, and the requirement that allowedTools\nmust include \"Task\" for a coordinator to invoke subagents\nThat subagent context must be explicitly provided in the prompt—subagents do not automatically\ninherit parent context or share memory between invocations\nThe AgentDefinition configuration including descriptions, system prompts, and tool restrictions for\neach subagent type\nFork-based session management for exploring divergent approaches from a shared analysis\nbaseline\nSkills in:\nIncluding complete findings from prior agents directly in the subagent's prompt (e.g., passing web\nsearch results and document analysis outputs to the synthesis subagent)\nUsing structured data formats to separate content from metadata (source URLs, document names,\npage numbers) when passing context between agents to preserve attribution\nSpawning parallel subagents by emitting multiple Task tool calls in a single coordinator response\nrather than across separate turns\n\nDesigning coordinator prompts that specify research goals and quality criteria rather than step-\nby-step procedural instructions, to enable subagent adaptability",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 6
+    },
+    {
+      "id": "D1.4",
+      "domain": "D1",
+      "officialTitle": "Implement multi-step workflows with enforcement and handoff patterns",
+      "officialText": "Knowledge of:\nThe difference between programmatic enforcement (hooks, prerequisite gates) and prompt-based\nguidance for workflow ordering\nWhen deterministic compliance is required (e.g., identity verification before financial operations),\nprompt instructions alone have a non-zero failure rate\nStructured handoff protocols for mid-process escalation that include customer details, root cause\nanalysis, and recommended actions\nSkills in:\nImplementing programmatic prerequisites that block downstream tool calls until prerequisite steps\nhave completed (e.g., blocking process_refund until get_customer has returned a verified\ncustomer ID)\nDecomposing multi-concern customer requests into distinct items, then investigating each in\nparallel using shared context before synthesizing a unified resolution\nCompiling structured handoff summaries (customer ID, root cause, refund amount, recommended\naction) when escalating to human agents who lack access to the conversation transcript",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 7
+    },
+    {
+      "id": "D1.5",
+      "domain": "D1",
+      "officialTitle": "Apply Agent SDK hooks for tool call interception and data normalization",
+      "officialText": "Knowledge of:\nHook patterns (e.g., PostToolUse) that intercept tool results for transformation before the model\nprocesses them\nHook patterns that intercept outgoing tool calls to enforce compliance rules (e.g., blocking\nrefunds above a threshold)\nThe distinction between using hooks for deterministic guarantees versus relying on prompt\ninstructions for probabilistic compliance\nSkills in:\nImplementing PostToolUse hooks to normalize heterogeneous data formats (Unix timestamps, ISO\n8601, numeric status codes) from different MCP tools before the agent processes them\n\nImplementing tool call interception hooks that block policy-violating actions (e.g., refunds\nexceeding $500) and redirect to alternative workflows (e.g., human escalation)\nChoosing hooks over prompt-based enforcement when business rules require guaranteed\ncompliance",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 7
+    },
+    {
+      "id": "D1.6",
+      "domain": "D1",
+      "officialTitle": "Design task decomposition strategies for complex workflows",
+      "officialText": "Knowledge of:\nWhen to use fixed sequential pipelines (prompt chaining) versus dynamic adaptive decomposition\nbased on intermediate findings\nPrompt chaining patterns that break reviews into sequential steps (e.g., analyze each file\nindividually, then run a cross-file integration pass)\nThe value of adaptive investigation plans that generate subtasks based on what is discovered at\neach step\nSkills in:\nSelecting task decomposition patterns appropriate to the workflow: prompt chaining for\npredictable multi-aspect reviews, dynamic decomposition for open-ended investigation tasks\nSplitting large code reviews into per-file local analysis passes plus a separate cross-file\nintegration pass to avoid attention dilution\nDecomposing open-ended tasks (e.g., \"add comprehensive tests to a legacy codebase\") by first\nmapping structure, identifying high-impact areas, then creating a prioritized plan that adapts as\ndependencies are discovered",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 8
+    },
+    {
+      "id": "D1.7",
+      "domain": "D1",
+      "officialTitle": "Manage session state, resumption, and forking",
+      "officialText": "Knowledge of:\nNamed session resumption using --resume <session-name> to continue a specific prior\nconversation\nfork_session for creating independent branches from a shared analysis baseline to explore\ndivergent approaches\nThe importance of informing the agent about changes to previously analyzed files when resuming\nsessions after code modifications\nWhy starting a new session with a structured summary is more reliable than resuming with stale\ntool results\nSkills in:\n\nUsing --resume with session names to continue named investigation sessions across work\nsessions\nUsing fork_session to create parallel exploration branches (e.g., comparing two testing strategies\nor refactoring approaches from a shared codebase analysis)\nChoosing between session resumption (when prior context is mostly valid) and starting fresh with\ninjected summaries (when prior tool results are stale)\nInforming a resumed session about specific file changes for targeted re-analysis rather than\nrequiring full re-exploration",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 8
+    },
+    {
+      "id": "D2.1",
+      "domain": "D2",
+      "officialTitle": "Design effective tool interfaces with clear descriptions and boundaries",
+      "officialText": "Knowledge of:\nTool descriptions as the primary mechanism LLMs use for tool selection; minimal descriptions\nlead to unreliable selection among similar tools\nThe importance of including input formats, example queries, edge cases, and boundary\nexplanations in tool descriptions\nHow ambiguous or overlapping tool descriptions cause misrouting (e.g., analyze_content vs\nanalyze_document with near-identical descriptions)\nThe impact of system prompt wording on tool selection: keyword-sensitive instructions can create\nunintended tool associations\nSkills in:\nWriting tool descriptions that clearly differentiate each tool's purpose, expected inputs, outputs,\nand when to use it versus similar alternatives\nRenaming tools and updating descriptions to eliminate functional overlap (e.g., renaming\nanalyze_content to extract_web_results with a web-specific description)\nSplitting generic tools into purpose-specific tools with defined input/output contracts (e.g.,\nsplitting a generic analyze_document into extract_data_points, summarize_content, and\nverify_claim_against_source)\nReviewing system prompts for keyword-sensitive instructions that might override well-written tool\ndescriptions",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 9
+    },
+    {
+      "id": "D2.2",
+      "domain": "D2",
+      "officialTitle": "Implement structured error responses for MCP tools",
+      "officialText": "Knowledge of:\nThe MCP isError flag pattern for communicating tool failures back to the agent\nThe distinction between transient errors (timeouts, service unavailability), validation errors (invalid\ninput), business errors (policy violations), and permission errors\nWhy uniform error responses (generic \"Operation failed\") prevent the agent from making\nappropriate recovery decisions\nThe difference between retryable and non-retryable errors, and how returning structured\nmetadata prevents wasted retry attempts\nSkills in:\nReturning structured error metadata including errorCategory (transient/validation/permission),\nisRetryable boolean, and human-readable descriptions\nIncluding retriable: false flags and customer-friendly explanations for business rule violations so\nthe agent can communicate appropriately\nImplementing local error recovery within subagents for transient failures, propagating to the\ncoordinator only errors that cannot be resolved locally along with partial results and what was\nattempted\nDistinguishing between access failures (needing retry decisions) and valid empty results\n(representing successful queries with no matches)",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 10
+    },
+    {
+      "id": "D2.3",
+      "domain": "D2",
+      "officialTitle": "Distribute tools appropriately across agents and configure tool choice",
+      "officialText": "Knowledge of:\nThe principle that giving an agent access to too many tools (e.g., 18 instead of 4-5) degrades tool\nselection reliability by increasing decision complexity\nWhy agents with tools outside their specialization tend to misuse them (e.g., a synthesis agent\nattempting web searches)\nScoped tool access: giving agents only the tools needed for their role, with limited cross-role tools\nfor specific high-frequency needs\ntool_choice configuration options: \"auto\", \"any\", and forced tool selection ({\"type\": \"tool\", \"name\":\n\"\n...\"})\nSkills in:\n\nRestricting each subagent's tool set to those relevant to its role, preventing cross-specialization\nmisuse\nReplacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document\nthat validates document URLs)\nProviding scoped cross-role tools for high-frequency needs (e.g., a verify_fact tool for the\nsynthesis agent) while routing complex cases through the coordinator\nUsing tool_choice forced selection to ensure a specific tool is called first (e.g., forcing\nextract_metadata before enrichment tools), then processing subsequent steps in follow-up turns\nSetting tool_choice: \"any\" to guarantee the model calls a tool rather than returning conversational\ntext",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 10
+    },
+    {
+      "id": "D2.4",
+      "domain": "D2",
+      "officialTitle": "Integrate MCP servers into Claude Code and agent workflows",
+      "officialText": "Knowledge of:\nMCP server scoping: project-level (.mcp.json) for shared team tooling vs user-level\n(~/.claude.json) for personal/experimental servers\nEnvironment variable expansion in .mcp.json (e.g., ${GITHUB_TOKEN}) for credential\nmanagement without committing secrets\nThat tools from all configured MCP servers are discovered at connection time and available\nsimultaneously to the agent\nMCP resources as a mechanism for exposing content catalogs (e.g., issue summaries,\ndocumentation hierarchies, database schemas) to reduce exploratory tool calls\nSkills in:\nConfiguring shared MCP servers in project-scoped .mcp.json with environment variable\nexpansion for authentication tokens\nConfiguring personal/experimental MCP servers in user-scoped ~/.claude.json\nEnhancing MCP tool descriptions to explain capabilities and outputs in detail, preventing the agent\nfrom preferring built-in tools (like Grep) over more capable MCP tools\nChoosing existing community MCP servers over custom implementations for standard integrations\n(e.g., Jira), reserving custom servers for team-specific workflows\nExposing content catalogs as MCP resources to give agents visibility into available data without\nrequiring exploratory tool calls",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 11
+    },
+    {
+      "id": "D2.5",
+      "domain": "D2",
+      "officialTitle": "Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively",
+      "officialText": "Knowledge of:\nGrep for content search (searching file contents for patterns like function names, error messages,\nor import statements)\nGlob for file path pattern matching (finding files by name or extension patterns)\nRead/Write for full file operations; Edit for targeted modifications using unique text matching\nWhen Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file\nmodifications\nSkills in:\nSelecting Grep for searching code content across a codebase (e.g., finding all callers of a\nfunction, locating error messages)\nSelecting Glob for finding files matching naming patterns (e.g., **/*.test.tsx)\nUsing Read to load full file contents followed by Write when Edit cannot find unique anchor text\nBuilding codebase understanding incrementally: starting with Grep to find entry points, then using\nRead to follow imports and trace flows, rather than reading all files upfront\nTracing function usage across wrapper modules by first identifying all exported names, then\nsearching for each name across the codebase",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 12
+    },
+    {
+      "id": "D3.1",
+      "domain": "D3",
+      "officialTitle": "Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular",
+      "officialText": "organization\nKnowledge of:\nThe CLAUDE.md configuration hierarchy: user-level (~/.claude/CLAUDE.md), project-level\n(.claude/CLAUDE.md or root CLAUDE.md), and directory-level (subdirectory CLAUDE.md files)\nThat user-level settings apply only to that user—instructions in ~/.claude/CLAUDE.md are not\nshared with teammates via version control\nThe @import syntax for referencing external files to keep CLAUDE.md modular (e.g., importing\nspecific standards files relevant to each package)\n.claude/rules/ directory for organizing topic-specific rule files as an alternative to a monolithic\nCLAUDE.md\nSkills in:\n\nDiagnosing configuration hierarchy issues (e.g., a new team member not receiving instructions\nbecause they're in user-level rather than project-level configuration)\nUsing @import to selectively include relevant standards files in each package's CLAUDE.md\nbased on maintainer domain knowledge\nSplitting large CLAUDE.md files into focused topic-specific files in .claude/rules/ (e.g., testing.md,\napi-conventions.md, deployment.md)\nUsing the /memory command to verify which memory files are loaded and diagnose inconsistent\nbehavior across sessions",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 12
+    },
+    {
+      "id": "D3.2",
+      "domain": "D3",
+      "officialTitle": "Create and configure custom slash commands and skills",
+      "officialText": "Knowledge of:\nProject-scoped commands in .claude/commands/ (shared via version control) vs user-scoped\ncommands in ~/.claude/commands/ (personal)\nSkills in .claude/skills/ with SKILL.md files that support frontmatter configuration including context:\nfork, allowed-tools, and argument-hint\nThe context: fork frontmatter option for running skills in an isolated sub-agent context, preventing\nskill outputs from polluting the main conversation\nPersonal skill customization: creating personal variants in ~/.claude/skills/ with different names to\navoid affecting teammates\nSkills in:\nCreating project-scoped slash commands in .claude/commands/ for team-wide availability via\nversion control\nUsing context: fork to isolate skills that produce verbose output (e.g., codebase analysis) or\nexploratory context (e.g., brainstorming alternatives) from the main session\nConfiguring allowed-tools in skill frontmatter to restrict tool access during skill execution (e.g.,\nlimiting to file write operations to prevent destructive actions)\nUsing argument-hint frontmatter to prompt developers for required parameters when they invoke\nthe skill without arguments\nChoosing between skills (on-demand invocation for task-specific workflows) and CLAUDE.md\n(always-loaded universal standards)",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 13
+    },
+    {
+      "id": "D3.3",
+      "domain": "D3",
+      "officialTitle": "Apply path-specific rules for conditional convention loading",
+      "officialText": "Knowledge of:\n\n.claude/rules/ files with YAML frontmatter paths fields containing glob patterns for conditional rule\nactivation\nHow path-scoped rules load only when editing matching files, reducing irrelevant context and\ntoken usage\nThe advantage of glob-pattern rules over directory-level CLAUDE.md files for conventions that\nspan multiple directories (e.g., test files spread throughout a codebase)\nSkills in:\nCreating .claude/rules/ files with YAML frontmatter path scoping (e.g., paths: [\"terraform/**/*\"])\nso rules load only when editing matching files\nUsing glob patterns in path-specific rules to apply conventions to files by type regardless of\ndirectory location (e.g., **/*.test.tsx for all test files)\nChoosing path-specific rules over subdirectory CLAUDE.md files when conventions must apply to\nfiles spread across the codebase",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 13
+    },
+    {
+      "id": "D3.4",
+      "domain": "D3",
+      "officialTitle": "Determine when to use plan mode vs direct execution",
+      "officialText": "Knowledge of:\nPlan mode is designed for complex tasks involving large-scale changes, multiple valid\napproaches, architectural decisions, and multi-file modifications\nDirect execution is appropriate for simple, well-scoped changes (e.g., adding a single validation\ncheck to one function)\nPlan mode enables safe codebase exploration and design before committing to changes,\npreventing costly rework\nThe Explore subagent for isolating verbose discovery output and returning summaries to preserve\nmain conversation context\nSkills in:\nSelecting plan mode for tasks with architectural implications (e.g., microservice restructuring,\nlibrary migrations affecting 45+ files, choosing between integration approaches with different\ninfrastructure requirements)\nSelecting direct execution for well-understood changes with clear scope (e.g., a single-file bug fix\nwith a clear stack trace, adding a date validation conditional)\nUsing the Explore subagent for verbose discovery phases to prevent context window exhaustion\nduring multi-phase tasks\n\nCombining plan mode for investigation with direct execution for implementation (e.g., planning a\nlibrary migration, then executing the planned approach)",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 14
+    },
+    {
+      "id": "D3.5",
+      "domain": "D3",
+      "officialTitle": "Apply iterative refinement techniques for progressive improvement",
+      "officialText": "Knowledge of:\nConcrete input/output examples as the most effective way to communicate expected\ntransformations when prose descriptions are interpreted inconsistently\nTest-driven iteration: writing test suites first, then iterating by sharing test failures to guide\nprogressive improvement\nThe interview pattern: having Claude ask questions to surface considerations the developer may\nnot have anticipated before implementing\nWhen to provide all issues in a single message (interacting problems) versus fixing them\nsequentially (independent problems)\nSkills in:\nProviding 2-3 concrete input/output examples to clarify transformation requirements when natural\nlanguage descriptions produce inconsistent results\nWriting test suites covering expected behavior, edge cases, and performance requirements before\nimplementation, then iterating by sharing test failures\nUsing the interview pattern to surface design considerations (e.g., cache invalidation strategies,\nfailure modes) before implementing solutions in unfamiliar domains\nProviding specific test cases with example input and expected output to fix edge case handling\n(e.g., null values in migration scripts)\nAddressing multiple interacting issues in a single detailed message when fixes interact, versus\nsequential iteration for independent issues",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 15
+    },
+    {
+      "id": "D3.6",
+      "domain": "D3",
+      "officialTitle": "Integrate Claude Code into CI/CD pipelines",
+      "officialText": "Knowledge of:\nThe -p (or --print) flag for running Claude Code in non-interactive mode in automated pipelines\n--output-format json and --json-schema CLI flags for enforcing structured output in CI contexts\nCLAUDE.md as the mechanism for providing project context (testing standards, fixture\nconventions, review criteria) to CI-invoked Claude Code\nSession context isolation: why the same Claude session that generated code is less effective at\nreviewing its own changes compared to an independent review instance\n\nSkills in:\nRunning Claude Code in CI with the -p flag to prevent interactive input hangs\nUsing --output-format json with --json-schema to produce machine-parseable structured findings\nfor automated posting as inline PR comments\nIncluding prior review findings in context when re-running reviews after new commits, instructing\nClaude to report only new or still-unaddressed issues to avoid duplicate comments\nProviding existing test files in context so test generation avoids suggesting duplicate scenarios\nalready covered by the test suite\nDocumenting testing standards, valuable test criteria, and available fixtures in CLAUDE.md to\nimprove test generation quality and reduce low-value test output",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 15
+    },
+    {
+      "id": "D4.1",
+      "domain": "D4",
+      "officialTitle": "Design prompts with explicit criteria to improve precision and reduce false",
+      "officialText": "positives\nKnowledge of:\nThe importance of explicit criteria over vague instructions (e.g., \"flag comments only when\nclaimed behavior contradicts actual code behavior\" vs \"check that comments are accurate\")\nHow general instructions like \"be conservative\" or \"only report high-confidence findings\" fail to\nimprove precision compared to specific categorical criteria\nThe impact of false positive rates on developer trust: high false positive categories undermine\nconfidence in accurate categories\nSkills in:\nWriting specific review criteria that define which issues to report (bugs, security) versus skip\n(minor style, local patterns) rather than relying on confidence-based filtering\nTemporarily disabling high false-positive categories to restore developer trust while improving\nprompts for those categories\nDefining explicit severity criteria with concrete code examples for each severity level to achieve\nconsistent classification",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 16
+    },
+    {
+      "id": "D4.2",
+      "domain": "D4",
+      "officialTitle": "Apply few-shot prompting to improve output consistency and quality",
+      "officialText": "Knowledge of:\n\nFew-shot examples as the most effective technique for achieving consistently formatted,\nactionable output when detailed instructions alone produce inconsistent results\nThe role of few-shot examples in demonstrating ambiguous-case handling (e.g., tool selection for\nambiguous requests, branch-level test coverage gaps)\nHow few-shot examples enable the model to generalize judgment to novel patterns rather than\nmatching only pre-specified cases\nThe effectiveness of few-shot examples for reducing hallucination in extraction tasks (e.g.,\nhandling informal measurements, varied document structures)\nSkills in:\nCreating 2-4 targeted few-shot examples for ambiguous scenarios that show reasoning for why\none action was chosen over plausible alternatives\nIncluding few-shot examples that demonstrate specific desired output format (location, issue,\nseverity, suggested fix) to achieve consistency\nProviding few-shot examples distinguishing acceptable code patterns from genuine issues to\nreduce false positives while enabling generalization\nUsing few-shot examples to demonstrate correct handling of varied document structures (inline\ncitations vs bibliographies, methodology sections vs embedded details)\nAdding few-shot examples showing correct extraction from documents with varied formats to\naddress empty/null extraction of required fields",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 16
+    },
+    {
+      "id": "D4.3",
+      "domain": "D4",
+      "officialTitle": "Enforce structured output using tool use and JSON schemas",
+      "officialText": "Knowledge of:\nTool use (tool_use) with JSON schemas as the most reliable approach for guaranteed schema-\ncompliant structured output, eliminating JSON syntax errors\nThe distinction between tool_choice: \"auto\" (model may return text instead of calling a tool), \"any\"\n(model must call a tool but can choose which), and forced tool selection (model must call a\nspecific named tool)\nThat strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors\n(e.g., line items that don't sum to total, values in wrong fields)\nSchema design considerations: required vs optional fields, enum fields with \"other\" + detail string\npatterns for extensible categories\nSkills in:\n\nDefining extraction tools with JSON schemas as input parameters and extracting structured data\nfrom the tool_use response\nSetting tool_choice: \"any\" to guarantee structured output when multiple extraction schemas exist\nand the document type is unknown\nForcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a\nparticular extraction runs before enrichment steps\nDesigning schema fields as optional (nullable) when source documents may not contain the\ninformation, preventing the model from fabricating values to satisfy required fields\nAdding enum values like \"unclear\" for ambiguous cases and \"other\" + detail fields for extensible\ncategorization\nIncluding format normalization rules in prompts alongside strict output schemas to handle\ninconsistent source formatting",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 17
+    },
+    {
+      "id": "D4.4",
+      "domain": "D4",
+      "officialTitle": "Implement validation, retry, and feedback loops for extraction quality",
+      "officialText": "Knowledge of:\nRetry-with-error-feedback: appending specific validation errors to the prompt on retry to guide\nthe model toward correction\nThe limits of retry: retries are ineffective when the required information is simply absent from the\nsource document (vs format or structural errors)\nFeedback loop design: tracking which code constructs trigger findings (detected_pattern field) to\nenable systematic analysis of dismissal patterns\nThe difference between semantic validation errors (values don't sum, wrong field placement) and\nschema syntax errors (eliminated by tool use)\nSkills in:\nImplementing follow-up requests that include the original document, the failed extraction, and\nspecific validation errors for model self-correction\nIdentifying when retries will be ineffective (e.g., information exists only in an external document\nnot provided) versus when they will succeed (format mismatches, structural output errors)\nAdding detected_pattern fields to structured findings to enable analysis of false positive patterns\nwhen developers dismiss findings\nDesigning self-correction validation flows: extracting \"calculated_total\" alongside \"stated_total\" to\nflag discrepancies, adding \"conflict_detected\" booleans for inconsistent source data",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 18
+    },
+    {
+      "id": "D4.5",
+      "domain": "D4",
+      "officialTitle": "Design efficient batch processing strategies",
+      "officialText": "Knowledge of:\nThe Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed\nlatency SLA\nBatch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports,\nweekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge\nchecks)\nThe batch API does not support multi-turn tool calling within a single request (cannot execute\ntools mid-request and return results)\ncustom_id fields for correlating batch request/response pairs\nSkills in:\nMatching API approach to workflow latency requirements: synchronous API for blocking pre-\nmerge checks, batch API for overnight/weekly analysis\nCalculating batch submission frequency based on SLA constraints (e.g., 4-hour windows to\nguarantee 30-hour SLA with 24-hour batch processing)\nHandling batch failures: resubmitting only failed documents (identified by custom_id) with\nappropriate modifications (e.g., chunking documents that exceeded context limits)\nUsing prompt refinement on a sample set before batch-processing large volumes to maximize\nfirst-pass success rates and reduce iterative resubmission costs",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 19
+    },
+    {
+      "id": "D4.6",
+      "domain": "D4",
+      "officialTitle": "Design multi-instance and multi-pass review architectures",
+      "officialText": "Knowledge of:\nSelf-review limitations: a model retains reasoning context from generation, making it less likely to\nquestion its own decisions in the same session\nIndependent review instances (without prior reasoning context) are more effective at catching\nsubtle issues than self-review instructions or extended thinking\nMulti-pass review: splitting large reviews into per-file local analysis passes plus cross-file\nintegration passes to avoid attention dilution and contradictory findings\nSkills in:\nUsing a second independent Claude instance to review generated code without the generator's\nreasoning context\n\nSplitting large multi-file reviews into focused per-file passes for local issues plus separate\nintegration passes for cross-file data flow analysis\nRunning verification passes where the model self-reports confidence alongside each finding to\nenable calibrated review routing",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 19
+    },
+    {
+      "id": "D5.1",
+      "domain": "D5",
+      "officialTitle": "Manage conversation context to preserve critical information across long",
+      "officialText": "interactions\nKnowledge of:\nProgressive summarization risks: condensing numerical values, percentages, dates, and\ncustomer-stated expectations into vague summaries\nThe \"lost in the middle\" effect: models reliably process information at the beginning and end of\nlong inputs but may omit findings from middle sections\nHow tool results accumulate in context and consume tokens disproportionately to their relevance\n(e.g., 40+ fields per order lookup when only 5 are relevant)\nThe importance of passing complete conversation history in subsequent API requests to maintain\nconversational coherence\nSkills in:\nExtracting transactional facts (amounts, dates, order numbers, statuses) into a persistent \"case\nfacts\" block included in each prompt, outside summarized history\nExtracting and persisting structured issue data (order IDs, amounts, statuses) into a separate\ncontext layer for multi-issue sessions\nTrimming verbose tool outputs to only relevant fields before they accumulate in context (e.g.,\nkeeping only return-relevant fields from order lookups)\nPlacing key findings summaries at the beginning of aggregated inputs and organizing detailed\nresults with explicit section headers to mitigate position effects\nRequiring subagents to include metadata (dates, source locations, methodological context) in\nstructured outputs to support accurate downstream synthesis\nModifying upstream agents to return structured data (key facts, citations, relevance scores)\ninstead of verbose content and reasoning chains when downstream agents have limited context\nbudgets",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 20
+    },
+    {
+      "id": "D5.2",
+      "domain": "D5",
+      "officialTitle": "Design effective escalation and ambiguity resolution patterns",
+      "officialText": "Knowledge of:\nAppropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just\ncomplex cases), and inability to make meaningful progress\nThe distinction between escalating immediately when a customer explicitly demands it versus\noffering to resolve when the issue is straightforward\nWhy sentiment-based escalation and self-reported confidence scores are unreliable proxies for\nactual case complexity\nHow multiple customer matches require clarification (requesting additional identifiers) rather than\nheuristic selection\nSkills in:\nAdding explicit escalation criteria with few-shot examples to the system prompt demonstrating\nwhen to escalate versus resolve autonomously\nHonoring explicit customer requests for human agents immediately without first attempting\ninvestigation\nAcknowledging frustration while offering resolution when the issue is within the agent's capability,\nescalating only if the customer reiterates their preference\nEscalating when policy is ambiguous or silent on the customer's specific request (e.g., competitor\nprice matching when policy only addresses own-site adjustments)\nInstructing the agent to ask for additional identifiers when tool results return multiple matches,\nrather than selecting based on heuristics",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 21
+    },
+    {
+      "id": "D5.3",
+      "domain": "D5",
+      "officialTitle": "Implement error propagation strategies across multi-agent systems",
+      "officialText": "Knowledge of:\nStructured error context (failure type, attempted query, partial results, alternative approaches) as\nenabling intelligent coordinator recovery decisions\nThe distinction between access failures (timeouts needing retry decisions) and valid empty results\n(successful queries with no matches)\nWhy generic error statuses (\"search unavailable\") hide valuable context from the coordinator\nWhy silently suppressing errors (returning empty results as success) or terminating entire\nworkflows on single failures are both anti-patterns\nSkills in:\n\nReturning structured error context including failure type, what was attempted, partial results, and\npotential alternatives to enable coordinator recovery\nDistinguishing access failures from valid empty results in error reporting so the coordinator can\nmake appropriate decisions\nHaving subagents implement local recovery for transient failures and only propagate errors they\ncannot resolve, including what was attempted and partial results\nStructuring synthesis output with coverage annotations indicating which findings are well-\nsupported versus which topic areas have gaps due to unavailable sources",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 21
+    },
+    {
+      "id": "D5.4",
+      "domain": "D5",
+      "officialTitle": "Manage context effectively in large codebase exploration",
+      "officialText": "Knowledge of:\nContext degradation in extended sessions: models start giving inconsistent answers and\nreferencing \"typical patterns\" rather than specific classes discovered earlier\nThe role of scratchpad files for persisting key findings across context boundaries\nSubagent delegation for isolating verbose exploration output while the main agent coordinates\nhigh-level understanding\nStructured state persistence for crash recovery: each agent exports state to a known location, and\nthe coordinator loads a manifest on resume\nSkills in:\nSpawning subagents to investigate specific questions (e.g., \"find all test files,\" \"trace refund flow\ndependencies\") while the main agent preserves high-level coordination\nHaving agents maintain scratchpad files recording key findings, referencing them for subsequent\nquestions to counteract context degradation\nSummarizing key findings from one exploration phase before spawning sub-agents for the next\nphase, injecting summaries into initial context\nDesigning crash recovery using structured agent state exports (manifests) that the coordinator\nloads on resume and injects into agent prompts\nUsing /compact to reduce context usage during extended exploration sessions when context fills\nwith verbose discovery output",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 22
+    },
+    {
+      "id": "D5.5",
+      "domain": "D5",
+      "officialTitle": "Design human review workflows and confidence calibration",
+      "officialText": "Knowledge of:\n\nThe risk that aggregate accuracy metrics (e.g., 97% overall) may mask poor performance on\nspecific document types or fields\nStratified random sampling for measuring error rates in high-confidence extractions and detecting\nnovel error patterns\nField-level confidence scores calibrated using labeled validation sets for routing review attention\nThe importance of validating accuracy by document type and field segment before automating\nhigh-confidence extractions\nSkills in:\nImplementing stratified random sampling of high-confidence extractions for ongoing error rate\nmeasurement and novel pattern detection\nAnalyzing accuracy by document type and field to verify consistent performance across all\nsegments before reducing human review\nHaving models output field-level confidence scores, then calibrating review thresholds using\nlabeled validation sets\nRouting extractions with low model confidence or ambiguous/contradictory source documents to\nhuman review, prioritizing limited reviewer capacity",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 22
+    },
+    {
+      "id": "D5.6",
+      "domain": "D5",
+      "officialTitle": "Preserve information provenance and handle uncertainty in multi-source",
+      "officialText": "synthesis\nKnowledge of:\nHow source attribution is lost during summarization steps when findings are compressed without\npreserving claim-source mappings\nThe importance of structured claim-source mappings that the synthesis agent must preserve and\nmerge when combining findings\nHow to handle conflicting statistics from credible sources: annotating conflicts with source\nattribution rather than arbitrarily selecting one value\nTemporal data: requiring publication/collection dates in structured outputs to prevent temporal\ndifferences from being misinterpreted as contradictions\nSkills in:\nRequiring subagents to output structured claim-source mappings (source URLs, document names,\nrelevant excerpts) that downstream agents preserve through synthesis\n\nStructuring reports with explicit sections distinguishing well-established findings from contested\nones, preserving original source characterizations and methodological context\nCompleting document analysis with conflicting values included and explicitly annotated, letting\nthe coordinator decide how to reconcile before passing to synthesis\nRequiring subagents to include publication or data collection dates in structured outputs to enable\ncorrect temporal interpretation\nRendering different content types appropriately in synthesis outputs—financial data as tables,\nnews as prose, technical findings as structured lists—rather than converting everything to a\nuniform format",
+      "sourceDocument": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "sourcePage": 23
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S1",
+      "title": "Customer Support Resolution Agent",
+      "officialText": "You are building a customer support resolution agent using the Claude Agent SDK. The agent handles\nhigh-ambiguity requests like returns, billing disputes, and account issues. It has access to your\nbackend systems through custom Model Context Protocol (MCP) tools (get_customer, lookup_order,\nprocess_refund, escalate_to_human). Your target is 80%+ first-contact resolution while knowing\nwhen to escalate.\nPrimary domains: Agentic Architecture & Orchestration, Tool Design & MCP Integration, Context\nManagement & Reliability",
+      "sourcePage": 3
+    },
+    {
+      "id": "S2",
+      "title": "Code Generation with Claude Code",
+      "officialText": "You are using Claude Code to accelerate software development. Your team uses it for code\ngeneration, refactoring, debugging, and documentation. You need to integrate it into your\ndevelopment workflow with custom slash commands, CLAUDE.md configurations, and understand\nwhen to use plan mode vs direct execution.\nPrimary domains: Claude Code Configuration & Workflows, Context Management & Reliability",
+      "sourcePage": 4
+    },
+    {
+      "id": "S3",
+      "title": "Multi-Agent Research System",
+      "officialText": "You are building a multi-agent research system using the Claude Agent SDK. A coordinator agent\ndelegates to specialized subagents: one searches the web, one analyzes documents, one\nsynthesizes findings, and one generates reports. The system researches topics and produces\ncomprehensive, cited reports.\nPrimary domains: Agentic Architecture & Orchestration, Tool Design & MCP Integration, Context\nManagement & Reliability",
+      "sourcePage": 4
+    },
+    {
+      "id": "S4",
+      "title": "Developer Productivity with Claude",
+      "officialText": "You are building developer productivity tools using the Claude Agent SDK. The agent helps engineers\nexplore unfamiliar codebases, understand legacy systems, generate boilerplate code, and automate\nrepetitive tasks. It uses the built-in tools (Read, Write, Bash, Grep, Glob) and integrates with Model\nContext Protocol (MCP) servers.\nPrimary domains: Tool Design & MCP Integration, Claude Code Configuration & Workflows, Agentic\nArchitecture & Orchestration",
+      "sourcePage": 4
+    },
+    {
+      "id": "S5",
+      "title": "Claude Code for Continuous Integration",
+      "officialText": "You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD)\npipeline. The system runs automated code reviews, generates test cases, and provides feedback on\npull requests. You need to design prompts that provide actionable feedback and minimize false\npositives.\nPrimary domains: Claude Code Configuration & Workflows, Prompt Engineering & Structured Output",
+      "sourcePage": 4
+    },
+    {
+      "id": "S6",
+      "title": "Structured Data Extraction",
+      "officialText": "You are building a structured data extraction system using Claude. The system extracts information\nfrom unstructured documents, validates the output using JavaScript Object Notation (JSON)\nschemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with\ndownstream systems.\n\nPrimary domains: Prompt Engineering & Structured Output, Context Management & Reliability",
+      "sourcePage": 4
+    }
+  ]
+}
