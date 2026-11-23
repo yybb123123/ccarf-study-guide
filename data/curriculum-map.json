@@ -1,0 +1,760 @@
+{
+  "schema": 1,
+  "source": "official Exam Guide v1.1 + repository file names",
+  "note": "单元映射为人工整理；资料按文件名中的领域前缀与目录归类，属于领域级映射，可人工修正。",
+  "units": [
+    {
+      "id": 1,
+      "day": "D0",
+      "title": "建立地图",
+      "taskStatementIds": []
+    },
+    {
+      "id": 2,
+      "day": "D1",
+      "title": "打地基 ①",
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2"
+      ]
+    },
+    {
+      "id": 3,
+      "day": "D2",
+      "title": "打地基 ②",
+      "taskStatementIds": [
+        "D2.1",
+        "D2.2"
+      ]
+    },
+    {
+      "id": 4,
+      "day": "D3",
+      "title": "D1 主攻 ①",
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3"
+      ]
+    },
+    {
+      "id": 5,
+      "day": "D4",
+      "title": "D1 主攻 ②",
+      "taskStatementIds": [
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7"
+      ]
+    },
+    {
+      "id": 6,
+      "day": "D5",
+      "title": "D3 主攻 ①",
+      "taskStatementIds": [
+        "D3.1",
+        "D3.2",
+        "D3.3"
+      ]
+    },
+    {
+      "id": 7,
+      "day": "D6",
+      "title": "D3 主攻 ②",
+      "taskStatementIds": [
+        "D3.4",
+        "D3.5"
+      ]
+    },
+    {
+      "id": 8,
+      "day": "D7",
+      "title": "D3 主攻 ③",
+      "taskStatementIds": [
+        "D3.6"
+      ]
+    },
+    {
+      "id": 9,
+      "day": "D8",
+      "title": "D4 主攻 ①",
+      "taskStatementIds": [
+        "D4.1",
+        "D4.2",
+        "D4.3"
+      ]
+    },
+    {
+      "id": 10,
+      "day": "D9",
+      "title": "D4 主攻 ②",
+      "taskStatementIds": [
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ]
+    },
+    {
+      "id": 11,
+      "day": "D10",
+      "title": "D2 主攻",
+      "taskStatementIds": [
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5"
+      ]
+    },
+    {
+      "id": 12,
+      "day": "D11",
+      "title": "D5 主攻",
+      "taskStatementIds": [
+        "D5.1",
+        "D5.2",
+        "D5.3",
+        "D5.4",
+        "D5.5",
+        "D5.6"
+      ]
+    },
+    {
+      "id": 13,
+      "day": "D12",
+      "title": "实作日",
+      "taskStatementIds": [
+        "D1.2",
+        "D2.3",
+        "D4.3",
+        "D5.1"
+      ]
+    },
+    {
+      "id": 14,
+      "day": "D13",
+      "title": "查漏",
+      "taskStatementIds": []
+    },
+    {
+      "id": 15,
+      "day": "D14",
+      "title": "机动",
+      "taskStatementIds": []
+    }
+  ],
+  "resources": [
+    {
+      "id": "R01",
+      "path": "00_开始这里/00_学习路线图_先读这个.md",
+      "name": "00_学习路线图_先读这个.md",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R02",
+      "path": "00_开始这里/01_考试资料索引_先读这个.md",
+      "name": "01_考试资料索引_先读这个.md",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R03",
+      "path": "00_开始这里/02_NotebookLM_费曼导师提示词.txt",
+      "name": "02_NotebookLM_费曼导师提示词.txt",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R04",
+      "path": "00_开始这里/03_所有来源链接.txt",
+      "name": "03_所有来源链接.txt",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R05",
+      "path": "00_开始这里/04_README_如何导入NotebookLM.txt",
+      "name": "04_README_如何导入NotebookLM.txt",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R06",
+      "path": "00_资料分类总表_先看这个.md",
+      "name": "00_资料分类总表_先看这个.md",
+      "domains": [],
+      "kind": "meta",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R07",
+      "path": "01_官方考纲_必读_最优先/00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "name": "00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf",
+      "domains": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ],
+      "kind": "official-guide",
+      "scope": "in-scope",
+      "evidenceLevel": 1,
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7",
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5",
+        "D3.1",
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5",
+        "D3.6",
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6",
+        "D5.1",
+        "D5.2",
+        "D5.3",
+        "D5.4",
+        "D5.5",
+        "D5.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R08",
+      "path": "02_低难度_必读_打地基/01_D1_Building_Effective_Agents.pdf",
+      "name": "01_D1_Building_Effective_Agents.pdf",
+      "domains": [
+        "D1"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R09",
+      "path": "02_低难度_必读_打地基/02_D1_Claude_Agent_SDK_Overview.pdf",
+      "name": "02_D1_Claude_Agent_SDK_Overview.pdf",
+      "domains": [
+        "D1"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R10",
+      "path": "02_低难度_必读_打地基/03_D2_MCP官方介绍.pdf",
+      "name": "03_D2_MCP官方介绍.pdf",
+      "domains": [
+        "D2"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R11",
+      "path": "02_低难度_必读_打地基/04_D3_Memory与CLAUDE_md.pdf",
+      "name": "04_D3_Memory与CLAUDE_md.pdf",
+      "domains": [
+        "D3"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D3.1",
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5",
+        "D3.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R12",
+      "path": "02_低难度_必读_打地基/05_D4_Anthropic_Prompting指南.pdf",
+      "name": "05_D4_Anthropic_Prompting指南.pdf",
+      "domains": [
+        "D4"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R13",
+      "path": "03_中高难度_必读_主攻/01_D1_27pct_Multi-agent_Research_System.pdf",
+      "name": "01_D1_27pct_Multi-agent_Research_System.pdf",
+      "domains": [
+        "D1"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R14",
+      "path": "03_中高难度_必读_主攻/02_D1_27pct_Claude_Code_Subagents.pdf",
+      "name": "02_D1_27pct_Claude_Code_Subagents.pdf",
+      "domains": [
+        "D1"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D1.1",
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6",
+        "D1.7"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R15",
+      "path": "03_中高难度_必读_主攻/03_D3_20pct_Claude_Code_Skills.pdf",
+      "name": "03_D3_20pct_Claude_Code_Skills.pdf",
+      "domains": [
+        "D3"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D3.1",
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5",
+        "D3.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R16",
+      "path": "03_中高难度_必读_主攻/04_D3_20pct_Claude_Code_Hooks.pdf",
+      "name": "04_D3_20pct_Claude_Code_Hooks.pdf",
+      "domains": [
+        "D3"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D3.1",
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5",
+        "D3.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R17",
+      "path": "03_中高难度_必读_主攻/05_D4_20pct_Structured_Outputs.pdf",
+      "name": "05_D4_20pct_Structured_Outputs.pdf",
+      "domains": [
+        "D4"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R18",
+      "path": "03_中高难度_必读_主攻/06_D4_20pct_Develop_Evaluations.pdf",
+      "name": "06_D4_20pct_Develop_Evaluations.pdf",
+      "domains": [
+        "D4"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R19",
+      "path": "03_中高难度_必读_主攻/07_D4_20pct_Message_Batches_API.pdf",
+      "name": "07_D4_20pct_Message_Batches_API.pdf",
+      "domains": [
+        "D4"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R20",
+      "path": "03_中高难度_必读_主攻/08_D2_18pct_Claude_Tool_Use_Overview.pdf",
+      "name": "08_D2_18pct_Claude_Tool_Use_Overview.pdf",
+      "domains": [
+        "D2"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R21",
+      "path": "03_中高难度_必读_主攻/09_D5_15pct_Contextual_Retrieval.pdf",
+      "name": "09_D5_15pct_Contextual_Retrieval.pdf",
+      "domains": [
+        "D5"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D5.1",
+        "D5.2",
+        "D5.3",
+        "D5.4",
+        "D5.5",
+        "D5.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R22",
+      "path": "03_中高难度_必读_主攻/10_D5_15pct_Demystifying_Evals.pdf",
+      "name": "10_D5_15pct_Demystifying_Evals.pdf",
+      "domains": [
+        "D5"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D5.1",
+        "D5.2",
+        "D5.3",
+        "D5.4",
+        "D5.5",
+        "D5.6"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R23",
+      "path": "04_高难度_选读_深水区/01_D2_MCP_Python_SDK.pdf",
+      "name": "01_D2_MCP_Python_SDK.pdf",
+      "domains": [
+        "D2"
+      ],
+      "kind": "official-tech",
+      "scope": "in-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5"
+      ],
+      "mapping": "domain"
+    },
+    {
+      "id": "R24",
+      "path": "04_高难度_选读_深水区/02_课程_Building_with_the_Claude_API.pdf",
+      "name": "02_课程_Building_with_the_Claude_API.pdf",
+      "domains": [],
+      "kind": "official-tech",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R25",
+      "path": "04_高难度_选读_深水区/03_课程_Claude_with_Amazon_Bedrock.pdf",
+      "name": "03_课程_Claude_with_Amazon_Bedrock.pdf",
+      "domains": [],
+      "kind": "official-tech",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R26",
+      "path": "04_高难度_选读_深水区/04_课程_Claude_on_Google_Cloud.pdf",
+      "name": "04_课程_Claude_on_Google_Cloud.pdf",
+      "domains": [],
+      "kind": "official-tech",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R27",
+      "path": "05_低优先_选读_课程与认证信息/01_CCAR-F_官方认证主页.pdf",
+      "name": "01_CCAR-F_官方认证主页.pdf",
+      "domains": [],
+      "kind": "cert-info",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R28",
+      "path": "05_低优先_选读_课程与认证信息/02_官方认证FAQ.pdf",
+      "name": "02_官方认证FAQ.pdf",
+      "domains": [],
+      "kind": "cert-info",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R29",
+      "path": "05_低优先_选读_课程与认证信息/03_专门认证备考课程目录.pdf",
+      "name": "03_专门认证备考课程目录.pdf",
+      "domains": [],
+      "kind": "cert-info",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R30",
+      "path": "05_低优先_选读_课程与认证信息/04_Anthropic_Academy课程总目录.pdf",
+      "name": "04_Anthropic_Academy课程总目录.pdf",
+      "domains": [],
+      "kind": "cert-info",
+      "scope": "related",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R31",
+      "path": "05_低优先_选读_课程与认证信息/05_课程_AI_Fluency.pdf",
+      "name": "05_课程_AI_Fluency.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R32",
+      "path": "05_低优先_选读_课程与认证信息/06_课程_Claude_101.pdf",
+      "name": "06_课程_Claude_101.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R33",
+      "path": "05_低优先_选读_课程与认证信息/07_课程_Claude_Code_101.pdf",
+      "name": "07_课程_Claude_Code_101.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R34",
+      "path": "05_低优先_选读_课程与认证信息/08_课程_Introduction_to_MCP.pdf",
+      "name": "08_课程_Introduction_to_MCP.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R35",
+      "path": "05_低优先_选读_课程与认证信息/09_课程_Claude_Code_in_Action.pdf",
+      "name": "09_课程_Claude_Code_in_Action.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R36",
+      "path": "05_低优先_选读_课程与认证信息/10_课程_Introduction_to_Agent_Skills.pdf",
+      "name": "10_课程_Introduction_to_Agent_Skills.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R37",
+      "path": "05_低优先_选读_课程与认证信息/11_课程_Introduction_to_Subagents.pdf",
+      "name": "11_课程_Introduction_to_Subagents.pdf",
+      "domains": [],
+      "kind": "course",
+      "scope": "out-of-scope",
+      "evidenceLevel": 2,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R38",
+      "path": "06_自测与实作_动手用/01_五大领域学习卡片.md",
+      "name": "01_五大领域学习卡片.md",
+      "domains": [],
+      "kind": "exercise",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    },
+    {
+      "id": "R39",
+      "path": "06_自测与实作_动手用/02_四项实作任务.md",
+      "name": "02_四项实作任务.md",
+      "domains": [],
+      "kind": "exercise",
+      "scope": "unverified",
+      "evidenceLevel": 4,
+      "taskStatementIds": [],
+      "mapping": "none"
+    }
+  ]
+}
