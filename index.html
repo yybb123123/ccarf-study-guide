@@ -788,6 +788,31 @@ body.is-remote .file-hit{opacity:.85}
 .scope-chip.related{background:var(--d4-soft);color:var(--d4)}
 .scope-chip.out-of-scope{background:var(--surface-3);color:var(--ink-3)}
 @media(max-width:900px){.ts-overview{grid-template-columns:repeat(2,1fr)}.ts-row{grid-template-columns:48px 1fr}.ts-row .ts-state{grid-column:2}.ts-detail .cols{grid-template-columns:1fr}}
+
+.scenario-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.scenario-card{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:14px 16px}
+.scenario-card h3{font-size:15px;margin-bottom:6px}
+.scenario-card .p{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-bottom:8px}
+.scenario-card .ops{display:flex;gap:6px;flex-wrap:wrap}
+.scenario-card .ops button{font-size:12px;padding:5px 9px;border:1px solid var(--line);background:var(--transparent,transparent);color:var(--ink-3);border-radius:3px;cursor:pointer}
+.exam-bank{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-bottom:12px}
+.exam-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.exam-actions select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r);padding:8px 10px;font:inherit;font-size:13px}
+.exam-top{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.exam-timer{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--amber)}
+.exam-q{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.exam-q h3{font-size:15px;line-height:1.6;margin-bottom:12px}
+.exam-q .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:var(--r);padding:9px 12px;font:inherit;font-size:13.5px;margin-bottom:7px;cursor:pointer}
+.exam-q .opt.is-sel{border-color:var(--brand);background:var(--brand-soft)}
+.exam-ops{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.exam-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
+.exam-nav button{min-height:36px;border:1px solid var(--line);background:var(--surface);color:var(--ink-3);border-radius:3px;font-size:12px;cursor:pointer}
+.exam-nav button.done{border-color:var(--brand-line);background:var(--brand-soft);color:var(--brand-ink)}
+.exam-nav button.marked{outline:2px solid var(--amber)}
+.exam-nav button.cur{border-color:var(--ink)}
+.exam-report table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.exam-report th,.exam-report td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+.exam-report .big{font-size:28px;font-weight:700}
 </style>
 </head>
 <body>
@@ -1809,6 +1834,8 @@ body.is-remote .file-hit{opacity:.85}
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="objectives">考纲目标</button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="kb">知识库</button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="tutor">导师</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="scenarios">情景</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="exam">考场</button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="review">复习</button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-tab="data">数据</button>
       </div>
@@ -1893,6 +1920,45 @@ body.is-remote .file-hit{opacity:.85}
         </aside>
       </div>
     </div>
+    <div class="studio-panel" data-panel="scenarios" hidden>
+      <p class="hint">六个官方情景，按 Exam Guide v1.1 的背景与主要领域整理；每个情景可练三个层级。</p>
+      <div id="scenarioList" class="scenario-list"></div>
+    </div>
+
+    <div class="studio-panel" data-panel="exam" hidden>
+      <div id="examSetup">
+        <div class="exam-bank" id="examBankInfo"></div>
+        <div class="exam-actions">
+          <button class="btn btn-primary" id="examStartFull" type="button">完整模拟（60 题 / 120 分钟）</button>
+          <button class="btn btn-quiet" id="examStartQuick" type="button">专项测验（现有题库）</button>
+          <select id="examDomain" aria-label="专项领域">
+            <option value="">全部领域</option>
+            <option value="D1">D1</option><option value="D2">D2</option><option value="D3">D3</option>
+            <option value="D4">D4</option><option value="D5">D5</option>
+          </select>
+        </div>
+        <p class="hint" id="examNotice"></p>
+        <p class="hint">完整模拟只在已验证题库 ≥60 且均有官方依据时开放；不完整测验不会被标记为正式模拟通过。720 分是官方评分规则说明，本站不预测官方分数。</p>
+      </div>
+
+      <div id="examView" hidden>
+        <div class="exam-top">
+          <span id="examTimer" class="exam-timer">--:--</span>
+          <span id="examProgress" class="hint"></span>
+          <button class="btn btn-quiet" id="examSubmit" type="button">交卷</button>
+        </div>
+        <article class="exam-q" id="examQuestion"></article>
+        <div class="exam-ops">
+          <button class="btn btn-quiet" id="examPrev" type="button">上一题</button>
+          <button class="btn btn-quiet" id="examMark" type="button">标记复查</button>
+          <button class="btn btn-primary" id="examNext" type="button">下一题</button>
+        </div>
+        <div class="exam-nav" id="examNav"></div>
+      </div>
+
+      <div id="examReport" hidden></div>
+    </div>
+
     <div class="studio-panel" data-panel="review" hidden>
       <div class="review-grid">
         <section class="review-col">
@@ -1915,6 +1981,12 @@ body.is-remote .file-hit{opacity:.85}
               <option value="unit">当前学习单元</option>
             </select>
             <input id="practiceTopic" type="text" placeholder="知识点（选「按知识点」时填）">
+            <select id="practiceLevel" aria-label="练习层级">
+              <option value="">默认难度</option>
+              <option value="1">Level 1 · 基本理解</option>
+              <option value="2">Level 2 · 架构决策</option>
+              <option value="3">Level 3 · 条件变化</option>
+            </select>
             <button class="btn btn-primary" id="practiceGen" type="button">生成 2 题</button>
           </div>
           <div id="practiceBox" class="practice-box"></div>
@@ -3342,6 +3414,101 @@ body.is-remote .file-hit{opacity:.85}
     return out;
   }
 
+
+  /* ---------------- P2: 组卷、计时与成绩 ---------------- */
+  var EXAM_WEIGHTS = { D1: 27, D2: 18, D3: 20, D4: 20, D5: 15 };
+  function examBankFilter(bank, opts) {
+    var o = opts || {};
+    return (bank || []).filter(function (q) {
+      if (!q || q.verified !== true) return false;
+      if (q.type !== "single" && q.type !== "multiple") return false;
+      if (!Array.isArray(q.options) || q.options.length !== 4) return false;
+      if (!Array.isArray(q.correctAnswers) || !q.correctAnswers.length) return false;
+      if (q.correctAnswers.some(function (i) { return i < 0 || i >= 4; })) return false;
+      if (q.type === "single" && q.correctAnswers.length !== 1) return false;
+      if (q.type === "multiple" && q.correctAnswers.length < 2) return false;
+      if (o.domain && q.domain !== o.domain) return false;
+      if (o.scenarioId && q.scenarioId !== o.scenarioId) return false;
+      if (o.formal && q.evidence !== "official") return false;
+      return true;
+    });
+  }
+  function examAllocate(available, size) {
+    var domains = Object.keys(EXAM_WEIGHTS);
+    var totalWeight = domains.reduce(function (n, d) { return n + EXAM_WEIGHTS[d]; }, 0);
+    var out = {}, assigned = 0, remainders = [];
+    domains.forEach(function (d) {
+      var exact = size * EXAM_WEIGHTS[d] / totalWeight;
+      var base = Math.floor(exact);
+      out[d] = Math.min(base, available[d] || 0);
+      assigned += out[d];
+      remainders.push({ d: d, frac: exact - base, spare: (available[d] || 0) - out[d] });
+    });
+    var left = size - assigned;
+    remainders.sort(function (a, b) { return b.frac - a.frac; });
+    while (left > 0) {
+      var progressed = false;
+      for (var i = 0; i < remainders.length && left > 0; i++) {
+        var r = remainders[i];
+        if ((out[r.d] || 0) < (available[r.d] || 0)) { out[r.d]++; left--; progressed = true; }
+      }
+      if (!progressed) break;
+    }
+    return left === 0 ? out : null;
+  }
+  function buildExam(bank, opts) {
+    var o = opts || {};
+    var size = o.size || 60;
+    var pool = examBankFilter(bank, o);
+    var available = {};
+    pool.forEach(function (q) { available[q.domain] = (available[q.domain] || 0) + 1; });
+    if (pool.length < size) return { ok: false, reason: "insufficient", available: pool.length, size: size, byDomain: available };
+    var alloc = examAllocate(available, size);
+    if (!alloc) return { ok: false, reason: "insufficient", available: pool.length, size: size, byDomain: available };
+    var seed = String(o.seed || "ccarf");
+    var picked = [];
+    Object.keys(alloc).forEach(function (d) {
+      var rows = pool.filter(function (q) { return q.domain === d; })
+        .sort(function (a, b) { return hashText(seed + ":" + a.id).localeCompare(hashText(seed + ":" + b.id)); });
+      picked = picked.concat(rows.slice(0, alloc[d]));
+    });
+    picked.sort(function (a, b) { return hashText(seed + "#" + a.id).localeCompare(hashText(seed + "#" + b.id)); });
+    return { ok: true, questions: picked, allocation: alloc, size: size, pool: pool.length };
+  }
+  function gradeExam(questions, answers) {
+    var byDomain = {}, byTs = {}, byType = { single: { total: 0, correct: 0 }, multiple: { total: 0, correct: 0 } };
+    var wrong = [], unanswered = 0, correct = 0;
+    (questions || []).forEach(function (q) {
+      var sel = answers && answers[q.id];
+      if (!Array.isArray(sel) || !sel.length) unanswered++;
+      var ok = Array.isArray(sel) && sel.length ? gradeQuestion(q, sel).correct : false;
+      if (ok) correct++;
+      byType[q.type] = byType[q.type] || { total: 0, correct: 0 };
+      byType[q.type].total++; if (ok) byType[q.type].correct++;
+      byDomain[q.domain] = byDomain[q.domain] || { total: 0, correct: 0 };
+      byDomain[q.domain].total++; if (ok) byDomain[q.domain].correct++;
+      (q.taskStatementIds || []).forEach(function (id) {
+        byTs[id] = byTs[id] || { total: 0, correct: 0 };
+        byTs[id].total++; if (ok) byTs[id].correct++;
+      });
+      if (!ok) wrong.push({ id: q.id, question: q.question, domain: q.domain, taskStatementIds: q.taskStatementIds || [], selected: sel || [], correctAnswers: q.correctAnswers, options: q.options, explanation: q.explanation || "" });
+    });
+    var total = (questions || []).length;
+    return {
+      total: total, correct: correct, pct: total ? Math.round(correct / total * 1000) / 10 : 0,
+      unanswered: unanswered, byDomain: byDomain, byTs: byTs, byType: byType, wrong: wrong
+    };
+  }
+  function examRemainingMs(startedAt, minutes, now) {
+    var end = Number(startedAt) + (minutes || 120) * 60000;
+    return Math.max(0, end - (now === undefined ? Date.now() : now));
+  }
+  function formatDuration(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000));
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return (h ? h + ":" : "") + (m < 10 ? "0" : "") + m + ":" + (sec < 10 ? "0" : "") + sec;
+  }
+
   global.CCARF_CORE = {
     migrateV1: migrateV1, hashText: hashText, hashBytes: hashBytes, chunkText: chunkText,
     tokenize: tokenize, classify: classify, DOMAINS: DOMAINS, buildIndex: buildIndex,
@@ -3354,7 +3521,9 @@ body.is-remote .file-hit{opacity:.85}
     validateQuestion: validateQuestion, gradeQuestion: gradeQuestion, invalidCitations: invalidCitations, parseQuestionPayload: parseQuestionPayload,
     SOURCE_LEVELS: SOURCE_LEVELS, QUESTION_DOMAINS: QUESTION_DOMAINS,
     TS_MASTERY_RULE: TS_MASTERY_RULE, tsEvidenceStatus: tsEvidenceStatus, recordTsAttempt: recordTsAttempt,
-    tsDisplayState: tsDisplayState, setTsManual: setTsManual
+    tsDisplayState: tsDisplayState, setTsManual: setTsManual,
+    EXAM_WEIGHTS: EXAM_WEIGHTS, examBankFilter: examBankFilter, examAllocate: examAllocate, buildExam: buildExam,
+    gradeExam: gradeExam, examRemainingMs: examRemainingMs, formatDuration: formatDuration
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -5197,8 +5366,15 @@ body.is-remote .file-hit{opacity:.85}
       "每项字段：question, type(\"single\" 或 \"multiple\"), options(4 个), correctAnswers(索引数组), explanation(至少 20 字), domain(D1-D5), taskStatementIds(数组), sourceReferences(1..n 的来源编号数组), difficulty(1-3)。",
       "单选题 correctAnswers 恰好 1 个；多选题至少 2 个且不能全选；选项不得重复。",
       "只能引用给定资料片段的编号；资料不足时 sourceReferences 留空，不要编造 Task Statement 或页码。",
-      taskIds.length ? "可用 Task Statement：" + taskIds.join(",") : "不要输出 Task Statement 编号。"
-    ].join("\n");
+      taskIds.length ? "可用 Task Statement：" + taskIds.join(",") : "不要输出 Task Statement 编号。",
+      (function () {
+        var lv = ($("practiceLevel") || {}).value || "";
+        if (lv === "1") return "难度层级：Level 1 基本理解，考查概念与关键机制。";
+        if (lv === "2") return "难度层级：Level 2 架构决策，给出多个看似合理的方案，要求选出最合适的一个并解释取舍。";
+        if (lv === "3") return "难度层级：Level 3 条件变化，改变权限、成本、延迟、失败或上下文约束后重新判断。";
+        return "";
+      })()
+    ].filter(Boolean).join("\n");
     var user = "范围：" + (domain || topic || "综合") + "\n资料片段：\n" + ctxOfSources(sources) + "\n\n请生成 2 道中文题目。";
     try {
       var reply = await window.CCARF_AI.chat([{ role: "user", content: user }], system);
@@ -5582,6 +5758,241 @@ body.is-remote .file-hit{opacity:.85}
     });
   }
 
+
+  /* ---------------- P2: 情景训练 + 模拟考场 ---------------- */
+  var EXAM_KEY = "ccarf.exam", EXAM_HISTORY = "ccarf.exams";
+  var BANK_CACHE = null, examState = null, examTimer = null;
+  var DOMAIN_NAMES = {
+    D1: "Agentic Architecture", D2: "Tool Design", D3: "Claude Code Configuration",
+    D4: "Prompt Engineering", D5: "Context Management"
+  };
+  async function loadBank() {
+    if (BANK_CACHE) return BANK_CACHE;
+    try {
+      var res = await fetch("data/question-bank.json", { cache: "no-cache" });
+      BANK_CACHE = res.ok ? (await res.json()).questions : [];
+    } catch (e) { BANK_CACHE = []; }
+    return BANK_CACHE;
+  }
+  function scenarioDomains(text) {
+    var m = /Primary domains:([\s\S]*?)(?:\n\n|$)/.exec(text || "");
+    if (!m) return [];
+    var ids = [];
+    Object.keys(DOMAIN_NAMES).forEach(function (d) { if (m[1].indexOf(DOMAIN_NAMES[d]) !== -1) ids.push(d); });
+    return ids;
+  }
+  function renderScenarios() {
+    loadExamData().then(function (d) {
+      var box = $("scenarioList");
+      if (!box || !d.reg) return;
+      box.innerHTML = (d.reg.scenarios || []).map(function (sc) {
+        var domains = scenarioDomains(sc.officialText);
+        var tsCount = ((d.map && d.map.units) ? d.reg.taskStatements.filter(function (t) { return domains.indexOf(t.domain) !== -1; }).length : 0);
+        var bg = String(sc.officialText || "").replace(/\s+/g, " ").slice(0, 220);
+        return '<article class="scenario-card"><h3>' + esc(sc.title) + "</h3>" +
+          '<div class="p">' + esc(bg) + "…</div>" +
+          '<div class="hint">主要领域：' + (domains.length ? domains.join(" / ") : "待核对") + " · 相关目标 " + tsCount + " 条</div>" +
+          '<div class="ops">' + [1, 2, 3].map(function (lv) {
+            return '<button type="button" data-scenario="' + esc(sc.title) + '" data-level="' + lv + '">Level ' + lv + " 练习</button>";
+          }).join("") + "</div></article>";
+      }).join("");
+      Array.prototype.forEach.call(box.querySelectorAll("button[data-scenario]"), function (b) {
+        b.addEventListener("click", function () {
+          var tab = document.querySelector('#studio .tab[data-tab="review"]');
+          if (tab) tab.click();
+          var mode = $("practiceMode"), topic = $("practiceTopic"), lv = $("practiceLevel");
+          if (mode) mode.value = "topic";
+          if (topic) topic.value = b.getAttribute("data-scenario");
+          if (lv) lv.value = b.getAttribute("data-level");
+          if (topic) topic.focus();
+        });
+      });
+    });
+  }
+
+  function examBankInfo(bank) {
+    var counts = {};
+    bank.forEach(function (q) { if (q.verified) counts[q.domain] = (counts[q.domain] || 0) + 1; });
+    var verified = bank.filter(function (q) { return q.verified === true; }).length;
+    var info = $("examBankInfo");
+    if (info) info.innerHTML = "<span>已验证题库：<b>" + verified + "</b> / 60</span>" +
+      Object.keys(DOMAIN_NAMES).map(function (d) { return "<span>" + d + "：" + (counts[d] || 0) + "</span>"; }).join("");
+    var full = $("examStartFull"), notice = $("examNotice");
+    if (full) full.disabled = verified < 60;
+    if (notice) notice.textContent = verified < 60
+      ? "完整模拟题库不足（" + verified + "/60），只能做专项测验；不会把不完整测验标记为正式模拟通过。"
+      : "题库已达到 60 题，可进行完整模拟。";
+  }
+  function saveExam() { if (examState) writeJSON(EXAM_KEY, examState); }
+  function examLeft() { return examState ? C.examRemainingMs(examState.startedAt, examState.minutes) : 0; }
+  function startExam(size, mode) {
+    loadBank().then(function (bank) {
+      var questions = [];
+      if (size === 60) {
+        var r = C.buildExam(bank, { size: 60, formal: true });
+        if (!r.ok) { $("examNotice").textContent = "完整模拟未开放：已验证题库 " + r.available + "/60。"; return; }
+        questions = r.questions;
+      } else {
+        var dom = ($("examDomain") || {}).value || "";
+        questions = C.examBankFilter(bank, { domain: dom, formal: true });
+        if (questions.length < 5) { $("examNotice").textContent = "当前范围可用题目不足 5 道。"; return; }
+      }
+      examState = {
+        id: "exam-" + Date.now(), mode: mode, startedAt: Date.now(),
+        minutes: size === 60 ? 120 : Math.max(10, questions.length * 2),
+        questions: questions, answers: {}, marked: {}, index: 0, submitted: false
+      };
+      saveExam();
+      $("examSetup").hidden = true;
+      $("examReport").hidden = true;
+      $("examView").hidden = false;
+      renderExamQuestion();
+      startExamTimer();
+    });
+  }
+  function answeredCount() {
+    if (!examState) return 0;
+    return examState.questions.filter(function (q) { return (examState.answers[q.id] || []).length; }).length;
+  }
+  function renderExamQuestion() {
+    if (!examState) return;
+    var q = examState.questions[examState.index];
+    var box = $("examQuestion");
+    var sel = examState.answers[q.id] || [];
+    box.innerHTML = '<div class="meta">' + esc(q.domain) + " · " + (q.type === "multiple" ? "多选题" : "单选题") + (q.scenarioId ? " · " + esc(q.scenarioId) : "") + '</div><h3>' + esc(q.question) + "</h3>" +
+      q.options.map(function (o, i) {
+        return '<button type="button" class="opt ' + (sel.indexOf(i) !== -1 ? "is-sel" : "") + '" data-i="' + i + '">' + String.fromCharCode(65 + i) + ". " + esc(o) + "</button>";
+      }).join("");
+    Array.prototype.forEach.call(box.querySelectorAll(".opt"), function (b) {
+      b.addEventListener("click", function () {
+        var i = parseInt(b.getAttribute("data-i"), 10);
+        var cur = examState.answers[q.id] || [];
+        if (q.type === "multiple") {
+          var at = cur.indexOf(i);
+          if (at >= 0) cur.splice(at, 1); else cur.push(i);
+        } else cur = [i];
+        examState.answers[q.id] = cur;
+        saveExam();
+        renderExamQuestion();
+      });
+    });
+    var progress = $("examProgress");
+    if (progress) progress.textContent = "第 " + (examState.index + 1) + " / " + examState.questions.length + " 题 · 已答 " + answeredCount() + " · 标记 " + Object.keys(examState.marked).filter(function (k) { return examState.marked[k]; }).length;
+    var mark = $("examMark");
+    if (mark) mark.textContent = examState.marked[q.id] ? "取消标记" : "标记复查";
+    var nav = $("examNav");
+    if (nav) {
+      nav.innerHTML = examState.questions.map(function (qq, i) {
+        var cls = i === examState.index ? "cur" : "";
+        if ((examState.answers[qq.id] || []).length) cls += " done";
+        if (examState.marked[qq.id]) cls += " marked";
+        return '<button type="button" class="' + cls + '" data-jump="' + i + '">' + (i + 1) + "</button>";
+      }).join("");
+      Array.prototype.forEach.call(nav.querySelectorAll("button"), function (b) {
+        b.addEventListener("click", function () { examState.index = parseInt(b.getAttribute("data-jump"), 10); saveExam(); renderExamQuestion(); });
+      });
+    }
+    var prev = $("examPrev"), next = $("examNext");
+    if (prev) prev.disabled = examState.index === 0;
+    if (next) next.textContent = examState.index === examState.questions.length - 1 ? "最后一题" : "下一题";
+  }
+  function startExamTimer() {
+    if (examTimer) clearInterval(examTimer);
+    function tick() {
+      if (!examState || examState.submitted) { clearInterval(examTimer); return; }
+      var left = examLeft();
+      var el = $("examTimer");
+      if (el) el.textContent = C.formatDuration(left);
+      if (left <= 0) { clearInterval(examTimer); submitExam(true); }
+    }
+    tick();
+    examTimer = setInterval(tick, 1000);
+  }
+  function submitExam(auto) {
+    if (!examState || examState.submitted) return;
+    var unanswered = examState.questions.length - answeredCount();
+    if (!auto && unanswered > 0 && !window.confirm("还有 " + unanswered + " 题未答，确认交卷？")) return;
+    var report = C.gradeExam(examState.questions, examState.answers);
+    var before = readJSON(EXAM_HISTORY, []);
+    var prev = before.length ? before[before.length - 1] : null;
+    var used = Math.min(examState.minutes * 60000, Date.now() - examState.startedAt);
+    examState.submitted = true;
+    try { localStorage.removeItem(EXAM_KEY); } catch (e) {}
+    if (examTimer) clearInterval(examTimer);
+    var hist = before.concat([{ at: new Date().toISOString(), mode: examState.mode, total: report.total, correct: report.correct, pct: report.pct }]).slice(-10);
+    writeJSON(EXAM_HISTORY, hist);
+    // 错题进入错题本，并写入对应 Task Statement 证据
+    var cards = loadCards();
+    report.wrong.forEach(function (w) {
+      // 未作答的题不进入错题本；只有实际答错才安排复习
+      if (!w.selected || !w.selected.length) return;
+      var q = examState.questions.filter(function (x) { return x.id === w.id; })[0];
+      if (!q) return;
+      var id = C.cardId(q.question);
+      var card = cards.filter(function (c) { return c.id === id; })[0] || {
+        id: id, question: q.question, options: q.options, correctAnswers: q.correctAnswers, type: q.type,
+        explanation: q.explanation || "", domain: q.domain, taskStatementIds: q.taskStatementIds || [],
+        firstWrongAt: C.todayISO(), level: 0, reps: 0
+      };
+      var n = C.srsNext(card, false, C.todayISO());
+      Object.assign(card, { nextReview: n.next, level: n.level, reps: n.reps, lastReviewedAt: C.todayISO() });
+      card.attempts = (card.attempts || []).concat([{ at: new Date().toISOString(), selected: w.selected, correct: false }]).slice(-20);
+      cards = C.upsertCard(cards, card);
+      recordTs(q.taskStatementIds, id, false);
+    });
+    saveCards(cards);
+    renderReview(); renderToday();
+    $("examView").hidden = true;
+    $("examSetup").hidden = false;
+    $("examReport").hidden = false;
+    var doms = Object.keys(report.byDomain).map(function (d) {
+      var x = report.byDomain[d];
+      return "<tr><td>" + d + "</td><td>" + x.correct + " / " + x.total + "</td><td>" + Math.round(x.correct / x.total * 100) + "%</td></tr>";
+    }).join("");
+    var weak = Object.keys(report.byTs).map(function (id) {
+      var x = report.byTs[id];
+      return { id: id, pct: x.correct / x.total, correct: x.correct, total: x.total };
+    }).filter(function (x) { return x.pct < 0.7; }).sort(function (a, b) { return a.pct - b.pct; }).slice(0, 8);
+    $("examReport").innerHTML = '<div class="exam-report"><h3>' + (auto ? "时间到，已自动交卷" : "交卷完成") + "</h3>" +
+      '<div class="big">' + report.pct + '%</div><p class="hint">' + report.correct + " / " + report.total + " 题 · 未答 " + report.unanswered + " · 用时 " + C.formatDuration(used) + " · 模式：" + esc(examState.mode) + "</p>" +
+      '<p class="hint">单选 ' + Math.round((report.byType.single.correct / (report.byType.single.total || 1)) * 100) + "% · 多选 " + Math.round((report.byType.multiple.correct / (report.byType.multiple.total || 1)) * 100) + "%" +
+      (prev ? " · 上次 " + prev.pct + "%" : "") + "</p>" +
+      "<table><thead><tr><th>领域</th><th>正确</th><th>正确率</th></tr></thead><tbody>" + doms + "</tbody></table>" +
+      (weak.length ? "<p class=\"hint\">薄弱目标：" + weak.map(function (x) { return x.id + "（" + x.correct + "/" + x.total + "）"; }).join("、") + "</p>" : "") +
+      (report.wrong.length ? "<details><summary>错题 " + report.wrong.length + " 道（含解析）</summary><ul>" + report.wrong.map(function (w) {
+        return "<li><strong>" + esc(w.question) + "</strong><br>正确答案：" + w.correctAnswers.map(function (i) { return String.fromCharCode(65 + i) + ". " + esc(w.options[i]); }).join("；") + "<br>" + esc(w.explanation) + "</li>";
+      }).join("") + "</ul></details>" : "") +
+      '<p class="hint">这是本站的模拟练习指标，不是官方评分；720 分规则仅作说明，不能换算官方分数。</p></div>';
+  }
+  function initExam() {
+    loadBank().then(function (bank) {
+      examBankInfo(bank);
+      var saved = readJSON(EXAM_KEY, null);
+      if (saved && !saved.submitted && Array.isArray(saved.questions) && saved.questions.length) {
+        examState = saved;
+        if (examLeft() <= 0) { examState.submitted = false; submitExam(true); }
+        else {
+          $("examSetup").hidden = true;
+          $("examView").hidden = false;
+          renderExamQuestion();
+          startExamTimer();
+        }
+      }
+    });
+    var full = $("examStartFull"), quick = $("examStartQuick");
+    if (full) full.addEventListener("click", function () { startExam(60, "完整模拟"); });
+    if (quick) quick.addEventListener("click", function () { startExam(0, "专项测验"); });
+    var prev = $("examPrev"), next = $("examNext"), mark = $("examMark"), submit = $("examSubmit");
+    if (prev) prev.addEventListener("click", function () { if (examState.index > 0) { examState.index--; saveExam(); renderExamQuestion(); } });
+    if (next) next.addEventListener("click", function () { if (examState.index < examState.questions.length - 1) { examState.index++; saveExam(); renderExamQuestion(); } });
+    if (mark) mark.addEventListener("click", function () { var q = examState.questions[examState.index]; examState.marked[q.id] = !examState.marked[q.id]; saveExam(); renderExamQuestion(); });
+    if (submit) submit.addEventListener("click", function () { submitExam(false); });
+    var tab = document.querySelector('#studio .tab[data-tab="exam"]');
+    if (tab) tab.addEventListener("click", function () { loadBank().then(examBankInfo); });
+  }
+
+  renderScenarios();
+  initExam();
   initObjectives();
   initData();
   initReview();
