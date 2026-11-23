@@ -132,6 +132,24 @@ const bilingualPairs = (html.match(/class="tfile-pair"/g) ?? []).length
 if (bilingualPairs !== 23) fails.push(`预期学习计划有 23 个中英双语资料入口，实际 ${bilingualPairs}`)
 if (!html.includes('id="bilingualReader"') || !html.includes('id="bilingualImportButton"')) fails.push('缺少本机双语译文阅读或导入入口')
 
+/* Full bilingual inventory: 39 original learning documents, 23 appearances in timeline + 17 supplementary links. */
+const supplementary = (html.match(/class="bilingual-extra-row"/g) ?? []).length
+if (supplementary !== 17) fails.push(`扩展双语资料预期 17 条，实际 ${supplementary}`)
+const allBilingualTitles = [...html.matchAll(/<span class="tfile-title" title="([^"]+)"/g)].map((m) => m[1])
+if (allBilingualTitles.length !== 40 || new Set(allBilingualTitles).size !== 39)
+  fails.push(`双语资料清单预期 40 处入口 / 39 份不同资料，实际 ${allBilingualTitles.length} 处 / ${new Set(allBilingualTitles).size} 份`)
+const supplementalLinks = [...html.matchAll(/<li class="bilingual-extra-row">([\s\S]*?)<\/li>/g)]
+for (const [i, entry] of supplementalLinks.entries()) {
+  const anchors = [...entry[1].matchAll(/<a class="tfile" href="([^"]+)"/g)]
+  if (anchors.length !== 1) fails.push(`扩展资料第 ${i + 1} 条应含一个真实原文链接`)
+  for (const match of anchors) {
+    let relative = match[1].replace(/^https:\/\/github\.com\/yybb123123\/ccarf-study-guide\/blob\/main\//, '')
+    let abs
+    try { abs = resolve(root, decodeURIComponent(relative)) } catch { fails.push(`无效扩展资源链接：${match[1]}`); continue }
+    if (!abs.startsWith(root + '/') || !existsSync(abs) || !statSync(abs).isFile()) fails.push(`扩展资源不存在：${relative}`)
+  }
+}
+
 const NB = 'notebook.google.com/notebook/c0ddef5c-4758-48a2-bf13-671d108d5933'
 if (!html.includes(NB)) fails.push('缺少 NotebookLM 笔记本入口链接')
 
