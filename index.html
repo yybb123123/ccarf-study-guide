@@ -3600,6 +3600,9 @@ body.is-remote .file-hit{opacity:.85}
     return { ts: ts, ledger: pruneLedger(led), applied: applied, skipped: skipped };
   }
 
+  function hasKnowledgePayload(data) {
+    return !!data && Object.prototype.hasOwnProperty.call(data, "knowledge") && data.knowledge !== undefined;
+  }
   async function makeBackupV3(data, now) {
     var b = await makeBackupV2(data, now);
     b.version = 3;
@@ -3660,7 +3663,7 @@ body.is-remote .file-hit{opacity:.85}
     EXAM_WEIGHTS: EXAM_WEIGHTS, examBankFilter: examBankFilter, examAllocate: examAllocate, buildExam: buildExam,
     gradeExam: gradeExam, examRemainingMs: examRemainingMs, formatDuration: formatDuration,
     examAttemptId: examAttemptId, buildExamEvidence: buildExamEvidence, applyExamEvidence: applyExamEvidence,
-    makeBackupV3: makeBackupV3, pruneLedger: pruneLedger, scenarioCoverage: scenarioCoverage, buildScenarioExam: buildScenarioExam
+    makeBackupV3: makeBackupV3, pruneLedger: pruneLedger, hasKnowledgePayload: hasKnowledgePayload, scenarioCoverage: scenarioCoverage, buildScenarioExam: buildScenarioExam
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -5869,8 +5872,13 @@ body.is-remote .file-hit{opacity:.85}
     }
   }
 
+  function writeStrict(key, value) {
+    // 恢复必须能感知写入失败并回滚，不能像普通 UI 写入那样静默吞掉
+    localStorage.setItem(key, JSON.stringify(value));
+  }
   function applyBackup(b) {
     var d = b.data || {};
+    var hasKnowledge = C.hasKnowledgePayload(d);
     var oldDocs = null, oldChunks = null;
     var keys = {
       units: "ccarf.units", notes: "ccarf.notes", accept: "ccarf.accept", chat: "ccarf.chat",
@@ -5885,27 +5893,30 @@ body.is-remote .file-hit{opacity:.85}
       return allChunks();
     }).then(function (chunks) {
       oldChunks = chunks;
-      return replaceAllKnowledge(d.knowledge || { docs: [], chunks: [] });
+      // 只有备份明确带有 knowledge 字段时才动 IndexedDB；
+      // 旧备份缺少该字段时保留本机资料，绝不默认清空。
+      if (!hasKnowledge) return Promise.resolve();
+      return replaceAllKnowledge({ docs: d.knowledge.docs || [], chunks: d.knowledge.chunks || [] });
     }).then(function () {
-      if (has("units")) writeJSON(keys.units, d.units || []);
-      if (has("notes")) writeJSON(keys.notes, d.notes || {});
-      if (has("accept")) writeJSON(keys.accept, d.accept || []);
-      if (has("chat")) writeJSON(keys.chat, d.chat || []);
-      if (has("cards")) writeJSON(keys.cards, d.cards || []);
-      if (has("mastery")) writeJSON(keys.mastery, d.mastery || {});
-      if (has("feynman")) writeJSON(keys.feynman, d.feynman || null);
-      if (has("time")) writeJSON(keys.time, d.time || null);
-      if (has("ts")) writeJSON(keys.ts, d.ts || null);
-      if (has("tsLedger")) writeJSON(keys.tsLedger, d.tsLedger || null);
-      if (has("exam")) writeJSON(keys.exam, d.exam || null);
-      if (has("exams")) writeJSON(keys.exams, d.exams || []);
-      if (has("examDate")) writeJSON(keys.examDate, d.examDate || null);
+      if (has("units")) writeStrict(keys.units, d.units || []);
+      if (has("notes")) writeStrict(keys.notes, d.notes || {});
+      if (has("accept")) writeStrict(keys.accept, d.accept || []);
+      if (has("chat")) writeStrict(keys.chat, d.chat || []);
+      if (has("cards")) writeStrict(keys.cards, d.cards || []);
+      if (has("mastery")) writeStrict(keys.mastery, d.mastery || {});
+      if (has("feynman")) writeStrict(keys.feynman, d.feynman || null);
+      if (has("time")) writeStrict(keys.time, d.time || null);
+      if (has("ts")) writeStrict(keys.ts, d.ts || null);
+      if (has("tsLedger")) writeStrict(keys.tsLedger, d.tsLedger || null);
+      if (has("exam")) writeStrict(keys.exam, d.exam || null);
+      if (has("exams")) writeStrict(keys.exams, d.exams || []);
+      if (has("examDate")) writeStrict(keys.examDate, d.examDate || null);
       if (has("settings")) {
         var cur = readJSON("ccarf.ai", {});
-        writeJSON(keys.ai, Object.assign({}, cur, C.safeSettings(d.settings)));
+        writeStrict(keys.ai, Object.assign({}, cur, C.safeSettings(d.settings)));
       }
     }).catch(function (e) {
-      var p = oldDocs ? replaceAllKnowledge({ docs: oldDocs, chunks: oldChunks || [] }) : Promise.resolve();
+      var p = hasKnowledge && oldDocs ? replaceAllKnowledge({ docs: oldDocs, chunks: oldChunks || [] }) : Promise.resolve();
       return p.catch(function () {}).then(function () {
         Object.keys(keys).forEach(function (k) {
           try {
@@ -5944,6 +5955,7 @@ body.is-remote .file-hit{opacity:.85}
             "<li>知识库：" + v.summary.docs + " 份 / " + v.summary.chunks + " 段 · 错题：" + v.summary.cards + "</li>" +
             "<li>进行中考试：" + (v.summary.inProgressExam ? "有" : "无") + " · 历史成绩：" + v.summary.exams + " 次 · 目标日期：" + esc(v.summary.examDate || "未设置") + "</li></ul>" +
             '<p class="hint">校验和只能帮助发现意外损坏，不能证明备份来自可信来源。</p>' +
+            (obj.data && Object.prototype.hasOwnProperty.call(obj.data, "knowledge") ? "" : '<p class="hint">该备份不含 knowledge 字段，恢复时会保留本机现有知识库与私人译文。</p>') +
             (v.ok ? '<p class="hint">校验通过。确认后会覆盖同名本地数据。</p>' : '<p class="bad">' + v.errors.map(esc).join("；") + "</p>");
         }
         if (v.ok) { pendingBackup = obj; if (btn) btn.disabled = false; }
