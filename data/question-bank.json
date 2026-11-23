@@ -1,0 +1,405 @@
+{
+  "schema": 1,
+  "version": 1,
+  "note": "原创、按官方 Task Statement 映射的模拟题；不是官方真题。",
+  "questions": [
+    {
+      "id": "Q-D1-01",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.1"
+      ],
+      "scenarioId": "S1",
+      "level": 1,
+      "type": "single",
+      "question": "在一个 agent 循环中，模型返回 stop_reason = \"end_turn\" 时，下一步应该做什么？",
+      "options": [
+        "继续执行模型请求的工具",
+        "结束循环并返回最终结果",
+        "清空上下文重新开始",
+        "立即重试同一请求"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "stop_reason 为 tool_use 时表示要执行工具并把结果回传；end_turn 表示模型已经完成本轮回答，应结束循环。",
+      "optionAnalysis": [
+        "tool_use 才需要执行工具，end_turn 不需要。",
+        "正确：end_turn 是终止信号。",
+        "清空上下文会丢失任务状态。",
+        "重试会产生重复调用。"
+      ],
+      "conditions": "模型明确返回 end_turn",
+      "pitfalls": "把 max_tokens 截断误当成正常结束",
+      "difficulty": 1,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D1-02",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.3"
+      ],
+      "scenarioId": "S3",
+      "level": 2,
+      "type": "single",
+      "question": "协调者把任务分给多个子代理时，哪种上下文传递方式最合适？",
+      "options": [
+        "把完整对话记录复制给每个子代理",
+        "只传必要事实、约束与来源，并保留可追溯引用",
+        "让所有子代理共享同一可变草稿",
+        "只传结论，不传任何来源"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "子代理的上下文应当隔离，只传完成任务所需的事实、约束与来源，既减少 token 也避免互相污染。",
+      "optionAnalysis": [
+        "全量复制会放大上下文并引入无关信息。",
+        "正确：必要事实 + 来源可追溯。",
+        "共享可变状态会造成竞态与覆盖。",
+        "没有来源无法验证结论。"
+      ],
+      "conditions": "子代理需要独立上下文",
+      "pitfalls": "把所有历史都塞进子代理",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D1-03",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.4"
+      ],
+      "scenarioId": "S1",
+      "level": 3,
+      "type": "single",
+      "question": "客户要求退款，退款工具具有不可逆副作用。最稳妥的做法是？",
+      "options": [
+        "在提示词里写明“请谨慎退款”",
+        "在代码或 hooks 中校验身份与权限，超出范围转人工",
+        "让模型自行判断是否合规",
+        "先退款，出错再人工修复"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "不可逆操作必须由代码或 hooks 强制执行权限与审批，不能只靠提示词；超出授权范围应转人工。",
+      "optionAnalysis": [
+        "提示词不是强制边界。",
+        "正确：代码/钩子强制 + 人工升级。",
+        "模型判断不能替代授权系统。",
+        "先执行再修复不可逆。"
+      ],
+      "conditions": "操作不可逆且涉及权限",
+      "pitfalls": "用提示词代替授权",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D2-01",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.1"
+      ],
+      "scenarioId": "S4",
+      "level": 1,
+      "type": "single",
+      "question": "要让模型稳定选择正确工具，工具描述最应该包含什么？",
+      "options": [
+        "只有工具名",
+        "名称、用途、输入 Schema、输出结构与边界条件",
+        "后端接口的全部实现细节",
+        "尽量模糊，避免限制模型"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "清晰名称、用途、输入/输出 Schema 与边界条件，能让模型判断何时该用、如何传参、什么情况不该用。",
+      "optionAnalysis": [
+        "只有名字无法判断适用场景。",
+        "正确：完整契约与边界。",
+        "实现细节会稀释信号。",
+        "模糊描述导致误选。"
+      ],
+      "conditions": "多个工具职责相近时",
+      "pitfalls": "描述含糊导致模型乱选",
+      "difficulty": 1,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D2-02",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.2"
+      ],
+      "scenarioId": "S1",
+      "level": 2,
+      "type": "single",
+      "question": "MCP 工具查询不到记录时，结构化响应应该怎样设计？",
+      "options": [
+        "返回 500 并抛异常",
+        "区分“业务无结果”和“执行失败”，给出可重试标记与原因",
+        "返回空字符串当作成功",
+        "只返回自然语言“失败了”"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "业务无结果与执行失败是不同状态；应返回结构化错误，包含原因、是否可重试，便于代理决定下一步。",
+      "optionAnalysis": [
+        "查无结果不是服务器错误。",
+        "正确：区分状态并标注可重试。",
+        "空成功会误导代理。",
+        "自然语言难以程序化处理。"
+      ],
+      "conditions": "代理需要根据错误决定重试或升级",
+      "pitfalls": "把查无结果当异常",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D2-03",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.3"
+      ],
+      "scenarioId": "S4",
+      "level": 2,
+      "type": "multiple",
+      "question": "给多个代理分配工具时，哪些做法符合最小授权？（选 2 项）",
+      "options": [
+        "每个代理只拿完成任务所需的工具",
+        "只读代理不授予退款或写入工具",
+        "所有代理都拿全部工具以便灵活",
+        "用提示词限制代理不要用危险工具"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "最小授权要求按任务分配工具，并且只读代理不应拥有写权限；提示词不能替代权限控制。",
+      "optionAnalysis": [
+        "正确：按任务分配。",
+        "正确：只读代理无写权限。",
+        "全量工具扩大攻击面。",
+        "提示词不是强制边界。"
+      ],
+      "conditions": "多代理共享后端系统",
+      "pitfalls": "用提示词替代权限控制",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D3-01",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.1"
+      ],
+      "scenarioId": "S2",
+      "level": 1,
+      "type": "single",
+      "question": "项目根目录与子目录都有 CLAUDE.md，通常应如何理解优先级？",
+      "options": [
+        "根目录永远覆盖子目录",
+        "更具体、更靠近当前文件的规则在相应范围内优先",
+        "子目录文件会被忽略",
+        "只有全局用户配置生效"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "CLAUDE.md 按目录层级生效，更具体的项目/目录规则在对应范围内优先；根目录提供默认约定。",
+      "optionAnalysis": [
+        "根目录不是永远最高优先级。",
+        "正确：更具体范围优先。",
+        "子目录会被读取。",
+        "全局配置只是其中一层。"
+      ],
+      "conditions": "多目录存在不同约定",
+      "pitfalls": "把根目录规则当成绝对覆盖",
+      "difficulty": 1,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D3-02",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.4"
+      ],
+      "scenarioId": "S5",
+      "level": 2,
+      "type": "single",
+      "question": "一个跨多个文件、需求仍有歧义的重构，开始前更适合？",
+      "options": [
+        "直接改代码，边改边想",
+        "先用 plan mode 明确范围与验收，再执行",
+        "只跑格式化工具",
+        "先提交再让 CI 决定"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "跨文件且需求不明确时，先用 plan mode 对齐范围、约束与验收标准，能避免大范围返工。",
+      "optionAnalysis": [
+        "边改边想容易扩大范围。",
+        "正确：先计划后执行。",
+        "格式化不解决设计问题。",
+        "CI 不能替你做需求决策。"
+      ],
+      "conditions": "改动跨文件且存在歧义",
+      "pitfalls": "跳过计划直接大改",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D4-01",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.3"
+      ],
+      "scenarioId": "S6",
+      "level": 1,
+      "type": "single",
+      "question": "要让抽取结果严格符合字段结构，最可靠的做法是？",
+      "options": [
+        "在提示词里说“请返回 JSON”",
+        "用工具调用配合 JSON Schema，并校验返回",
+        "用正则从自由文本里猜",
+        "让模型自由发挥后人工整理"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "工具调用 + JSON Schema 把结构约束变成可校验的契约；返回后仍需做 Schema 与业务校验。",
+      "optionAnalysis": [
+        "只说请返回 JSON 无法保证结构。",
+        "正确：Schema + 校验。",
+        "正则难以覆盖嵌套与转义。",
+        "人工整理不可扩展。"
+      ],
+      "conditions": "字段多、需要下游系统消费",
+      "pitfalls": "把“看起来像 JSON”当成合法",
+      "difficulty": 1,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D4-02",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.4"
+      ],
+      "scenarioId": "S6",
+      "level": 3,
+      "type": "single",
+      "question": "抽取结果 Schema 校验失败后，合理的重试策略是？",
+      "options": [
+        "无限重试直到成功",
+        "把具体校验错误回传，有限次重试后升级/转人工",
+        "直接丢弃失败样本",
+        "降低 Schema 要求以通过"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "把校验错误作为反馈做有限次重试，仍失败则升级或转人工；无限重试与放宽 Schema 都会掩盖问题。",
+      "optionAnalysis": [
+        "无限重试会放大成本。",
+        "正确：错误反馈 + 有限重试 + 升级。",
+        "丢弃会丢失可分析信号。",
+        "放宽 Schema 会破坏契约。"
+      ],
+      "conditions": "抽取结果进入下游系统",
+      "pitfalls": "用重试掩盖系统性错误",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D5-01",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.1"
+      ],
+      "scenarioId": "S3",
+      "level": 2,
+      "type": "multiple",
+      "question": "长对话中保留关键上下文，哪些做法有效？（选 2 项）",
+      "options": [
+        "保留已确认的决策、未决问题与来源",
+        "把必要的任务状态结构化后重新注入",
+        "每轮都重发全部历史原文",
+        "依赖模型自己记住所有细节"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "保留决策、未决项与来源，并把任务状态结构化注入，能在压缩上下文的同时保住关键信息。",
+      "optionAnalysis": [
+        "正确：保留决策与来源。",
+        "正确：结构化状态注入。",
+        "全量重发成本高且稀释信号。",
+        "模型不会可靠记住所有细节。"
+      ],
+      "conditions": "对话很长或发生压缩",
+      "pitfalls": "把摘要当成无损记录",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    },
+    {
+      "id": "Q-D5-02",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.2"
+      ],
+      "scenarioId": "S1",
+      "level": 3,
+      "type": "single",
+      "question": "用户请求含糊且涉及高风险操作时，最合适的处理是？",
+      "options": [
+        "按最常见解释直接执行",
+        "先提出针对性的澄清问题，无法确认时升级人工",
+        "让模型编一个合理假设",
+        "随机选一个方案并记录"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "高风险 + 歧义时应先澄清关键条件；无法确认时升级人工，而不是猜测执行。",
+      "optionAnalysis": [
+        "猜测执行风险不可控。",
+        "正确：澄清 + 升级。",
+        "编造假设会制造错误事实。",
+        "随机选择不可审计。"
+      ],
+      "conditions": "高风险且信息不足",
+      "pitfalls": "把“合理猜测”当成决策",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official",
+      "verified": true
+    }
+  ]
+}
