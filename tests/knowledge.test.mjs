@@ -109,7 +109,7 @@ test('backup roundtrip validates and detects tampering', () => {
   assert.equal(b.version, 1)
   const ok = core.validateBackup(JSON.parse(JSON.stringify(b)))
   assert.equal(ok.ok, true)
-  assert.deepEqual(plain(ok.summary), { units: 2, notes: 1, docs: 1, cards: 1 })
+  assert.deepEqual(plain(ok.summary), { units: 2, notes: 1, docs: 1, chunks: 0, cards: 1, accept: 0, chat: 0, feynman: 0 })
 
   const bad = JSON.parse(JSON.stringify(b))
   bad.data.units.push(99)
