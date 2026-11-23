@@ -129,7 +129,7 @@ if (planFileCount === 0) fails.push('学习计划中没有可点击资料链接'
 console.log(`  plan: ${planFileBlocks.length} units, ${planFileCount} clickable file links`)
 
 const bilingualPairs = (html.match(/class="tfile-pair"/g) ?? []).length
-if (bilingualPairs !== 23) fails.push(`预期学习计划有 23 个中英双语资料入口，实际 ${bilingualPairs}`)
+if (bilingualPairs !== 40) fails.push(`预期双语资料入口共 40 处（含学习计划与扩展资料），实际 ${bilingualPairs}`)
 if (!html.includes('id="bilingualReader"') || !html.includes('id="bilingualImportButton"')) fails.push('缺少本机双语译文阅读或导入入口')
 
 /* Full bilingual inventory: 39 original learning documents, 23 appearances in timeline + 17 supplementary links. */
