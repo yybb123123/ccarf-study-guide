@@ -233,6 +233,11 @@ section[id],[id^="unit-"]{scroll-margin-top:88px}
 .tl-files{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .tfile{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);background:var(--surface-2);
   border:1px solid var(--line-2);padding:3px 7px;border-radius:3px;overflow-wrap:anywhere}
+/* 学习计划资料：可点击、键盘可聚焦，PDF 直达文件，MD 打开 GitHub 阅读页 */
+a.tfile{display:inline-flex;align-items:center;max-width:100%;text-decoration:none;cursor:pointer}
+a.tfile::after{content:"↗";font-family:var(--font-sans);margin-left:5px;font-size:12px;flex:none}
+a.tfile:hover,a.tfile:focus-visible{color:var(--brand-ink);background:var(--brand-soft);border-color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+a.tfile:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .tl-check{margin-left:auto;display:flex;align-items:center;gap:8px;cursor:pointer;
   font-size:12.5px;color:var(--ink-2);padding:4px;border-radius:var(--r);user-select:none}
 .tl-check:hover{color:var(--ink)}
@@ -1906,7 +1911,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：通读考纲目录与五大领域标题，用笔记列出每个领域下的 Task Statement 编号</p>
-          <div class="tl-files"><span class="tfile">00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf</span><span class="tfile">01_考试资料索引_先读这个.md</span></div>
+          <div class="tl-files"><a class="tfile" href="01_%E5%AE%98%E6%96%B9%E8%80%83%E7%BA%B2_%E5%BF%85%E8%AF%BB_%E6%9C%80%E4%BC%98%E5%85%88/00_CCAR-F_Exam_Guide_v1.1_%E5%AE%98%E6%96%B942%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf（新标签页）">00_CCAR-F_Exam_Guide_v1.1_官方42页.pdf</a><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/00_%E5%BC%80%E5%A7%8B%E8%BF%99%E9%87%8C/01_%E8%80%83%E8%AF%95%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95_%E5%85%88%E8%AF%BB%E8%BF%99%E4%B8%AA.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_考试资料索引_先读这个.md（新标签页）">01_考试资料索引_先读这个.md</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="1" aria-expanded="false" aria-controls="note-1">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1930,7 +1935,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Workflow 和 Agent 的分界线在哪？SDK 能做什么、不能做什么？</p>
-          <div class="tl-files"><span class="tfile">01_D1_Building_Effective_Agents.pdf</span><span class="tfile">02_D1_Claude_Agent_SDK_Overview.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/01_D1_Building_Effective_Agents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_Building_Effective_Agents.pdf（新标签页）">01_D1_Building_Effective_Agents.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/02_D1_Claude_Agent_SDK_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf（新标签页）">02_D1_Claude_Agent_SDK_Overview.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="2" aria-expanded="false" aria-controls="note-2">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1954,7 +1959,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：规则该写在 CLAUDE.md 还是代码里？MCP 的三角色分别解决什么？</p>
-          <div class="tl-files"><span class="tfile">03_D2_MCP官方介绍.pdf</span><span class="tfile">04_D3_Memory与CLAUDE_md.pdf</span><span class="tfile">05_D4_Anthropic_Prompting指南.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D2_MCP官方介绍.pdf（新标签页）">03_D2_MCP官方介绍.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/04_D3_Memory%E4%B8%8ECLAUDE_md.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf（新标签页）">04_D3_Memory与CLAUDE_md.pdf</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf（新标签页）">05_D4_Anthropic_Prompting指南.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="3" aria-expanded="false" aria-controls="note-3">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1978,7 +1983,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：画出 coordinator → subagent → 汇总的消息流，标出哪里可能重复工作</p>
-          <div class="tl-files"><span class="tfile">01_D1_27pct_Multi-agent_Research_System.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/01_D1_27pct_Multi-agent_Research_System.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_27pct_Multi-agent_Research_System.pdf（新标签页）">01_D1_27pct_Multi-agent_Research_System.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="4" aria-expanded="false" aria-controls="note-4">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2002,7 +2007,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：上下文隔离到底传什么、不传什么？失败时子代理怎么上报？</p>
-          <div class="tl-files"><span class="tfile">02_D1_27pct_Claude_Code_Subagents.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/02_D1_27pct_Claude_Code_Subagents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_27pct_Claude_Code_Subagents.pdf（新标签页）">02_D1_27pct_Claude_Code_Subagents.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="5" aria-expanded="false" aria-controls="note-5">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2026,7 +2031,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Skills / Rules / Hooks 三者的职责边界，各举一个必须用的场景</p>
-          <div class="tl-files"><span class="tfile">03_D3_20pct_Claude_Code_Skills.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/03_D3_20pct_Claude_Code_Skills.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D3_20pct_Claude_Code_Skills.pdf（新标签页）">03_D3_20pct_Claude_Code_Skills.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="6" aria-expanded="false" aria-controls="note-6">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2050,7 +2055,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Hooks 上半：有哪些执行点，每个点在什么时机触发</p>
-          <div class="tl-files"><span class="tfile">04_D3_20pct_Claude_Code_Hooks.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf（新标签页）">04_D3_20pct_Claude_Code_Hooks.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="7" aria-expanded="false" aria-controls="note-7">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2074,7 +2079,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Hooks 下半 + 动手：写一个能拦截危险命令的 hook，验证退出码</p>
-          <div class="tl-files"><span class="tfile">04_D3_20pct_Claude_Code_Hooks.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/04_D3_20pct_Claude_Code_Hooks.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_20pct_Claude_Code_Hooks.pdf（新标签页）">04_D3_20pct_Claude_Code_Hooks.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="8" aria-expanded="false" aria-controls="note-8">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2098,7 +2103,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：区分「JSON 合法」与「业务事实正确」，设计字段级错误回传</p>
-          <div class="tl-files"><span class="tfile">05_D4_20pct_Structured_Outputs.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/05_D4_20pct_Structured_Outputs.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_20pct_Structured_Outputs.pdf（新标签页）">05_D4_20pct_Structured_Outputs.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="9" aria-expanded="false" aria-controls="note-9">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2122,7 +2127,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：设计一个能抓出误报的评测集；说明什么时候该用批处理</p>
-          <div class="tl-files"><span class="tfile">06_D4_20pct_Develop_Evaluations.pdf</span><span class="tfile">07_D4_20pct_Message_Batches_API.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/06_D4_20pct_Develop_Evaluations.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 06_D4_20pct_Develop_Evaluations.pdf（新标签页）">06_D4_20pct_Develop_Evaluations.pdf</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/07_D4_20pct_Message_Batches_API.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 07_D4_20pct_Message_Batches_API.pdf（新标签页）">07_D4_20pct_Message_Batches_API.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="10" aria-expanded="false" aria-controls="note-10">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2146,7 +2151,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：三种「没结果」的区别；两个相似工具怎样写描述避免误选</p>
-          <div class="tl-files"><span class="tfile">08_D2_18pct_Claude_Tool_Use_Overview.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/08_D2_18pct_Claude_Tool_Use_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 08_D2_18pct_Claude_Tool_Use_Overview.pdf（新标签页）">08_D2_18pct_Claude_Tool_Use_Overview.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="11" aria-expanded="false" aria-controls="note-11">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2170,7 +2175,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：来源归属怎么记录；什么条件下必须转人工</p>
-          <div class="tl-files"><span class="tfile">09_D5_15pct_Contextual_Retrieval.pdf</span><span class="tfile">10_D5_15pct_Demystifying_Evals.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/09_D5_15pct_Contextual_Retrieval.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 09_D5_15pct_Contextual_Retrieval.pdf（新标签页）">09_D5_15pct_Contextual_Retrieval.pdf</a><a class="tfile" href="03_%E4%B8%AD%E9%AB%98%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E4%B8%BB%E6%94%BB/10_D5_15pct_Demystifying_Evals.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 10_D5_15pct_Demystifying_Evals.pdf（新标签页）">10_D5_15pct_Demystifying_Evals.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="12" aria-expanded="false" aria-controls="note-12">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2194,7 +2199,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：完成 Exercise 1 与 Exercise 3，留下可复现的失败案例</p>
-          <div class="tl-files"><span class="tfile">02_四项实作任务.md</span></div>
+          <div class="tl-files"><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/02_%E5%9B%9B%E9%A1%B9%E5%AE%9E%E4%BD%9C%E4%BB%BB%E5%8A%A1.md" target="_blank" rel="noopener noreferrer" aria-label="打开 02_四项实作任务.md（新标签页）">02_四项实作任务.md</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="13" aria-expanded="false" aria-controls="note-13">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2218,7 +2223,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：五道自测题全过一遍，答不上来的回 03 文件夹补</p>
-          <div class="tl-files"><span class="tfile">02_官方认证FAQ.pdf</span><span class="tfile">01_CCAR-F_官方认证主页.pdf</span><span class="tfile">01_五大领域学习卡片.md</span></div>
+          <div class="tl-files"><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/02_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81FAQ.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_官方认证FAQ.pdf（新标签页）">02_官方认证FAQ.pdf</a><a class="tfile" href="05_%E4%BD%8E%E4%BC%98%E5%85%88_%E9%80%89%E8%AF%BB_%E8%AF%BE%E7%A8%8B%E4%B8%8E%E8%AE%A4%E8%AF%81%E4%BF%A1%E6%81%AF/01_CCAR-F_%E5%AE%98%E6%96%B9%E8%AE%A4%E8%AF%81%E4%B8%BB%E9%A1%B5.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_CCAR-F_官方认证主页.pdf（新标签页）">01_CCAR-F_官方认证主页.pdf</a><a class="tfile" href="https://github.com/yybb123123/ccarf-study-guide/blob/main/06_%E8%87%AA%E6%B5%8B%E4%B8%8E%E5%AE%9E%E4%BD%9C_%E5%8A%A8%E6%89%8B%E7%94%A8/01_%E4%BA%94%E5%A4%A7%E9%A2%86%E5%9F%9F%E5%AD%A6%E4%B9%A0%E5%8D%A1%E7%89%87.md" target="_blank" rel="noopener noreferrer" aria-label="打开 01_五大领域学习卡片.md（新标签页）">01_五大领域学习卡片.md</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="14" aria-expanded="false" aria-controls="note-14">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2242,7 +2247,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：补漏，或用费曼法把五领域各讲 3 分钟；有余力再碰深水区</p>
-          <div class="tl-files"><span class="tfile">01_D2_MCP_Python_SDK.pdf</span></div>
+          <div class="tl-files"><a class="tfile" href="04_%E9%AB%98%E9%9A%BE%E5%BA%A6_%E9%80%89%E8%AF%BB_%E6%B7%B1%E6%B0%B4%E5%8C%BA/01_D2_MCP_Python_SDK.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D2_MCP_Python_SDK.pdf（新标签页）">01_D2_MCP_Python_SDK.pdf</a></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="15" aria-expanded="false" aria-controls="note-15">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
