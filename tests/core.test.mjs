@@ -9,7 +9,8 @@ const html = readFileSync(htmlUrl, 'utf8')
 function loadCore() {
   const m = html.match(/<script id="ccarf-core">([\s\S]*?)<\/script>/)
   assert.ok(m, 'index.html must contain <script id="ccarf-core">')
-  const sandbox = { window: {} }
+  const sandbox = { DecompressionStream, Blob, Response, crypto: globalThis.crypto }
+  sandbox.window = sandbox
   vm.runInNewContext(m[1], sandbox)
   return sandbox.window.CCARF_CORE
 }
