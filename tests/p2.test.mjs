@@ -18,8 +18,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v))
 const bank = bankFile.questions
 
 test('question bank is structurally valid and officially mapped', () => {
-  assert.equal(bank.length, 12)
-  assert.equal(new Set(bank.map((q) => q.id)).size, 12)
+  assert.equal(bank.length, 60)
+  assert.equal(new Set(bank.map((q) => q.id)).size, bank.length)
   const tsIds = new Set(exam.taskStatements.map((t) => t.id))
   const scenarioIds = new Set(exam.scenarios.map((s) => s.id))
   for (const q of bank) {
@@ -37,29 +37,36 @@ test('question bank is structurally valid and officially mapped', () => {
     assert.equal(v.ok, true, q.id + ': ' + v.errors.join(';'))
   }
   assert.deepEqual(new Set(bank.map((q) => q.domain)), new Set(['D1', 'D2', 'D3', 'D4', 'D5']))
+  for (const t of exam.taskStatements) {
+    assert.ok(bank.some((q) => q.taskStatementIds.includes(t.id)), 'no question for ' + t.id)
+  }
 })
 
-test('full mock is refused while the verified bank is short', () => {
-  const r = core.buildExam(bank, { size: 60, formal: true })
-  assert.equal(r.ok, false)
-  assert.equal(r.reason, 'insufficient')
-  assert.equal(r.available, 12)
+test('full mock builds 60 items and refuses a short pool', () => {
+  const r = core.buildExam(bank, { size: 60, formal: true, seed: 'full' })
+  assert.equal(r.ok, true, JSON.stringify(r))
+  assert.equal(r.questions.length, 60)
+  assert.equal(new Set(r.questions.map((q) => q.id)).size, 60)
+  const short = core.buildExam(bank.slice(0, 59), { size: 60, formal: true })
+  assert.equal(short.ok, false)
+  assert.equal(short.reason, 'insufficient')
+  assert.equal(short.available, 59)
 })
 
 test('a focused test can be built from the current bank without repeats', () => {
-  const r = core.buildExam(bank, { size: 12, formal: true, seed: 'a' })
+  const r = core.buildExam(bank, { size: 30, formal: true, seed: 'a' })
   assert.equal(r.ok, true, JSON.stringify(r))
-  assert.equal(r.questions.length, 12)
-  assert.equal(new Set(r.questions.map((q) => q.id)).size, 12)
-  const again = core.buildExam(bank, { size: 12, formal: true, seed: 'a' })
+  assert.equal(r.questions.length, 30)
+  assert.equal(new Set(r.questions.map((q) => q.id)).size, 30)
+  const again = core.buildExam(bank, { size: 30, formal: true, seed: 'a' })
   assert.deepEqual(plain(again.questions.map((q) => q.id)), plain(r.questions.map((q) => q.id)))
 })
 
 test('formal mode excludes non-official questions', () => {
   const fake = { ...bank[0], id: 'fake', evidence: 'personal', verified: true }
-  const r = core.buildExam([...bank, fake], { size: 13, formal: true, seed: 'x' })
+  const r = core.buildExam([...bank, fake], { size: 61, formal: true, seed: 'x' })
   assert.equal(r.ok, false)
-  const mixed = core.buildExam([...bank, fake], { size: 12, formal: true, seed: 'x' })
+  const mixed = core.buildExam([...bank, fake], { size: 60, formal: true, seed: 'x' })
   assert.equal(mixed.ok, true)
   assert.ok(!mixed.questions.some((q) => q.id === 'fake'))
 })

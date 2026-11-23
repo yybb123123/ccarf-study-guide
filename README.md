@@ -49,8 +49,8 @@ Key 只存在你自己的浏览器里，不写进仓库，也不会经过第三�
 ## 情景训练与模拟考场
 
 - 六个官方情景（Customer Support、Code Generation、Multi-Agent Research、Developer Productivity、CI、Structured Data Extraction），每个可练 Level 1 基本理解 / Level 2 架构决策 / Level 3 条件变化；
-- 题库：`data/question-bank.json`，当前 12 道原创模拟题，均映射官方 Task Statement、带逐项解析，标注「非官方真题」；
-- 完整模拟要求已验证题库 ≥60 且均有官方依据；不足时按钮禁用并显示「12/60」，不把不完整测验标记为正式通过；
+- 题库：`data/question-bank.json`，60 道原创模拟题（每条官方 Task Statement 2 道），均带逐项解析并标注「非官方真题」；
+- 完整模拟要求已验证题库 ≥60 且均有官方依据；当前 60/60，已开放 60 题 / 120 分钟模式。不足时按钮会自动禁用，不把不完整测验标记为正式通过；
 - 专项测验支持计时、题号导航、标记复查、自动保存、刷新续考、超时自动交卷、按领域/TS 报告、错题自动进入复习；
 - 报告只做本站学习指标；720 分是官方评分规则说明，不做官方分数预测。
 
