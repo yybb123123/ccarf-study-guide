@@ -6025,17 +6025,18 @@ body.is-remote .file-hit{opacity:.85}
       var x = report.byDomain[d];
       return "<tr><td>" + d + "</td><td>" + x.correct + " / " + x.total + "</td><td>" + Math.round(x.correct / x.total * 100) + "%</td></tr>";
     }).join("");
+    var wrongAnswered = report.wrong.filter(function (w) { return w.selected && w.selected.length; });
     var weak = Object.keys(report.byTs).map(function (id) {
       var x = report.byTs[id];
       return { id: id, pct: x.correct / x.total, correct: x.correct, total: x.total };
     }).filter(function (x) { return x.pct < 0.7; }).sort(function (a, b) { return a.pct - b.pct; }).slice(0, 8);
     $("examReport").innerHTML = '<div class="exam-report"><h3>' + (auto ? "时间到，已自动交卷" : "交卷完成") + "</h3>" +
-      '<div class="big">' + report.pct + '%</div><p class="hint">' + report.correct + " / " + report.total + " 题 · 未答 " + report.unanswered + " · 用时 " + C.formatDuration(used) + " · 模式：" + esc(examState.mode) + "</p>" +
+      '<div class="big">' + report.pct + '%</div><p class="hint">' + report.correct + " / " + report.total + " 题 · 未答 " + report.unanswered + " · 答错 " + wrongAnswered.length + " · 用时 " + C.formatDuration(used) + " · 模式：" + esc(examState.mode) + "</p>" +
       '<p class="hint">单选 ' + Math.round((report.byType.single.correct / (report.byType.single.total || 1)) * 100) + "% · 多选 " + Math.round((report.byType.multiple.correct / (report.byType.multiple.total || 1)) * 100) + "%" +
       (prev ? " · 上次 " + prev.pct + "%" : "") + "</p>" +
       "<table><thead><tr><th>领域</th><th>正确</th><th>正确率</th></tr></thead><tbody>" + doms + "</tbody></table>" +
       (weak.length ? "<p class=\"hint\">薄弱目标：" + weak.map(function (x) { return x.id + "（" + x.correct + "/" + x.total + "）"; }).join("、") + "</p>" : "") +
-      (report.wrong.length ? "<details><summary>错题 " + report.wrong.length + " 道（含解析）</summary><ul>" + report.wrong.map(function (w) {
+      (wrongAnswered.length ? "<details><summary>错题 " + wrongAnswered.length + " 道（含解析）</summary><ul>" + wrongAnswered.map(function (w) {
         return "<li><strong>" + esc(w.question) + "</strong><br>正确答案：" + w.correctAnswers.map(function (i) { return String.fromCharCode(65 + i) + ". " + esc(w.options[i]); }).join("；") + "<br>" + esc(w.explanation) + "</li>";
       }).join("") + "</ul></details>" : "") +
       '<p class="hint">这是本站的模拟练习指标，不是官方评分；720 分规则仅作说明，不能换算官方分数。</p></div>';
