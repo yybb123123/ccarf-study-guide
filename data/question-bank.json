@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": 4,
+  "version": 6,
   "note": "原创、按官方 Task Statement 映射的模拟题；不是官方真题。",
   "questions": [
     {
@@ -2673,6 +2673,304 @@
       "conditions": "复杂工作流拆解",
       "pitfalls": "一刀切用同一种策略",
       "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S1-13",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.2"
+      ],
+      "scenarioId": "S1",
+      "level": 3,
+      "type": "multiple",
+      "question": "库存不足的业务错误应包含哪些信息，才能让代理正确恢复？（选 2 项）",
+      "options": [
+        "类别 inventory、retriable=false",
+        "可执行提示：缺货数量或替代方案",
+        "HTTP 500，让代理自己猜",
+        "空结果，当作成功"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "业务规则失败应标记为不可重试，并给出可执行信息；500 或空成功都会让代理继续错误流程。",
+      "optionAnalysis": [
+        "正确：业务类别 + 不可重试。",
+        "正确：可执行提示。",
+        "500 丢失业务语义。",
+        "空成功会误导代理。"
+      ],
+      "conditions": "业务规则失败而非网络故障",
+      "pitfalls": "把业务失败当成可重试错误",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S1-14",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.2"
+      ],
+      "scenarioId": "S1",
+      "level": 2,
+      "type": "single",
+      "question": "客户明确要求转人工，但问题看起来代理可以解决。最合适的处理是？",
+      "options": [
+        "尊重明确请求，转人工并附上下文摘要",
+        "坚持自动解决，忽略请求",
+        "让模型判断客户是否真的需要人工",
+        "先承诺已解决再转人工"
+      ],
+      "correctAnswers": [
+        0
+      ],
+      "explanation": "客户明确要求人工是 D5.2 的升级触发条件；应转人工并保留上下文，而不是替客户否定请求。",
+      "optionAnalysis": [
+        "正确：尊重请求 + 上下文。",
+        "忽略明确请求会损害信任。",
+        "模型不能替客户做这个决定。",
+        "虚假承诺不可接受。"
+      ],
+      "conditions": "客户明确要求人工",
+      "pitfalls": "用“可以自动解决”为由拒绝升级",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S1-15",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.4"
+      ],
+      "scenarioId": "S1",
+      "level": 3,
+      "type": "single",
+      "question": "退款前必须先确认 get_customer 返回的客户 ID 与订单匹配。多步工作流如何强制这个前置条件？",
+      "options": [
+        "在工作流/代码中要求前置工具成功且 ID 匹配，否则阻断退款",
+        "在提示词里写“请先验证”",
+        "先退款，失败后再验证",
+        "让退款工具自己决定是否验证"
+      ],
+      "correctAnswers": [
+        0
+      ],
+      "explanation": "前置条件必须由工作流/代码确定性执行；提示词、事后验证或工具自行决定都不能保证顺序与权限。",
+      "optionAnalysis": [
+        "正确：确定性前置门禁。",
+        "提示词不保证执行。",
+        "先退款已产生不可逆副作用。",
+        "工具不应承担流程编排。"
+      ],
+      "conditions": "多步流程存在前置依赖",
+      "pitfalls": "把顺序约束交给提示词",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S2-13",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.2"
+      ],
+      "scenarioId": "S2",
+      "level": 2,
+      "type": "multiple",
+      "question": "自定义 skill 的 frontmatter，哪些配置合理？（选 2 项）",
+      "options": [
+        "context: fork 让长输出在隔离子代理中运行",
+        "allowed-tools 限制该 skill 可用的工具",
+        "在 SKILL.md 里写入 API Key",
+        "把 argument-hint 当作权限控制"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "fork 隔离上下文，allowed-tools 限制工具；凭证不能进仓库，argument-hint 只是提示。",
+      "optionAnalysis": [
+        "正确：fork 隔离。",
+        "正确：allowed-tools 限制。",
+        "凭证会泄露。",
+        "argument-hint 不执行权限。"
+      ],
+      "conditions": "团队共享 skill",
+      "pitfalls": "把提示当权限",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S2-14",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.5"
+      ],
+      "scenarioId": "S2",
+      "level": 2,
+      "type": "single",
+      "question": "一次反馈里包含多个相互独立的代码问题，哪种迭代方式更合适？",
+      "options": [
+        "一次只改一个独立问题并验证，再处理下一个",
+        "一次性重写所有相关文件",
+        "只改最后一个问题",
+        "忽略测试直接提交"
+      ],
+      "correctAnswers": [
+        0
+      ],
+      "explanation": "独立问题应逐个修复并验证，避免一次大改引入难以定位的回归；这也是 D3.5 的逐步精化。",
+      "optionAnalysis": [
+        "正确：逐个修复 + 验证。",
+        "大重写难以定位回归。",
+        "遗漏问题。",
+        "跳过验证风险高。"
+      ],
+      "conditions": "多个独立问题同时反馈",
+      "pitfalls": "把所有问题混在一次大改里",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S2-15",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.4"
+      ],
+      "scenarioId": "S2",
+      "level": 2,
+      "type": "single",
+      "question": "在大型仓库里修改跨模块功能，怎样降低上下文退化？",
+      "options": [
+        "一次把所有相关文件塞进上下文",
+        "先定位相关模块，把关键路径记录到 scratchpad，再分步修改",
+        "只给文件名让模型猜",
+        "关闭搜索工具"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "先定位、记录关键发现再分步执行，可避免长上下文泛化。",
+      "optionAnalysis": [
+        "全量上下文会稀释信号。",
+        "正确：定位 + scratchpad + 分步。",
+        "猜测不可靠。",
+        "关闭搜索失去定位能力。"
+      ],
+      "conditions": "大型代码库跨模块修改",
+      "pitfalls": "把整库塞进一次请求",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S6-14",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.4"
+      ],
+      "scenarioId": "S6",
+      "level": 3,
+      "type": "single",
+      "question": "源文档根本没有“发票日期”，抽取 Schema 却要求必填。重试最可能的结果是？",
+      "options": [
+        "重试会补出正确日期",
+        "重试通常无效，应标记缺失并转人工，而不是编造",
+        "降低 Schema 让空值通过即可",
+        "无限重试直到出现日期"
+      ],
+      "correctAnswers": [
+        1
+      ],
+      "explanation": "当所需信息在源文档中不存在时，重试无法产生事实；应把字段标记为缺失并升级，而不是让模型编造或放宽契约。",
+      "optionAnalysis": [
+        "源文档没有的信息不会被重试创造。",
+        "正确：标记缺失 + 转人工。",
+        "放宽 Schema 会掩盖缺失。",
+        "无限重试浪费且无效。"
+      ],
+      "conditions": "字段在源文档缺失",
+      "pitfalls": "用重试或放宽 Schema 掩盖缺失",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-S6-15",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.3"
+      ],
+      "scenarioId": "S6",
+      "level": 3,
+      "type": "single",
+      "question": "源文档中某些字段可能缺失，设计抽取 Schema 时最稳妥的是？",
+      "options": [
+        "允许 null/optional 并明确标注缺失",
+        "全部必填，迫使模型给出值",
+        "删除这些字段",
+        "用空字符串伪装成有效值"
+      ],
+      "correctAnswers": [
+        0
+      ],
+      "explanation": "nullable/optional 字段能表达“确实没有”，避免模型为了满足必填而编造；空字符串会污染下游判断。",
+      "optionAnalysis": [
+        "正确：允许缺失并标注。",
+        "必填会诱发编造。",
+        "删除字段丢失需求。",
+        "空字符串不是真实值。"
+      ],
+      "conditions": "字段可能不存在",
+      "pitfalls": "用必填逼迫模型猜值",
+      "difficulty": 3,
       "source": "original",
       "evidence": "official-outline",
       "verified": true,

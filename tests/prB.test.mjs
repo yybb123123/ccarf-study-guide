@@ -38,13 +38,18 @@ test('provenance is explicit, not presented as official review', () => {
   assert.ok(exam.scenarios.length === 6)
 })
 
-test('four-scenario composition refuses the current uneven bank', () => {
+test('four-scenario composition now uses S1/S2/S3/S6 with unique items', () => {
   const cov = core.scenarioCoverage(bank, 60, 4)
   assert.equal(cov.per, 15)
-  assert.ok(cov.eligible.length < 4, JSON.stringify(cov.counts))
+  assert.ok(cov.eligible.length >= 4, JSON.stringify(cov.counts))
   const r = core.buildScenarioExam(bank, { size: 60, scenarioCount: 4, seed: 'x' })
-  assert.equal(r.ok, false)
-  assert.equal(r.reason, 'insufficient-scenarios')
+  assert.equal(r.ok, true, JSON.stringify(r))
+  assert.equal(r.questions.length, 60)
+  assert.equal(new Set(r.questions.map((q) => q.id)).size, 60)
+  assert.equal(new Set(r.questions.map((q) => q.scenarioId)).size, 4)
+  const other = core.buildScenarioExam(bank, { size: 60, scenarioCount: 4, seed: 'y' })
+  assert.equal(other.ok, true)
+  assert.notDeepEqual(other.questions.map((q) => q.id), r.questions.map((q) => q.id))
 })
 
 test('four-scenario composition works when four scenarios have enough items', () => {
@@ -80,5 +85,34 @@ test('audit report covers every question and states its limits', () => {
   for (const q of audit.questions) {
     assert.equal(q.status, 'self-checked')
     for (const [k, v] of Object.entries(q.checks)) assert.equal(v, true, q.id + ':' + k)
+  }
+})
+
+test('P1 adds eight reviewed questions to S1/S2/S6 without duplicate stems', () => {
+  const ids = ['Q-S1-13', 'Q-S1-14', 'Q-S1-15', 'Q-S2-13', 'Q-S2-14', 'Q-S2-15', 'Q-S6-14', 'Q-S6-15']
+  for (const id of ids) {
+    const q = bank.find((x) => x.id === id)
+    assert.ok(q, id)
+    assert.ok(['S1', 'S2', 'S6'].includes(q.scenarioId), id)
+    assert.equal(q.origin, 'original-simulation')
+    assert.equal(q.reviewStatus, 'structure+content-self-checked')
+    assert.equal(q.humanReviewed, false)
+    assert.equal(q.optionAnalysis.length, 4)
+  }
+  const cov = core.scenarioCoverage(bank, 60, 4)
+  for (const s of ['S1', 'S2', 'S3', 'S6']) assert.ok(cov.eligible.includes(s), s)
+  assert.deepEqual(bank.filter((q) => q.id.startsWith('Q-S1-1') || q.id.startsWith('Q-S2-1') || q.id.startsWith('Q-S6-1')).length >= 8, true)
+})
+
+test('independent review record covers all eight new questions', () => {
+  const review = JSON.parse(readFileSync(new URL('../data/question-review-p1.json', import.meta.url), 'utf8'))
+  assert.equal(review.humanReviewed, false)
+  assert.equal(review.final.reviewed, 8)
+  assert.equal(review.final.passed, 8)
+  assert.equal(review.final.failed, 0)
+  assert.equal(review.rounds.length, 2)
+  assert.equal(review.rounds[0].failed, 6)
+  for (const id of review.final.rewritten) {
+    assert.ok(review.rounds[1].findings.some((f) => f.id === id && f.verdict === 'pass'), id)
   }
 })
