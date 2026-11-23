@@ -18,13 +18,17 @@ const plain = (v) => JSON.parse(JSON.stringify(v))
 const bank = bankFile.questions
 
 test('question bank is structurally valid and officially mapped', () => {
-  assert.equal(bank.length, 60)
+  assert.ok(bank.length >= 70)
+  assert.ok(bank.filter((q) => q.type === 'multiple').length >= 12, 'needs multiple-choice coverage')
   assert.equal(new Set(bank.map((q) => q.id)).size, bank.length)
   const tsIds = new Set(exam.taskStatements.map((t) => t.id))
   const scenarioIds = new Set(exam.scenarios.map((s) => s.id))
   for (const q of bank) {
     assert.equal(q.verified, true, q.id)
-    assert.equal(q.evidence, 'official', q.id)
+    assert.ok(['official', 'official-outline'].includes(q.evidence), q.id)
+    assert.equal(q.origin, 'original-simulation', q.id)
+    assert.equal(q.humanReviewed, false, q.id)
+    assert.match(q.reviewStatus, /self-checked/)
     assert.equal(q.options.length, 4, q.id)
     assert.equal(q.optionAnalysis.length, 4, q.id)
     assert.ok(q.explanation.length >= 12, q.id)
@@ -64,9 +68,9 @@ test('a focused test can be built from the current bank without repeats', () => 
 
 test('formal mode excludes non-official questions', () => {
   const fake = { ...bank[0], id: 'fake', evidence: 'personal', verified: true }
-  const r = core.buildExam([...bank, fake], { size: 61, formal: true, seed: 'x' })
+  const r = core.buildExam([...bank, fake], { size: bank.length + 1, formal: true, seed: 'x' })
   assert.equal(r.ok, false)
-  const mixed = core.buildExam([...bank, fake], { size: 60, formal: true, seed: 'x' })
+  const mixed = core.buildExam([...bank, fake], { size: bank.length, formal: true, seed: 'x' })
   assert.equal(mixed.ok, true)
   assert.ok(!mixed.questions.some((q) => q.id === 'fake'))
 })

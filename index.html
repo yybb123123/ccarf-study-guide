@@ -1953,7 +1953,8 @@ body.is-remote .file-hit{opacity:.85}
           </select>
         </div>
         <p class="hint" id="examNotice"></p>
-        <p class="hint">完整模拟只在已验证题库 ≥60 且均有官方依据时开放；不完整测验不会被标记为正式模拟通过。720 分是官方评分规则说明，本站不预测官方分数。</p>
+        <p class="hint">完整模拟只在 4 个官方情景各 15 题时开放；不完整测验不会被标记为正式模拟通过。720 分是官方评分规则说明，本站不预测官方分数。</p>
+        <p class="hint">题库是原创模拟题（结构 + 编写者自检，<code>humanReviewed: false</code>），不是官方真题；审校记录见 <code>data/question-audit.json</code>。</p>
       </div>
 
       <div id="examView" hidden>
@@ -3452,7 +3453,8 @@ body.is-remote .file-hit{opacity:.85}
       if (q.type === "multiple" && q.correctAnswers.length < 2) return false;
       if (o.domain && q.domain !== o.domain) return false;
       if (o.scenarioId && q.scenarioId !== o.scenarioId) return false;
-      if (o.formal && q.evidence !== "official") return false;
+      if (o.formal && q.evidence !== "official" && q.evidence !== "official-outline") return false;
+      if (o.formal && !(q.reviewStatus && /self-checked|human-reviewed/.test(q.reviewStatus))) return false;
       return true;
     });
   }
@@ -3590,6 +3592,44 @@ body.is-remote .file-hit{opacity:.85}
     return b;
   }
 
+
+  function scenarioCoverage(bank, size, count) {
+    var per = Math.ceil((size || 60) / (count || 4));
+    var pool = examBankFilter(bank, { formal: true });
+    var by = {}, counts = {};
+    pool.forEach(function (q) {
+      if (!q.scenarioId) return;
+      by[q.scenarioId] = by[q.scenarioId] || [];
+      by[q.scenarioId].push(q);
+    });
+    Object.keys(by).forEach(function (s) { counts[s] = by[s].length; });
+    var eligible = Object.keys(by).filter(function (s) { return by[s].length >= per; }).sort();
+    return { per: per, eligible: eligible, counts: counts, pool: pool.length };
+  }
+  function buildScenarioExam(bank, opts) {
+    var o = opts || {}, size = o.size || 60, count = o.scenarioCount || 4, seed = String(o.seed || "ccarf");
+    var cov = scenarioCoverage(bank, size, count);
+    if (cov.eligible.length < count) {
+      return { ok: false, reason: "insufficient-scenarios", per: cov.per, eligible: cov.eligible.length, counts: cov.counts, size: size };
+    }
+    var pickedScenarios = cov.eligible.slice().sort(function (a, b) {
+      return hashText(seed + ":s:" + a).localeCompare(hashText(seed + ":s:" + b));
+    }).slice(0, count);
+    var pool = examBankFilter(bank, { formal: true });
+    var base = Math.floor(size / count), extra = size - base * count;
+    var questions = [];
+    pickedScenarios.forEach(function (sc, idx) {
+      var need = base + (idx < extra ? 1 : 0);
+      var rows = pool.filter(function (q) { return q.scenarioId === sc; })
+        .sort(function (a, b) { return hashText(seed + ":" + sc + ":" + a.id).localeCompare(hashText(seed + ":" + sc + ":" + b.id)); });
+      questions = questions.concat(rows.slice(0, need));
+    });
+    if (questions.length !== size || new Set(questions.map(function (q) { return q.id; })).size !== size) {
+      return { ok: false, reason: "composition-failed", per: cov.per, eligible: cov.eligible.length, counts: cov.counts, size: size };
+    }
+    return { ok: true, questions: questions, scenarios: pickedScenarios, per: cov.per, count: cov.counts };
+  }
+
   global.CCARF_CORE = {
     migrateV1: migrateV1, hashText: hashText, hashBytes: hashBytes, chunkText: chunkText,
     tokenize: tokenize, classify: classify, DOMAINS: DOMAINS, buildIndex: buildIndex,
@@ -3606,7 +3646,7 @@ body.is-remote .file-hit{opacity:.85}
     EXAM_WEIGHTS: EXAM_WEIGHTS, examBankFilter: examBankFilter, examAllocate: examAllocate, buildExam: buildExam,
     gradeExam: gradeExam, examRemainingMs: examRemainingMs, formatDuration: formatDuration,
     examAttemptId: examAttemptId, buildExamEvidence: buildExamEvidence, applyExamEvidence: applyExamEvidence,
-    makeBackupV3: makeBackupV3, pruneLedger: pruneLedger
+    makeBackupV3: makeBackupV3, pruneLedger: pruneLedger, scenarioCoverage: scenarioCoverage, buildScenarioExam: buildScenarioExam
   };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
@@ -5276,7 +5316,7 @@ body.is-remote .file-hit{opacity:.85}
 
   /* ---------------- P3: 错题、客观判分与间隔复习 ---------------- */
   var CARDS_KEY = "ccarf.cards";
-  var EVIDENCE_LABEL = { official: "官方依据", translation: "译文依据", personal: "个人资料依据", model: "模型知识 · 非官方" };
+  var EVIDENCE_LABEL = { official: "官方依据", "official-outline": "官方考纲原创 · 结构+内容自检（非官方真题）", translation: "译文依据", personal: "个人资料依据", model: "模型知识 · 非官方" };
   function todayISO() { return C.todayISO(); }
   function loadCards() { var a = readJSON(CARDS_KEY, []); return Array.isArray(a) ? a : []; }
   function saveCards(list) { writeJSON(CARDS_KEY, list.slice(-500)); }
@@ -5965,17 +6005,26 @@ body.is-remote .file-hit{opacity:.85}
   }
 
   function examBankInfo(bank) {
-    var counts = {};
-    bank.forEach(function (q) { if (q.verified) counts[q.domain] = (counts[q.domain] || 0) + 1; });
+    var counts = {}, types = { single: 0, multiple: 0 };
+    bank.forEach(function (q) {
+      if (!q.verified) return;
+      counts[q.domain] = (counts[q.domain] || 0) + 1;
+      types[q.type] = (types[q.type] || 0) + 1;
+    });
     var verified = bank.filter(function (q) { return q.verified === true; }).length;
+    var cov = C.scenarioCoverage(bank, 60, 4);
+    var maxPer = Math.max.apply(null, Object.keys(cov.counts).map(function (k) { return cov.counts[k]; }).concat([0]));
     var info = $("examBankInfo");
-    if (info) info.innerHTML = "<span>已验证题库：<b>" + verified + "</b> / 60</span>" +
+    if (info) info.innerHTML = "<span>可用题库：<b>" + verified + "</b> 题（单选 " + types.single + " / 多选 " + types.multiple + "）</span>" +
+      "<span>四情景组卷：<b>" + cov.eligible.length + " / 4</b> 个情景达到每卷 15 题</span>" +
       Object.keys(DOMAIN_NAMES).map(function (d) { return "<span>" + d + "：" + (counts[d] || 0) + "</span>"; }).join("");
     var full = $("examStartFull"), notice = $("examNotice");
-    if (full) full.disabled = verified < 60;
-    if (notice) notice.textContent = verified < 60
-      ? "完整模拟题库不足（" + verified + "/60），只能做专项测验；不会把不完整测验标记为正式模拟通过。"
-      : "题库已达到 60 题，可进行完整模拟。";
+    if (full) full.disabled = cov.eligible.length < 4;
+    if (notice) {
+      notice.textContent = cov.eligible.length < 4
+        ? "完整模拟需 4 个情景各 15 题；当前最多 " + maxPer + " 题/情景，暂不开放。专项测验仍可用，且不会被标记为正式模拟通过。"
+        : "已满足 4 情景 60 题组卷条件，可进行完整模拟。";
+    }
   }
   function saveExam() { if (examState) writeJSON(EXAM_KEY, examState); }
   function examLeft() { return examState ? C.examRemainingMs(examState.startedAt, examState.minutes) : 0; }
@@ -5983,8 +6032,11 @@ body.is-remote .file-hit{opacity:.85}
     loadBank().then(function (bank) {
       var questions = [];
       if (size === 60) {
-        var r = C.buildExam(bank, { size: 60, formal: true });
-        if (!r.ok) { $("examNotice").textContent = "完整模拟未开放：已验证题库 " + r.available + "/60。"; return; }
+        var r = C.buildScenarioExam(bank, { size: 60, scenarioCount: 4, seed: String(Date.now()) });
+        if (!r.ok) {
+          $("examNotice").textContent = "完整模拟未开放：需要 4 个情景各 15 题，当前满足 " + (r.eligible || 0) + " 个情景。";
+          return;
+        }
         questions = r.questions;
       } else {
         var dom = ($("examDomain") || {}).value || "";
