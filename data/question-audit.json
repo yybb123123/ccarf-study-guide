@@ -1,0 +1,1473 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-11-23T04:41:05.308Z",
+  "reviewer": "agent",
+  "humanReviewed": false,
+  "method": "结构校验 + 依据 Exam Guide v1.1 的编写者自检；没有独立人工审校证据",
+  "disclaimer": "Schema 合法不等于技术答案一定正确；本报告不声称通过 Anthropic 或任何人工审校。",
+  "summary": {
+    "total": 72,
+    "single": 58,
+    "multiple": 14,
+    "byDomain": {
+      "D1": 17,
+      "D2": 12,
+      "D3": 14,
+      "D4": 14,
+      "D5": 15
+    },
+    "byScenario": {
+      "S1": 12,
+      "S3": 16,
+      "S4": 10,
+      "S2": 12,
+      "S5": 9,
+      "S6": 13
+    },
+    "taskStatementsCovered": 30,
+    "failed": 0,
+    "duplicateStems": 0
+  },
+  "questions": [
+    {
+      "id": "Q-D1-01",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-02",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-03",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-01",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-02",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-03",
+      "type": "multiple",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-01",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-02",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-01",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-02",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-01",
+      "type": "multiple",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-02",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-04",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-05",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-06",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-07",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-04",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-05",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-03",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-04",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-05",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-06",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-03",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-04",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-05",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-06",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-03",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-04",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-05",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-06",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-08",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-09",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-10",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-11",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-12",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-13",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-14",
+      "type": "single",
+      "domain": "D1",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-06",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-07",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-08",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-09",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-10",
+      "type": "single",
+      "domain": "D2",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-07",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-08",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-09",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-10",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-11",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-12",
+      "type": "single",
+      "domain": "D3",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-07",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-08",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-09",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-10",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-11",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-12",
+      "type": "single",
+      "domain": "D4",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-07",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-08",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-09",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-10",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-11",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-12",
+      "type": "single",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-15",
+      "type": "multiple",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-16",
+      "type": "multiple",
+      "domain": "D1",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-11",
+      "type": "multiple",
+      "domain": "D2",
+      "scenarioId": "S1",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D2-12",
+      "type": "multiple",
+      "domain": "D2",
+      "scenarioId": "S4",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-13",
+      "type": "multiple",
+      "domain": "D3",
+      "scenarioId": "S2",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D3-14",
+      "type": "multiple",
+      "domain": "D3",
+      "scenarioId": "S5",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-13",
+      "type": "multiple",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D4-14",
+      "type": "multiple",
+      "domain": "D4",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-13",
+      "type": "multiple",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-14",
+      "type": "multiple",
+      "domain": "D5",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D5-15",
+      "type": "multiple",
+      "domain": "D5",
+      "scenarioId": "S6",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    },
+    {
+      "id": "Q-D1-17",
+      "type": "multiple",
+      "domain": "D1",
+      "scenarioId": "S3",
+      "status": "self-checked",
+      "checks": {
+        "inScope": true,
+        "fourOptions": true,
+        "uniqueOptions": true,
+        "answerCountOk": true,
+        "answerInRange": true,
+        "explanation": true,
+        "optionAnalysis": true,
+        "scenarioValid": true,
+        "duplicateStem": true,
+        "provenance": true
+      },
+      "notes": []
+    }
+  ]
+}

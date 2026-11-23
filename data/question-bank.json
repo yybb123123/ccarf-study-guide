@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": 3,
+  "version": 4,
   "note": "原创、按官方 Task Statement 映射的模拟题；不是官方真题。",
   "questions": [
     {
@@ -33,8 +33,12 @@
       "pitfalls": "把 max_tokens 截断误当成正常结束",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-02",
@@ -66,8 +70,12 @@
       "pitfalls": "把所有历史都塞进子代理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-03",
@@ -99,8 +107,12 @@
       "pitfalls": "用提示词代替授权",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-01",
@@ -132,8 +144,12 @@
       "pitfalls": "描述含糊导致模型乱选",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-02",
@@ -165,8 +181,12 @@
       "pitfalls": "把查无结果当异常",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-03",
@@ -199,8 +219,12 @@
       "pitfalls": "用提示词替代权限控制",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-01",
@@ -232,8 +256,12 @@
       "pitfalls": "把根目录规则当成绝对覆盖",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-02",
@@ -265,8 +293,12 @@
       "pitfalls": "跳过计划直接大改",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-01",
@@ -298,8 +330,12 @@
       "pitfalls": "把“看起来像 JSON”当成合法",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-02",
@@ -331,8 +367,12 @@
       "pitfalls": "用重试掩盖系统性错误",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-01",
@@ -365,8 +405,12 @@
       "pitfalls": "把摘要当成无损记录",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-02",
@@ -398,8 +442,12 @@
       "pitfalls": "把“合理猜测”当成决策",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-04",
@@ -431,8 +479,12 @@
       "pitfalls": "让子代理共享可变状态",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-05",
@@ -464,8 +516,12 @@
       "pitfalls": "用提示词代替 hook",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-06",
@@ -497,8 +553,12 @@
       "pitfalls": "把所有任务都做成动态代理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-07",
@@ -530,8 +590,12 @@
       "pitfalls": "恢复后不说明文件变化",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-04",
@@ -563,8 +627,12 @@
       "pitfalls": "提交明文凭证",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-05",
@@ -596,8 +664,12 @@
       "pitfalls": "用 Glob 搜函数名",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-03",
@@ -629,8 +701,12 @@
       "pitfalls": "把团队命令放用户目录",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-04",
@@ -662,8 +738,12 @@
       "pitfalls": "把所有规则塞进全局",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-05",
@@ -695,8 +775,12 @@
       "pitfalls": "只靠形容词描述",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-06",
@@ -728,8 +812,12 @@
       "pitfalls": "在 CI 里等待交互输入",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-03",
@@ -761,8 +849,12 @@
       "pitfalls": "用形容词代替标准",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-04",
@@ -794,8 +886,12 @@
       "pitfalls": "用重试掩盖提示缺陷",
       "difficulty": 1,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-05",
@@ -827,8 +923,12 @@
       "pitfalls": "把交互式流程放进批处理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-06",
@@ -860,8 +960,12 @@
       "pitfalls": "让生成者自审并当作独立评审",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-03",
@@ -893,8 +997,12 @@
       "pitfalls": "用“失败”两个字代替错误上下文",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-04",
@@ -926,8 +1034,12 @@
       "pitfalls": "把摘要当成无损记忆",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-05",
@@ -959,8 +1071,12 @@
       "pitfalls": "只看总体准确率",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-06",
@@ -992,8 +1108,12 @@
       "pitfalls": "在摘要中丢失 claim-source 映射",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-08",
@@ -1025,8 +1145,12 @@
       "pitfalls": "把 tool_use 当结束",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-09",
@@ -1058,8 +1182,12 @@
       "pitfalls": "静默吞掉子代理失败",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-10",
@@ -1091,8 +1219,12 @@
       "pitfalls": "把全部历史塞给子代理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-11",
@@ -1124,8 +1256,12 @@
       "pitfalls": "把强制规则写进提示词",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-12",
@@ -1157,8 +1293,12 @@
       "pitfalls": "用 PostToolUse 做权限控制",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-13",
@@ -1190,8 +1330,12 @@
       "pitfalls": "一次提示塞入全部文件",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D1-14",
@@ -1223,8 +1367,12 @@
       "pitfalls": "用 fork 代替删除历史",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-06",
@@ -1256,8 +1404,12 @@
       "pitfalls": "只写“查询数据”",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-07",
@@ -1289,8 +1441,12 @@
       "pitfalls": "所有错误都标记可重试",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-08",
@@ -1322,8 +1478,12 @@
       "pitfalls": "把全部工具都暴露给每个代理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-09",
@@ -1355,8 +1515,12 @@
       "pitfalls": "把凭证硬编码进 .mcp.json",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D2-10",
@@ -1388,8 +1552,12 @@
       "pitfalls": "用 Edit 盲改重复片段",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-07",
@@ -1421,8 +1589,12 @@
       "pitfalls": "假设根文件覆盖一切",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-08",
@@ -1454,8 +1626,12 @@
       "pitfalls": "把所有技能都设为 fork",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-09",
@@ -1487,8 +1663,12 @@
       "pitfalls": "把规则复制到每个目录",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-10",
@@ -1520,8 +1700,12 @@
       "pitfalls": "所有改动都先 plan",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-11",
@@ -1553,8 +1737,12 @@
       "pitfalls": "跳过澄清直接写代码",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D3-12",
@@ -1586,8 +1774,12 @@
       "pitfalls": "让生成者自审并当作独立验证",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-07",
@@ -1619,8 +1811,12 @@
       "pitfalls": "用模糊形容词代替标准",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-08",
@@ -1652,8 +1848,12 @@
       "pitfalls": "只给正例不给歧义例",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-09",
@@ -1685,8 +1885,12 @@
       "pitfalls": "把 Schema 通过当业务正确",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-10",
@@ -1718,8 +1922,12 @@
       "pitfalls": "只说“重试”",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-11",
@@ -1751,8 +1959,12 @@
       "pitfalls": "把工具循环放进批处理",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D4-12",
@@ -1784,8 +1996,12 @@
       "pitfalls": "单次塞入全部 diff",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-07",
@@ -1817,8 +2033,12 @@
       "pitfalls": "压缩后丢失来源",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-08",
@@ -1850,8 +2070,12 @@
       "pitfalls": "低置信也自动执行",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-09",
@@ -1883,8 +2107,12 @@
       "pitfalls": "把空结果当异常",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-10",
@@ -1916,8 +2144,12 @@
       "pitfalls": "把关键发现只留在对话里",
       "difficulty": 2,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-11",
@@ -1949,8 +2181,12 @@
       "pitfalls": "只用平均值评估",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "Q-D5-12",
@@ -1982,8 +2218,468 @@
       "pitfalls": "摘要后无法追溯来源",
       "difficulty": 3,
       "source": "original",
-      "evidence": "official",
-      "verified": true
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D1-15",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.2"
+      ],
+      "scenarioId": "S3",
+      "level": 2,
+      "type": "multiple",
+      "question": "协调者在多代理架构中承担哪些职责？（选 2 项）",
+      "options": [
+        "路由子代理之间的通信与结果汇总",
+        "维护错误处理与升级决策",
+        "自动继承每个子代理的全部历史",
+        "让子代理共享可变草稿"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "协调者负责路由、汇总、错误处理与升级；子代理上下文隔离，不共享可变状态。",
+      "optionAnalysis": [
+        "正确：通信与汇总。",
+        "正确：错误处理/升级。",
+        "不继承完整历史。",
+        "共享草稿有竞态。"
+      ],
+      "conditions": "hub-and-spoke 架构",
+      "pitfalls": "把协调者当成历史容器",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D1-16",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.4"
+      ],
+      "scenarioId": "S1",
+      "level": 3,
+      "type": "multiple",
+      "question": "要“确定性”限制退款工作流，哪些做法有效？（选 2 项）",
+      "options": [
+        "在 hooks/代码中校验金额与权限并阻断",
+        "超出授权时转人工审批",
+        "在提示词里写“请谨慎”",
+        "失败后无限重试"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "确定性边界靠代码/hooks 与人工升级；提示词与无限重试都不是强制。",
+      "optionAnalysis": [
+        "正确：代码/hook 阻断。",
+        "正确：人工升级。",
+        "提示词不保证。",
+        "重试不解决权限。"
+      ],
+      "conditions": "不可逆退款流程",
+      "pitfalls": "用提示词当权限系统",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D2-11",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.2"
+      ],
+      "scenarioId": "S1",
+      "level": 2,
+      "type": "multiple",
+      "question": "结构化工具错误应包含哪些信息？（选 2 项）",
+      "options": [
+        "错误类型与是否可重试",
+        "失败上下文或部分结果",
+        "隐藏真实原因",
+        "统一返回 500"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "错误类型/可重试标记与上下文让代理决定重试、换工具或升级。",
+      "optionAnalysis": [
+        "正确：类型 + 可重试。",
+        "正确：上下文/部分结果。",
+        "隐藏原因妨碍恢复。",
+        "统一 500 丢失语义。"
+      ],
+      "conditions": "代理需要自动恢复",
+      "pitfalls": "只返回“失败”",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D2-12",
+      "domain": "D2",
+      "taskStatementIds": [
+        "D2.4"
+      ],
+      "scenarioId": "S4",
+      "level": 2,
+      "type": "multiple",
+      "question": "关于 MCP 配置与凭证，哪些做法正确？（选 2 项）",
+      "options": [
+        "团队工具放项目级 .mcp.json",
+        "用 ${ENV} 展开凭证，避免入库",
+        "把 Token 提交到仓库",
+        "把所有服务器只放用户级"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "项目级共享配置 + 环境变量展开；凭证不入库。",
+      "optionAnalysis": [
+        "正确：项目级共享。",
+        "正确：环境变量。",
+        "明文提交会泄露。",
+        "个人/团队应区分。"
+      ],
+      "conditions": "团队共享 MCP",
+      "pitfalls": "提交明文 Token",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D3-13",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.1"
+      ],
+      "scenarioId": "S2",
+      "level": 2,
+      "type": "multiple",
+      "question": "CLAUDE.md 的层级规则，哪些描述正确？（选 2 项）",
+      "options": [
+        "根目录提供默认约定",
+        "更具体的目录规则在对应范围内优先",
+        "只有根目录文件生效",
+        "子目录文件会被忽略"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "根目录是默认，局部更具体规则在范围内优先。",
+      "optionAnalysis": [
+        "正确：根目录默认。",
+        "正确：局部优先。",
+        "子目录也生效。",
+        "不会被忽略。"
+      ],
+      "conditions": "多目录项目",
+      "pitfalls": "假设只有根规则",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D3-14",
+      "domain": "D3",
+      "taskStatementIds": [
+        "D3.6"
+      ],
+      "scenarioId": "S5",
+      "level": 2,
+      "type": "multiple",
+      "question": "CI 中非交互运行 Claude Code，哪些做法必要？（选 2 项）",
+      "options": [
+        "使用 -p/--print 非交互模式",
+        "输出结构化结果并检查退出码",
+        "等待人工确认",
+        "关闭失败退出码"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "CI 需要非交互 + 可程序化消费的结果与退出码。",
+      "optionAnalysis": [
+        "正确：非交互。",
+        "正确：结构化 + 退出码。",
+        "人工确认会阻塞。",
+        "关闭退出码掩盖失败。"
+      ],
+      "conditions": "CI 自动化",
+      "pitfalls": "在流水线等待交互",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D4-13",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.3"
+      ],
+      "scenarioId": "S6",
+      "level": 2,
+      "type": "multiple",
+      "question": "强制结构化输出，哪些做法有效？（选 2 项）",
+      "options": [
+        "工具调用 + JSON Schema",
+        "返回后做 Schema 与业务校验",
+        "只在提示词里写“返回 JSON”",
+        "用正则从自由文本猜"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "Schema 工具提供结构约束，返回后仍需校验。",
+      "optionAnalysis": [
+        "正确：工具 + Schema。",
+        "正确：返回后校验。",
+        "仅提示不保证。",
+        "正则难以覆盖。"
+      ],
+      "conditions": "抽取结果下游消费",
+      "pitfalls": "把提示词当 Schema",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D4-14",
+      "domain": "D4",
+      "taskStatementIds": [
+        "D4.5"
+      ],
+      "scenarioId": "S6",
+      "level": 2,
+      "type": "multiple",
+      "question": "哪些任务适合 Message Batches API？（选 2 项）",
+      "options": [
+        "非阻塞的夜间批量报告",
+        "可延迟的离线审计",
+        "实时聊天回复",
+        "请求内多轮工具调用"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "批处理适合可延迟任务；不支持请求内多轮工具，不适合实时。",
+      "optionAnalysis": [
+        "正确：夜间批处理。",
+        "正确：离线审计。",
+        "实时不适合。",
+        "多轮工具不支持。"
+      ],
+      "conditions": "成本敏感离线任务",
+      "pitfalls": "把交互式流程放批处理",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D5-13",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.1"
+      ],
+      "scenarioId": "S3",
+      "level": 2,
+      "type": "multiple",
+      "question": "长对话压缩时，哪些信息必须保留？（选 2 项）",
+      "options": [
+        "已确认的决策与未决问题",
+        "claim 与来源的映射",
+        "所有闲聊原文",
+        "模型的内部思考"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "压缩必须保留决策、未决项与来源映射。",
+      "optionAnalysis": [
+        "正确：决策/未决。",
+        "正确：来源映射。",
+        "闲聊可丢。",
+        "思考过程可丢。"
+      ],
+      "conditions": "上下文压缩",
+      "pitfalls": "压缩后失去来源",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D5-14",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.3"
+      ],
+      "scenarioId": "S3",
+      "level": 3,
+      "type": "multiple",
+      "question": "子代理失败时，哪些信息应回传协调者？（选 2 项）",
+      "options": [
+        "失败类型与已尝试的查询",
+        "部分结果与替代方案",
+        "一句“失败了”",
+        "静默重试不记录"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "结构化失败上下文与部分结果支持恢复决策。",
+      "optionAnalysis": [
+        "正确：失败类型/查询。",
+        "正确：部分结果/替代。",
+        "笼统状态无用。",
+        "静默重试掩盖。"
+      ],
+      "conditions": "多代理错误传播",
+      "pitfalls": "只回传通用错误",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D5-15",
+      "domain": "D5",
+      "taskStatementIds": [
+        "D5.5"
+      ],
+      "scenarioId": "S6",
+      "level": 3,
+      "type": "multiple",
+      "question": "评估抽取质量时，哪些做法有效？（选 2 项）",
+      "options": [
+        "按文档类型/字段分层抽样",
+        "分别统计字段级准确率",
+        "只看总体准确率",
+        "跳过人工复核"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "分层抽样与字段级指标能暴露被平均掩盖的问题。",
+      "optionAnalysis": [
+        "正确：分层抽样。",
+        "正确：字段级。",
+        "总体掩盖差异。",
+        "不复核失去发现渠道。"
+      ],
+      "conditions": "质量监控",
+      "pitfalls": "只看一个总分",
+      "difficulty": 3,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "id": "Q-D1-17",
+      "domain": "D1",
+      "taskStatementIds": [
+        "D1.6"
+      ],
+      "scenarioId": "S3",
+      "level": 2,
+      "type": "multiple",
+      "question": "任务分解策略的选择，哪些正确？（选 2 项）",
+      "options": [
+        "步骤固定时用顺序 prompt chaining",
+        "中间发现会改变下一步时用动态分解",
+        "所有任务都必须用动态代理",
+        "只用一个超长提示完成所有步骤"
+      ],
+      "correctAnswers": [
+        0,
+        1
+      ],
+      "explanation": "固定流程适合可预知步骤，动态分解适合发现驱动。",
+      "optionAnalysis": [
+        "正确：固定用 chaining。",
+        "正确：动态分解。",
+        "不必都动态。",
+        "超长提示易丢细节。"
+      ],
+      "conditions": "复杂工作流拆解",
+      "pitfalls": "一刀切用同一种策略",
+      "difficulty": 2,
+      "source": "original",
+      "evidence": "official-outline",
+      "verified": true,
+      "origin": "original-simulation",
+      "reviewStatus": "structure+content-self-checked",
+      "humanReviewed": false,
+      "reviewedAt": "2026-11-23"
     }
   ]
 }
