@@ -3193,6 +3193,7 @@ body.is-remote .file-hit{opacity:.85}
       if (d.exam !== undefined && d.exam !== null && !isObj(d.exam)) errors.push("exam 结构不正确");
       if (d.exams !== undefined && d.exams !== null && !Array.isArray(d.exams)) errors.push("exams 结构不正确");
       if (d.examDate !== undefined && d.examDate !== null && typeof d.examDate !== "string") errors.push("examDate 结构不正确");
+      if (d.pdfTranslations !== undefined && (!Array.isArray(d.pdfTranslations) || d.pdfTranslations.length > 60 || d.pdfTranslations.some(function(e){return !isObj(e) || typeof e.source !== "string" || !/\.pdf$/i.test(e.source) || e.lang !== "zh-CN" || typeof e.name !== "string" || typeof e.data !== "string" || e.data.length > 12*1024*1024;}))) errors.push("pdfTranslations 结构不正确");
       if (d.settings !== undefined && !isObj(d.settings)) errors.push("settings 结构不正确");
       if (d.knowledge !== undefined) {
         if (!isObj(d.knowledge)) errors.push("knowledge 结构不正确");
@@ -5848,6 +5849,7 @@ body.is-remote .file-hit{opacity:.85}
       exams: readJSON(EXAM_HISTORY, null),
       examDate: readJSON("ccarf.examDate", null),
       knowledge: { docs: docs, chunks: chunks },
+      pdfTranslations: window.CCARF_PDF ? await window.CCARF_PDF.exportAll() : [],
       settings: C.safeSettings(readJSON("ccarf.ai", {}))
     };
     return C.makeBackupV3(data, new Date().toISOString());
@@ -5880,7 +5882,7 @@ body.is-remote .file-hit{opacity:.85}
   function applyBackup(b) {
     var d = b.data || {};
     var hasKnowledge = C.hasKnowledgePayload(d);
-    var oldDocs = null, oldChunks = null;
+    var oldDocs = null, oldChunks = null, oldPdfs = null;
     var keys = {
       units: "ccarf.units", notes: "ccarf.notes", accept: "ccarf.accept", chat: "ccarf.chat",
       cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, time: "ccarf.time", ts: TS_KEY, tsLedger: TS_LEDGER_KEY,
@@ -5894,10 +5896,18 @@ body.is-remote .file-hit{opacity:.85}
       return allChunks();
     }).then(function (chunks) {
       oldChunks = chunks;
+      return window.CCARF_PDF ? window.CCARF_PDF.snapshot() : [];
+    }).then(function (pdfs) {
+      oldPdfs = pdfs;
       // 只有备份明确带有 knowledge 字段时才动 IndexedDB；
       // 旧备份缺少该字段时保留本机资料，绝不默认清空。
       if (!hasKnowledge) return Promise.resolve();
       return replaceAllKnowledge({ docs: d.knowledge.docs || [], chunks: d.knowledge.chunks || [] });
+    }).then(function () {
+      if (has("pdfTranslations")) {
+        if (!window.CCARF_PDF) throw new Error("当前页面不支持中文 PDF 恢复");
+        return window.CCARF_PDF.restoreAll(d.pdfTranslations);
+      }
     }).then(function () {
       if (has("units")) writeStrict(keys.units, d.units || []);
       if (has("notes")) writeStrict(keys.notes, d.notes || {});
@@ -6398,7 +6408,7 @@ refresh();
     var source=pdfSource(file.name);
     if(!source)return null;
     await checkPdf(file,source);
-    return {source:source,name:file.name,lang:"zh-CN",bytes:file.size,addedAt:new Date().toISOString(),blob:file};
+    return {source:source,name:file.name,lang:"zh-CN",bytes:file.size,addedAt:new Date().toISOString(),blob:new Blob([file],{type:"application/pdf"})};
   }
   async function fromZip(file){
     if(file.size>MAX_ARCHIVE)throw new Error("ZIP 超出 32 MB 限额");
@@ -6435,7 +6445,7 @@ refresh();
       }else throw new Error("ZIP 压缩格式不支持："+name);
       if(blob.size!==expected)throw new Error("ZIP 解压大小不一致："+name);
       await checkPdf(blob,source);
-      out.push({source:source,name:name.split("/").pop(),lang:"zh-CN",bytes:blob.size,addedAt:new Date().toISOString(),blob:blob});
+      out.push({source:source,name:name.split("/").pop(),lang:"zh-CN",bytes:blob.size,addedAt:new Date().toISOString(),blob:new Blob([blob],{type:"application/pdf"})});
     }
     return out;
   }
