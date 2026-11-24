@@ -2013,7 +2013,7 @@ body.is-remote .file-hit{opacity:.85}
       <div class="data-grid">
         <section class="review-col">
           <h3>导出完整备份</h3>
-          <p class="hint">包含：学习进度、笔记、实作验收、聊天记录、费曼对话、知识库、错题与复习、掌握状态、非敏感设置。<br>不包含：DeepSeek API Key、GitHub Token。校验和只能发现意外损坏，不能证明来源可信。</p>
+          <p class="hint">包含：学习进度、笔记、实作验收、聊天记录、费曼对话、知识库、中文 PDF 译本、错题与复习、掌握状态、非敏感设置。<br>不包含：DeepSeek API Key、GitHub Token。校验和只能发现意外损坏，不能证明来源可信。</p>
           <button class="btn btn-primary" id="backupExport" type="button">导出 JSON 备份</button>
           <p class="hint" id="backupInfo"></p>
           <p class="hint">备份可能包含私人 NotebookLM 资料，请存放在本机安全位置，不要提交到公开仓库。</p>
@@ -5869,7 +5869,7 @@ body.is-remote .file-hit{opacity:.85}
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
-      if (info) info.textContent = "已导出 " + (blob.size / 1024).toFixed(0) + " KB：" + b.data.knowledge.docs.length + " 份资料、" + b.data.cards.length + " 道错题、" + (b.data.chat || []).length + " 条聊天记录、SHA-256 已签名；不含 API Key。";
+      if (info) info.textContent = "已导出 " + (blob.size / 1024).toFixed(0) + " KB：" + b.data.knowledge.docs.length + " 份资料、" + (b.data.pdfTranslations || []).length + " 份中文PDF、" + b.data.cards.length + " 道错题、" + (b.data.chat || []).length + " 条聊天记录、SHA-256 已签名；不含 API Key。";
     } catch (e) {
       if (info) info.textContent = "导出失败：" + e.message;
     }
@@ -5929,10 +5929,13 @@ body.is-remote .file-hit{opacity:.85}
     }).catch(function (e) {
       var p = hasKnowledge && oldDocs ? replaceAllKnowledge({ docs: oldDocs, chunks: oldChunks || [] }) : Promise.resolve();
       return p.catch(function () {}).then(function () {
+        if (has("pdfTranslations") && oldPdfs && window.CCARF_PDF)
+          return window.CCARF_PDF.restoreSnapshot(oldPdfs);
+      }).catch(function () {}).then(function () {
         Object.keys(keys).forEach(function (k) {
           try {
-            if (oldLS[k] === null) localStorage.removeItem(keys[k]);
-            else localStorage.setItem(keys[k], oldLS[k]);
+            if (oldLS[k] === null) localStorage.removeItem(k);
+            else localStorage.setItem(k, oldLS[k]);
           } catch (err) {}
         });
         throw e;
