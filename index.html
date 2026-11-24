@@ -2013,7 +2013,7 @@ body.is-remote .file-hit{opacity:.85}
       <div class="data-grid">
         <section class="review-col">
           <h3>导出完整备份</h3>
-          <p class="hint">包含：学习进度、笔记、实作验收、聊天记录、费曼对话、知识库、错题与复习、掌握状态、非敏感设置。<br>不包含：DeepSeek API Key、GitHub Token。校验和只能发现意外损坏，不能证明来源可信。</p>
+          <p class="hint">包含：学习进度、笔记、实作验收、聊天记录、费曼对话、知识库、中文 PDF 译本、错题与复习、掌握状态、非敏感设置。<br>不包含：DeepSeek API Key、GitHub Token。校验和只能发现意外损坏，不能证明来源可信。</p>
           <button class="btn btn-primary" id="backupExport" type="button">导出 JSON 备份</button>
           <p class="hint" id="backupInfo"></p>
           <p class="hint">备份可能包含私人 NotebookLM 资料，请存放在本机安全位置，不要提交到公开仓库。</p>
@@ -2046,7 +2046,8 @@ body.is-remote .file-hit{opacity:.85}
       </div>
     </header>
 
-    <div class="bilingual-controls"><button id="bilingualImportButton" type="button" class="btn btn-quiet">导入本机双语译文包（JSON）</button><input id="bilingualImportFile" type="file" accept=".json,application/json" hidden><span id="bilingualImportStatus" role="status">中文链接优先使用官方译文；其他资料可导入个人译本。</span></div>
+    <div class="bilingual-controls pdf-import-controls"><button id="pdfImportBtn" type="button" class="btn btn-primary btn-sm">导入中文 PDF（ZIP 或多选）</button><input id="pdfImportInput" type="file" accept=".zip,application/zip,.pdf,application/pdf" multiple hidden><span id="pdfImportStatus" role="status" aria-live="polite">译本仅保存在当前浏览器，不会上传到公开 GitHub。</span></div>
+    <div class="bilingual-controls"><button id="bilingualImportButton" type="button" class="btn btn-quiet">旧版 Markdown / JSON（兼容）</button><input id="bilingualImportFile" type="file" accept=".json,application/json" hidden><span id="bilingualImportStatus" role="status">中文链接优先使用官方译文；其他资料可导入个人译本。</span></div>
     <div class="dbars" id="dbars" aria-label="按考试领域统计的学习进度"></div>
 
     <div class="stats">
@@ -2097,7 +2098,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：Workflow 和 Agent 的分界线在哪？SDK 能做什么、不能做什么？</p>
-          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="01_D1_Building_Effective_Agents.pdf">01_D1_Building_Effective_Agents.pdf</span><button class="tfile tfile-local" data-bilingual-source="01_D1_Building_Effective_Agents.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 01_D1_Building_Effective_Agents.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/01_D1_Building_Effective_Agents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_Building_Effective_Agents.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="02_D1_Claude_Agent_SDK_Overview.pdf">02_D1_Claude_Agent_SDK_Overview.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/agent-sdk/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/02_D1_Claude_Agent_SDK_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 英文原版">EN</a></span></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="01_D1_Building_Effective_Agents.pdf">01_D1_Building_Effective_Agents.pdf</span><button class="tfile tfile-local" data-bilingual-source="01_D1_Building_Effective_Agents.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 01_D1_Building_Effective_Agents.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/01_D1_Building_Effective_Agents.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 01_D1_Building_Effective_Agents.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="02_D1_Claude_Agent_SDK_Overview.pdf">02_D1_Claude_Agent_SDK_Overview.pdf</span><button class="tfile tfile-local" type="button" data-bilingual-source="02_D1_Claude_Agent_SDK_Overview.pdf" data-bilingual-lang="zh-CN" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 个人中文 PDF 译本">中文 PDF（未导入）</button><a class="tfile" href="https://code.claude.com/docs/zh-CN/agent-sdk/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 在线官方中文版（可能不同于 PDF 保存版本）">官网中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/02_D1_Claude_Agent_SDK_Overview.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 02_D1_Claude_Agent_SDK_Overview.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="2" aria-expanded="false" aria-controls="note-2">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2121,7 +2122,7 @@ body.is-remote .file-hit{opacity:.85}
             </label>
           </header>
           <p class="tl-q">今天要能回答：规则该写在 CLAUDE.md 还是代码里？MCP 的三角色分别解决什么？</p>
-          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="03_D2_MCP官方介绍.pdf">03_D2_MCP官方介绍.pdf</span><button class="tfile tfile-local" data-bilingual-source="03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 03_D2_MCP官方介绍.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D2_MCP官方介绍.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="04_D3_Memory与CLAUDE_md.pdf">04_D3_Memory与CLAUDE_md.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/memory" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/04_D3_Memory%E4%B8%8ECLAUDE_md.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="05_D4_Anthropic_Prompting指南.pdf">05_D4_Anthropic_Prompting指南.pdf</span><a class="tfile" href="https://platform.claude.com/docs/zh-CN/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 英文原版">EN</a></span></div>
+          <div class="tl-files"><span class="tfile-pair"><span class="tfile-title" title="03_D2_MCP官方介绍.pdf">03_D2_MCP官方介绍.pdf</span><button class="tfile tfile-local" data-bilingual-source="03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" data-bilingual-lang="zh-CN" type="button" aria-label="打开 03_D2_MCP官方介绍.pdf 的中文译本">中文（未导入）</button><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/03_D2_MCP%E5%AE%98%E6%96%B9%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 03_D2_MCP官方介绍.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="04_D3_Memory与CLAUDE_md.pdf">04_D3_Memory与CLAUDE_md.pdf</span><a class="tfile" href="https://code.claude.com/docs/zh-CN/memory" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 在线官方中文版（可能不同于 PDF 保存版本）">中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/04_D3_Memory%E4%B8%8ECLAUDE_md.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 04_D3_Memory与CLAUDE_md.pdf 英文原版">EN</a></span><span class="tfile-pair"><span class="tfile-title" title="05_D4_Anthropic_Prompting指南.pdf">05_D4_Anthropic_Prompting指南.pdf</span><button class="tfile tfile-local" type="button" data-bilingual-source="05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" data-bilingual-lang="zh-CN" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 个人中文 PDF 译本">中文 PDF（未导入）</button><a class="tfile" href="https://platform.claude.com/docs/zh-CN/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 在线官方中文版（可能不同于 PDF 保存版本）">官网中文</a><a class="tfile" href="02_%E4%BD%8E%E9%9A%BE%E5%BA%A6_%E5%BF%85%E8%AF%BB_%E6%89%93%E5%9C%B0%E5%9F%BA/05_D4_Anthropic_Prompting%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开 05_D4_Anthropic_Prompting指南.pdf 英文原版">EN</a></span></div>
           <div class="tl-note">
             <button class="note-btn" type="button" data-note-btn="3" aria-expanded="false" aria-controls="note-3">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -3192,6 +3193,7 @@ body.is-remote .file-hit{opacity:.85}
       if (d.exam !== undefined && d.exam !== null && !isObj(d.exam)) errors.push("exam 结构不正确");
       if (d.exams !== undefined && d.exams !== null && !Array.isArray(d.exams)) errors.push("exams 结构不正确");
       if (d.examDate !== undefined && d.examDate !== null && typeof d.examDate !== "string") errors.push("examDate 结构不正确");
+      if (d.pdfTranslations !== undefined && (!Array.isArray(d.pdfTranslations) || d.pdfTranslations.length > 60 || d.pdfTranslations.some(function(e){return !isObj(e) || typeof e.source !== "string" || !/\.pdf$/i.test(e.source) || e.lang !== "zh-CN" || typeof e.name !== "string" || typeof e.data !== "string" || e.data.length > 12*1024*1024;}))) errors.push("pdfTranslations 结构不正确");
       if (d.settings !== undefined && !isObj(d.settings)) errors.push("settings 结构不正确");
       if (d.knowledge !== undefined) {
         if (!isObj(d.knowledge)) errors.push("knowledge 结构不正确");
@@ -5847,6 +5849,7 @@ body.is-remote .file-hit{opacity:.85}
       exams: readJSON(EXAM_HISTORY, null),
       examDate: readJSON("ccarf.examDate", null),
       knowledge: { docs: docs, chunks: chunks },
+      pdfTranslations: window.CCARF_PDF ? await window.CCARF_PDF.exportAll() : [],
       settings: C.safeSettings(readJSON("ccarf.ai", {}))
     };
     return C.makeBackupV3(data, new Date().toISOString());
@@ -5866,7 +5869,7 @@ body.is-remote .file-hit{opacity:.85}
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
-      if (info) info.textContent = "已导出 " + (blob.size / 1024).toFixed(0) + " KB：" + b.data.knowledge.docs.length + " 份资料、" + b.data.cards.length + " 道错题、" + (b.data.chat || []).length + " 条聊天记录、SHA-256 已签名；不含 API Key。";
+      if (info) info.textContent = "已导出 " + (blob.size / 1024).toFixed(0) + " KB：" + b.data.knowledge.docs.length + " 份资料、" + (b.data.pdfTranslations || []).length + " 份中文PDF、" + b.data.cards.length + " 道错题、" + (b.data.chat || []).length + " 条聊天记录、SHA-256 已签名；不含 API Key。";
     } catch (e) {
       if (info) info.textContent = "导出失败：" + e.message;
     }
@@ -5879,7 +5882,7 @@ body.is-remote .file-hit{opacity:.85}
   function applyBackup(b) {
     var d = b.data || {};
     var hasKnowledge = C.hasKnowledgePayload(d);
-    var oldDocs = null, oldChunks = null;
+    var oldDocs = null, oldChunks = null, oldPdfs = null;
     var keys = {
       units: "ccarf.units", notes: "ccarf.notes", accept: "ccarf.accept", chat: "ccarf.chat",
       cards: CARDS_KEY, mastery: MASTERY_KEY, feynman: TUTOR_KEY, time: "ccarf.time", ts: TS_KEY, tsLedger: TS_LEDGER_KEY,
@@ -5893,10 +5896,18 @@ body.is-remote .file-hit{opacity:.85}
       return allChunks();
     }).then(function (chunks) {
       oldChunks = chunks;
+      return window.CCARF_PDF ? window.CCARF_PDF.snapshot() : [];
+    }).then(function (pdfs) {
+      oldPdfs = pdfs;
       // 只有备份明确带有 knowledge 字段时才动 IndexedDB；
       // 旧备份缺少该字段时保留本机资料，绝不默认清空。
       if (!hasKnowledge) return Promise.resolve();
       return replaceAllKnowledge({ docs: d.knowledge.docs || [], chunks: d.knowledge.chunks || [] });
+    }).then(function () {
+      if (has("pdfTranslations")) {
+        if (!window.CCARF_PDF) throw new Error("当前页面不支持中文 PDF 恢复");
+        return window.CCARF_PDF.restoreAll(d.pdfTranslations);
+      }
     }).then(function () {
       if (has("units")) writeStrict(keys.units, d.units || []);
       if (has("notes")) writeStrict(keys.notes, d.notes || {});
@@ -5918,10 +5929,13 @@ body.is-remote .file-hit{opacity:.85}
     }).catch(function (e) {
       var p = hasKnowledge && oldDocs ? replaceAllKnowledge({ docs: oldDocs, chunks: oldChunks || [] }) : Promise.resolve();
       return p.catch(function () {}).then(function () {
+        if (has("pdfTranslations") && oldPdfs && window.CCARF_PDF)
+          return window.CCARF_PDF.restoreSnapshot(oldPdfs);
+      }).catch(function () {}).then(function () {
         Object.keys(keys).forEach(function (k) {
           try {
-            if (oldLS[k] === null) localStorage.removeItem(keys[k]);
-            else localStorage.setItem(keys[k], oldLS[k]);
+            if (oldLS[k] === null) localStorage.removeItem(k);
+            else localStorage.setItem(k, oldLS[k]);
           } catch (err) {}
         });
         throw e;
@@ -6311,7 +6325,7 @@ function request(req) { return new Promise(function(resolve,reject){req.onsucces
 async function getAll(){var db=await database(); return request(db.transaction("docs","readonly").objectStore("docs").getAll());}
 function setStatus(msg){if(status)status.textContent=msg;}
 async function refresh(){try { var records=await getAll();var map=new Map(records.filter(function(d){return d.bilingualSource&&d.fullText}).map(function(d){return[d.id,d]}));
-  list.forEach(function(b){var source=decodeURIComponent(b.dataset.bilingualSource);var lang=b.dataset.bilingualLang;var found=map.has(uid(source,lang)); b.textContent=(lang==="en"?"EN":"中文")+(found?"":"（未导入）");b.dataset.bilingualReady=found?"true":"false";});
+  list.forEach(function(b){var source=decodeURIComponent(b.dataset.bilingualSource);var lang=b.dataset.bilingualLang;var found=map.has(uid(source,lang)); if(lang==="zh-CN" && b.dataset.pdfReady==="true")return; b.textContent=(lang==="en"?"EN":"中文")+(found?"":"（未导入）");b.dataset.bilingualReady=found?"true":"false";});
  } catch(e){setStatus("无法读取本机译文："+e.message);} }
 async function sha256(t){if(!crypto||!crypto.subtle)throw new Error("需要安全的 HTTPS 环境");var bytes=new TextEncoder().encode(t);var d=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(d)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
 async function saveOne(item){var db=await database(), source=item.sourceName,lang=item.lang,id=uid(source,lang);var text=item.text;
@@ -6344,6 +6358,199 @@ list.forEach(function(b){b.addEventListener("click",async function(){try{var sou
  }catch(e){setStatus("打开译文失败："+e.message)}});});
 var closer=document.getElementById("bilingualReaderClose");if(closer)closer.addEventListener("click",function(){reader.close()});
 refresh();
+})();
+</script>
+<script id="ccarf-pdf-translations">
+/* Private Chinese PDF reader. No file is uploaded to GitHub or to an API. */
+(function () {
+  "use strict";
+  var DB_NAME="ccarf-private-pdf", DB_STORE="translations", MAX_FILE=8*1024*1024,
+      MAX_ARCHIVE=32*1024*1024, MAX_SUM=45*1024*1024, DB_OPEN=null;
+  var input=document.getElementById("pdfImportInput"), button=document.getElementById("pdfImportBtn"),
+      status=document.getElementById("pdfImportStatus");
+  var titles=Array.from(document.querySelectorAll(".tfile-title[title$='.pdf']"));
+  var allowed=new Set(titles.map(function(el){return el.getAttribute("title")}));
+  var actions=Array.from(document.querySelectorAll(".tfile-local[data-bilingual-lang='zh-CN']"));
+  function setStatus(s){if(status)status.textContent=s;}
+  function pdfSource(filename){
+    var name=String(filename||"").split(/[\/\\]/).pop();
+    if(!/\.zh\.pdf$/i.test(name))return null;
+    var source=name.replace(/\.zh\.pdf$/i,".pdf");
+    return allowed.has(source)?source:null;
+  }
+  function database(){
+    if(!DB_OPEN) DB_OPEN=new Promise(function(resolve,reject){
+      var r=indexedDB.open(DB_NAME,1);
+      r.onupgradeneeded=function(){if(!r.result.objectStoreNames.contains(DB_STORE))r.result.createObjectStore(DB_STORE,{keyPath:"source"})};
+      r.onsuccess=function(){resolve(r.result)};
+      r.onerror=function(){reject(r.error||new Error("无法打开本机 PDF 存储"))};
+      r.onblocked=function(){reject(new Error("PDF 存储被其他页面阻止，请关闭其他标签页"))};
+    }).catch(function(e){DB_OPEN=null;throw e});
+    return DB_OPEN;
+  }
+  function request(req){return new Promise(function(resolve,reject){req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error||new Error("存储请求失败"))};})}
+  async function snapshot(){var db=await database();return request(db.transaction(DB_STORE,"readonly").objectStore(DB_STORE).getAll());}
+  async function get(source){var db=await database();return request(db.transaction(DB_STORE,"readonly").objectStore(DB_STORE).get(source));}
+  async function writeRecords(records,replace){
+    var db=await database();
+    return new Promise(function(resolve,reject){
+      var tx=db.transaction(DB_STORE,"readwrite"),store=tx.objectStore(DB_STORE);
+      if(replace)store.clear();
+      records.forEach(function(r){store.put(r)});
+      tx.oncomplete=function(){resolve()};
+      tx.onerror=function(){reject(tx.error||new Error("写入 PDF 失败"))};
+      tx.onabort=function(){reject(tx.error||new Error("PDF 事务已回滚"))};
+    });
+  }
+  async function checkPdf(blob,source){
+    if(!blob||!blob.size||blob.size>MAX_FILE)throw new Error(source+": PDF 大小超出允许范围");
+    var h=new Uint8Array(await blob.slice(0,5).arrayBuffer());
+    if(String.fromCharCode.apply(null,h)!=="%PDF-")throw new Error(source+": 文件不是有效 PDF");
+  }
+  async function fileRecord(file){
+    var source=pdfSource(file.name);
+    if(!source)return null;
+    await checkPdf(file,source);
+    return {source:source,name:file.name,lang:"zh-CN",bytes:file.size,addedAt:new Date().toISOString(),blob:new Blob([file],{type:"application/pdf"})};
+  }
+  async function fromZip(file){
+    if(file.size>MAX_ARCHIVE)throw new Error("ZIP 超出 32 MB 限额");
+    var buffer=await file.arrayBuffer(),v=new DataView(buffer),end=-1;
+    for(var i=buffer.byteLength-22;i>=Math.max(0,buffer.byteLength-65557);i--){
+      if(v.getUint32(i,true)===0x06054b50){end=i;break;}
+    }
+    if(end<0)throw new Error("无效 ZIP：未找到中央目录");
+    var count=v.getUint16(end+10,true),pos=v.getUint32(end+16,true);
+    if(count>150)throw new Error("ZIP 文件过多，已拒绝导入");
+    var total=0,out=[];
+    for(var k=0;k<count;k++){
+      if(pos+46>buffer.byteLength||v.getUint32(pos,true)!==0x02014b50)throw new Error("ZIP 目录结构错误");
+      var method=v.getUint16(pos+10,true),compressed=v.getUint32(pos+20,true),
+        expected=v.getUint32(pos+24,true),nlen=v.getUint16(pos+28,true),
+        xlen=v.getUint16(pos+30,true),clen=v.getUint16(pos+32,true),
+        offset=v.getUint32(pos+42,true);
+      if(pos+46+nlen+xlen+clen>buffer.byteLength)throw new Error("ZIP 目录越界");
+      var name=new TextDecoder("utf-8").decode(new Uint8Array(buffer,pos+46,nlen));
+      pos+=46+nlen+xlen+clen;
+      var source=pdfSource(name);
+      if(!source)continue;
+      total+=expected;
+      if(expected<=0||expected>MAX_FILE||total>MAX_SUM)throw new Error("ZIP 中文 PDF 体积超出限制");
+      if(offset+30>buffer.byteLength||v.getUint32(offset,true)!==0x04034b50)throw new Error("ZIP PDF 文件头损坏");
+      var dataStart=offset+30+v.getUint16(offset+26,true)+v.getUint16(offset+28,true);
+      if(dataStart+compressed>buffer.byteLength)throw new Error("ZIP PDF 数据越界");
+      var src=new Blob([buffer.slice(dataStart,dataStart+compressed)]),blob;
+      if(method===0)blob=src;
+      else if(method===8){
+        if(!window.DecompressionStream)throw new Error("浏览器不支持 ZIP 解压，请解压后多选 PDF 导入");
+        try{blob=await new Response(src.stream().pipeThrough(new DecompressionStream("deflate-raw"))).blob()}
+        catch(e){throw new Error("无法解压 PDF："+name+"，可改用解压后多选导入")}
+      }else throw new Error("ZIP 压缩格式不支持："+name);
+      if(blob.size!==expected)throw new Error("ZIP 解压大小不一致："+name);
+      await checkPdf(blob,source);
+      out.push({source:source,name:name.split("/").pop(),lang:"zh-CN",bytes:blob.size,addedAt:new Date().toISOString(),blob:new Blob([blob],{type:"application/pdf"})});
+    }
+    return out;
+  }
+  async function refresh(){
+    try{
+      var records=await snapshot(),set=new Set(records.map(function(r){return r.source}));
+      actions.forEach(function(b){
+        var source=decodeURIComponent(b.dataset.bilingualSource);
+        if(!allowed.has(source))return;
+        var found=set.has(source);
+        b.dataset.pdfReady=found?"true":"false";
+        b.textContent=found?"中文 PDF":"中文 PDF（未导入）";
+      });
+      setStatus("中文 PDF 已导入 "+records.length+" 份；当前设备本地保存。");
+    }catch(e){setStatus("PDF 存储读取失败："+e.message)}
+  }
+  async function importFiles(files){
+    var all=[],zipCount=0;
+    for(var i=0;i<files.length;i++){
+      var f=files[i];
+      setStatus("正在检查 "+(i+1)+"/"+files.length+": "+f.name);
+      if(/\.zip$/i.test(f.name)){zipCount++;all=all.concat(await fromZip(f));}
+      else{var r=await fileRecord(f);if(r)all.push(r);}
+    }
+    var dedup=new Map(all.map(function(r){return[r.source,r]}));
+    if(!dedup.size)throw new Error("未找到与学习网站资料对应的 .zh.pdf 文件");
+    await writeRecords(Array.from(dedup.values()),false);
+    await refresh();
+    setStatus("已导入 "+dedup.size+" 份中文 PDF"+(zipCount?"（ZIP）":"")+"，点击学习计划中的「中文 PDF」即可直接打开；原 Markdown 仍供 AI 检索。");
+  }
+  if(button&&input){
+    button.addEventListener("click",function(){input.click()});
+    input.addEventListener("change",function(){
+      var files=Array.from(input.files||[]);
+      if(!files.length)return;
+      importFiles(files).catch(function(e){setStatus("PDF 导入失败："+e.message)}).finally(function(){input.value=""});
+    });
+  }
+  // Capture before legacy Markdown click handlers. A PDF always wins if imported.
+  document.addEventListener("click",function(event){
+    var node=event.target;
+    var b=node&&node.closest?node.closest(".tfile-local[data-bilingual-lang='zh-CN']"):null;
+    if(!b)return;
+    var source=decodeURIComponent(b.dataset.bilingualSource);
+    if(!allowed.has(source))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(b.dataset.pdfReady!=="true"){
+      setStatus("请先导入 "+source+" 对应的 .zh.pdf；可以直接选择「22 份中文 PDF」ZIP 一次导入。");
+      if(input)input.click();
+      return;
+    }
+    var tab=window.open("about:blank","_blank");
+    if(tab){try{tab.opener=null;tab.document.title="打开中文 PDF…";}catch(e){}}
+    get(source).then(function(rec){
+      if(!rec||!rec.blob)throw new Error("本机 PDF 已丢失，请重新导入");
+      var blobUrl=URL.createObjectURL(rec.blob);
+      if(tab&&!tab.closed)tab.location.replace(blobUrl);
+      else {
+        var a=document.createElement("a");a.href=blobUrl;a.target="_blank";a.rel="noopener noreferrer";a.textContent="点击打开 "+rec.name;
+        if(status){status.replaceChildren(document.createTextNode("弹出窗口被阻止。"),a)}
+      }
+      setTimeout(function(){URL.revokeObjectURL(blobUrl)},600000);
+    }).catch(function(e){if(tab&&!tab.closed)tab.close();setStatus("打开 PDF 失败："+e.message)});
+  },true);
+  function asBase64(buffer){
+    var bytes=new Uint8Array(buffer),parts=[],step=32768;
+    for(var i=0;i<bytes.length;i+=step)parts.push(String.fromCharCode.apply(null,bytes.subarray(i,i+step)));
+    return btoa(parts.join(""));
+  }
+  function fromBase64(data){
+    var raw=atob(data),bytes=new Uint8Array(raw.length);
+    for(var i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+    return new Blob([bytes],{type:"application/pdf"});
+  }
+  async function exportAll(){
+    var records=await snapshot(),out=[];
+    for(var i=0;i<records.length;i++){
+      var r=records[i];
+      out.push({source:r.source,name:r.name,lang:"zh-CN",data:asBase64(await r.blob.arrayBuffer())});
+    }
+    return out;
+  }
+  async function restoreAll(entries){
+    if(!Array.isArray(entries)||entries.length>60)throw new Error("PDF 备份结构不正确");
+    var records=[],names=new Set(),total=0;
+    for(var i=0;i<entries.length;i++){
+      var e=entries[i];
+      if(!e||e.lang!=="zh-CN"||!allowed.has(e.source)||typeof e.data!=="string"||typeof e.name!=="string"||names.has(e.source))
+        throw new Error("PDF 备份包含无效或重复的文档");
+      names.add(e.source);
+      if(e.data.length>12*1024*1024)throw new Error("PDF 备份单个文件过大");
+      var blob=fromBase64(e.data);total+=blob.size;
+      if(total>MAX_SUM)throw new Error("PDF 备份总体积过大");
+      await checkPdf(blob,e.source);
+      records.push({source:e.source,name:e.name,lang:"zh-CN",bytes:blob.size,addedAt:new Date().toISOString(),blob:blob});
+    }
+    await writeRecords(records,true);
+    await refresh();
+  }
+  async function restoreSnapshot(records){await writeRecords(records||[],true);await refresh()}
+  window.CCARF_PDF={pdfSource:pdfSource,snapshot:snapshot,exportAll:exportAll,restoreAll:restoreAll,restoreSnapshot:restoreSnapshot,refresh:refresh};
+  refresh();
 })();
 </script>
 </body>
