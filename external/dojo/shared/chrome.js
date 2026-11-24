@@ -1,0 +1,88 @@
+/* Shared theme bootstraps synchronously, before styles and body are parsed. */
+(() => {
+  'use strict';
+  const script = document.currentScript;
+  const app = script.dataset.app;
+  const siteRoot = new URL('../', script.src);
+  const isTheme = value => value === 'dark' || value === 'light' || value === 'system';
+  function readTheme(key) {
+    try {
+      const value = localStorage.getItem(key);
+      const theme = key === 'signal0.theme' ? value : JSON.parse(value)?.prefs?.theme;
+      return isTheme(theme) ? theme : undefined;
+    } catch (_) { return undefined; }
+  }
+  function writeTheme(theme) {
+    try { localStorage.setItem('signal0.theme', theme); } catch (_) {}
+  }
+  let theme = readTheme('signal0.theme');
+  if (!theme) {
+    // The hub retains CCA-F migration and also accepts the React archive.
+    const keys = app === 'hub' ? ['ccae.v2', 'react-quiz-v1']
+      : app === 'cca-f' ? ['ccae.v2'] : app === 'cca-p' ? ['ccap.v1'] : app === 'react' ? ['react-quiz-v1'] : [];
+    for (const key of keys) {
+      theme = readTheme(key);
+      if (theme) break;
+    }
+  }
+  if (!theme) theme = 'system';
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  const resolvedTheme = () => theme === 'system' ? (media.matches ? 'dark' : 'light') : theme;
+  function applyTheme() {
+    const resolved = resolvedTheme();
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.dataset.themePreference = theme;
+    const button = document.getElementById('themeBtn');
+    if (button) {
+      button.textContent = theme === 'system' ? '◐' : resolved === 'dark' ? '☾' : '☀';
+      if (!document.getElementById('themeMenu')) button.setAttribute('aria-pressed', String(resolved === 'dark'));
+    }
+  }
+  function setTheme(value) {
+    if (!isTheme(value)) return;
+    theme = value; writeTheme(theme); applyTheme();
+    try { window.Signal0Chrome.onThemeChange?.(resolvedTheme()); } catch (_) {}
+    dispatchEvent(new Event('signal0-theme-change'));
+  }
+  window.Signal0Chrome = { applyTheme, setTheme, get preference() { return theme; }, onThemeChange: null };
+  media.addEventListener('change', () => { if (theme === 'system') applyTheme(); });
+  addEventListener('storage', event => {
+    if(event.key === 'signal0.theme') { theme = readTheme('signal0.theme') || 'system'; applyTheme(); dispatchEvent(new Event('signal0-theme-change')); }
+  });
+  applyTheme();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    applyTheme();
+    const themeButton = document.getElementById('themeBtn');
+    if (themeButton && !document.getElementById('themeMenu')) themeButton.onclick = () => setTheme(resolvedTheme() === 'dark' ? 'light' : 'dark');
+    const homeBack = document.querySelector('.home-back');
+    if (homeBack && location.protocol === 'file:') homeBack.href = new URL('index.html', siteRoot).href;
+    const button = document.getElementById('appswitchBtn');
+    const menu = document.getElementById('appswitchMenu');
+    if (!button || !menu) return;
+    function setAppMenu(open) {
+      menu.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+    }
+    button.onclick = (e) => {
+      setAppMenu(menu.hidden);
+    };
+    menu.querySelectorAll('a').forEach(link => {
+      if (location.protocol === 'file:') {
+        link.href = new URL(link.getAttribute('href').slice(1) + 'index.html', siteRoot).href;
+      }
+      link.onclick = () => setAppMenu(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.appswitch-wrap')) setAppMenu(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        e.preventDefault();
+        e.stopPropagation();
+        setAppMenu(false);
+        button.focus();
+      }
+    }, true);
+  });
+})();
